@@ -121,7 +121,7 @@
             <div style="position:absolute; inset:0; pointer-events:none;">
               <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute; inset:0; width:100%; height:100%;">
                 <sc-for list="{{ roadLines }}" as="r" hint-placeholder-count="4">
-                  <polyline points="{{ r.points }}" fill="none" stroke="rgba(45,45,45,0.6)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"></polyline>
+                  <polyline points="{{ r.points }}" fill="none" stroke="rgba(45,45,45,0.6)" stroke-width="9" stroke-linecap="butt" stroke-linejoin="round" vector-effect="non-scaling-stroke"></polyline>
                 </sc-for>
               </svg>
               <sc-for list="{{ roadLines }}" as="r" hint-placeholder-count="4">
@@ -541,7 +541,7 @@ function logiChainAreas(physItems, logiNodes) {
 }
 // 지번관리에 등록된 차도지번
 const ROAD_LINES = [
-  { name: "도로지번", verts: [[46, 37], [94, 37]] },
+  { name: "도로지번", verts: [[44, 37], [96, 37]] },
 ];
 const LOGI_DETAILS = {
   hwe: { org: "기획팀", use: "기타", indoor: "-", area: "270,500" },
