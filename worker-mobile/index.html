@@ -1,27 +1,683 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>작업자용 모바일 앱</title>
-  <style>
-    html,
-    body {
-      margin: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-
-    iframe {
-      display: block;
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<base href="../">
+<script src="./support.js"></script>
 </head>
 <body>
-  <iframe src="../%EC%9E%91%EC%97%85%EC%9E%90%EC%9A%A9%20%EB%AA%A8%EB%B0%94%EC%9D%BC%20%EC%95%B1%20%28%ED%86%B5%ED%95%A9%29.dc.html" title="작업자용 모바일 앱 통합 화면"></iframe>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.24.0/dist/tabler-icons.min.css">
+<script src="_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/_ds_bundle.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; }
+  *, *::before, *::after { box-sizing: border-box; }
+  a { color: var(--blue-dark); text-decoration: none; }
+  input::placeholder, textarea::placeholder { color: var(--text-placeholder); }
+  button { white-space: nowrap; }
+  .dl-pick:hover { border-color: var(--brand-primary) !important; color: var(--brand-primary) !important; }
+  .mb-frame { width: 390px; height: 760px; flex-shrink: 0; background: var(--gray-80); border-radius: 34px; padding: 10px; box-shadow: 0 2px 8px rgba(54,59,64,0.25); }
+  .mb-screen { width: 100%; height: 100%; background: var(--bg-primary); border-radius: 26px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+  .mb-head { position: relative; flex-shrink: 0; height: 56px; display: flex; align-items: center; gap: 10px; padding: 0 12px; border-bottom: 1px solid var(--border-default); }
+  .mb-body { flex: 1; min-height: 0; overflow: auto; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+  .mb-row { display: grid; grid-template-columns: 104px 1fr; border-bottom: 1px solid var(--border-default); }
+  .mb-k { background: var(--gray-5); padding: 10px; font: 400 12px var(--font-content); color: var(--text-tertiary); display: flex; align-items: center; }
+  .mb-v { padding: 10px; font: 400 13px var(--font-content); color: var(--text-secondary); font-variant-numeric: tabular-nums; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .mb-cta { height: 48px; border: none; border-radius: 8px; font: 700 16px var(--font-content); cursor: pointer; flex-shrink: 0; }
+  .mb-input { width: 100%; height: 44px; border: 1px solid var(--border-input); border-radius: 8px; padding: 0 12px; font: 400 14px var(--font-content); color: var(--text-secondary); }
+  .mb-cap { font: 400 12px var(--font-content); color: var(--text-tertiary); }
+  .mb-card { border: 1px solid var(--border-default); border-radius: 8px; overflow: hidden; }
+  .mb-menu { display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 14px; border: none; background: transparent; color: var(--text-secondary); font: 500 15px var(--font-content); cursor: pointer; width: 100%; text-align: left; }
+  .mb-menu[data-on="true"] { background: var(--status-wait-bg); color: var(--brand-primary); font-weight: 700; }
+  .mb-menu:hover { background: var(--gray-5); }
+</style>
+</helmet>
+
+<div style="min-height:100vh; width:100%; background:var(--gray-10); display:flex; flex-direction:column; align-items:center; gap:16px; padding:20px; font-family:var(--font-primary); color:var(--text-secondary);" data-screen-label="{{ screenLabel }}">
+
+  <sc-if value="{{ showPicker }}" hint-placeholder-val="{{ true }}">
+    <div style="width:640px; max-width:100%; display:flex; flex-direction:column; gap:8px; padding:12px 16px; background:var(--bg-primary); border:1px solid var(--border-default); border-radius:8px;">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font:700 14px var(--font-content); color:var(--text-primary); white-space:nowrap;">작업자용 모바일 앱</span>
+        <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">{{ screenLabel }}</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
+        <sc-for list="{{ pickRows }}" as="p" hint-placeholder-count="10">
+          <button class="dl-pick" onClick="{{ p.onClick }}" title="{{ p.label }}" style="flex-shrink:0; height:26px; padding:0 9px; border:1px solid {{ p.border }}; border-radius:999px; background:{{ p.bg }}; color:{{ p.color }}; font:700 11px var(--font-content); font-variant-numeric:tabular-nums; cursor:pointer;">{{ p.short }}</button>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <div class="mb-frame">
+    <div class="mb-screen">
+
+      <!-- ===== HEL19-01 로그인 ===== -->
+      <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ false }}">
+        <div class="mb-body" style="justify-content:center; align-items:center;">
+          <img src="_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/assets/logo-horizontal.png" alt="한화오션에코텍" style="height:26px; width:auto;">
+          <span style="font:700 20px var(--font-content); color:var(--text-primary);">작업자 로그인</span>
+          <span class="mb-cap" style="text-align:center; line-height:1.6;">작업정보, 작업실적, 긴급배차<br>서비스를 제공합니다.</span>
+          <input class="mb-input" placeholder="사번 또는 ID를 입력하세요.">
+          <input class="mb-input" type="password" placeholder="비밀번호를 입력하세요.">
+          <button class="mb-cta" onClick="{{ doLogin }}" style="width:100%; background:var(--brand-primary); color:#fff;">로그인</button>
+          <span class="mb-cap" style="text-align:center;">로그인 후 2단계 인증(2FA)이 진행됩니다.</span>
+        </div>
+      </sc-if>
+
+      <!-- ===== HEL19-01A 2FA 인증 ===== -->
+      <sc-if value="{{ is2fa }}" hint-placeholder-val="{{ false }}">
+        <div class="mb-body" style="justify-content:center; align-items:center;">
+          <img src="_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/assets/logo-horizontal.png" alt="한화오션에코텍" style="height:26px; width:auto;">
+          <span style="font:700 20px var(--font-content); color:var(--text-primary);">2단계 인증</span>
+          <span class="mb-cap" style="text-align:center; line-height:1.6;"><strong style="font-weight:500; color:var(--text-primary);">홍길동</strong>님, 등록된 인증 앱에<br>표시된 6자리 코드를 입력해 주세요.</span>
+          <div style="width:100%; padding:12px; border-radius:8px; background:var(--status-wait-bg); display:flex; flex-direction:column; gap:8px;">
+            <span style="font:500 12px var(--font-content); color:var(--brand-pressed);">2FA 인증코드</span>
+            <input class="mb-input" placeholder="6자리 코드 또는 백업코드를 입력하세요." style="background:var(--bg-primary); text-align:center; letter-spacing:4px; font-variant-numeric:tabular-nums;">
+            <span class="mb-cap">Microsoft Entra ID 기반 인증 적용 검토 중 · 유효시간 02:59</span>
+          </div>
+          <button class="mb-cta" onClick="{{ doVerify }}" style="width:100%; background:var(--brand-primary); color:#fff;">인증 완료</button>
+          <div style="display:flex; align-items:center; gap:14px;">
+            <button onClick="{{ backToLogin }}" style="border:none; background:transparent; padding:0; color:var(--text-tertiary); font:400 13px var(--font-content); cursor:pointer;">이전으로</button>
+            <span style="color:var(--border-default);">·</span>
+            <button style="border:none; background:transparent; padding:0; color:var(--brand-primary); font:500 13px var(--font-content); cursor:pointer;">코드 재전송</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ===== 앱 공통 헤더 ===== -->
+      <sc-if value="{{ isApp }}" hint-placeholder-val="{{ true }}">
+        <div class="mb-head">
+          <button onClick="{{ toggleDrawer }}" title="메뉴" style="width:36px; height:36px; border:none; background:transparent; cursor:pointer; color:var(--text-secondary); display:flex; align-items:center; justify-content:center;"><i class="ti ti-menu-2" style="font-size:22px;"></i></button>
+          <span style="position:absolute; left:50%; transform:translateX(-50%); font:700 16px var(--font-content); color:var(--text-primary); white-space:nowrap;">{{ pageTitle }}</span>
+          <button onClick="{{ toggleAlarm }}" title="알림" style="margin-left:auto; width:36px; height:36px; border:none; background:transparent; cursor:pointer; color:var(--text-secondary); display:flex; align-items:center; justify-content:center; position:relative;">
+            <i class="ti ti-bell" style="font-size:22px;"></i>
+            <span style="position:absolute; top:5px; right:5px; width:8px; height:8px; border-radius:50%; background:var(--red-main);"></span>
+          </button>
+        </div>
+
+        <!-- ===== 지도 화면 ===== -->
+        <sc-if value="{{ isMap }}" hint-placeholder-val="{{ false }}">
+          <div style="flex:1; min-height:0; position:relative; background:var(--gray-10);">
+            <div style="position:absolute; inset:0; pointer-events:none;">
+              <div style="position:absolute; left:0; right:0; top:46%; height:20px; background:var(--gray-0); opacity:0.85;"></div>
+              <div style="position:absolute; left:12%; top:12%; width:46%; height:24%; border:1px solid var(--gray-40); background:rgba(255,255,255,0.4); padding:5px;"><span style="font:700 11px var(--font-content); color:var(--gray-40);">O1</span></div>
+              <div style="position:absolute; left:20%; top:58%; width:42%; height:22%; border:1px solid var(--gray-40); background:rgba(255,255,255,0.4); padding:5px;"><span style="font:700 11px var(--font-content); color:var(--gray-40);">O1b1</span></div>
+            </div>
+            <div style="position:absolute; left:22%; top:20%; display:flex; align-items:center; gap:3px; height:20px; padding:0 6px; border-radius:4px; background:var(--orange-40); color:#fff; font:700 11px/1 var(--font-content);"><i class="ti ti-package" style="font-size:12px;"></i>자재</div>
+            <div style="position:absolute; left:54%; top:30%; display:flex; align-items:center; gap:3px; height:20px; padding:0 6px; border-radius:4px; background:var(--blue-dark); color:#fff; font:700 11px/1 var(--font-content); font-variant-numeric:tabular-nums;"><i class="ti ti-box" style="font-size:12px;"></i>BL602</div>
+            <div onClick="{{ clickVehicle }}" style="position:absolute; left:{{ tpLeft }}%; top:{{ tpTop }}%; display:flex; align-items:center; gap:3px; height:24px; padding:0 8px; border-radius:999px; background:var(--brand-primary); color:#fff; font:700 11px/1 var(--font-content); font-variant-numeric:tabular-nums; cursor:pointer; border:{{ tpBorder }};"><i class="ti ti-truck-delivery" style="font-size:13px;"></i>TP02</div>
+            <sc-if value="{{ showObstacle }}" hint-placeholder-val="{{ false }}">
+              <div onClick="{{ clickObstacle }}" style="position:absolute; left:32%; top:66%; display:flex; align-items:center; gap:3px; height:20px; padding:0 6px; border-radius:4px; background:var(--red-main); color:#fff; font:700 11px/1 var(--font-content); cursor:pointer;"><i class="ti ti-alert-triangle" style="font-size:12px;"></i>방해요소</div>
+            </sc-if>
+            <div style="position:absolute; left:44%; top:50%; width:30px; height:30px; border-radius:50%; background:var(--text-primary); border:2px solid #fff; display:flex; align-items:center; justify-content:center;"><i class="ti ti-navigation" style="font-size:15px; color:#fff;"></i></div>
+
+            <div style="position:absolute; left:12px; top:12px; display:flex; gap:6px;">
+              <button onClick="{{ toggleOption }}" style="height:32px; padding:0 12px; border:1px solid var(--border-default); border-radius:6px; background:{{ optBg }}; color:{{ optColor }}; font:500 12px var(--font-content); cursor:pointer;">옵션</button>
+              <button onClick="{{ toggleFind }}" style="height:32px; padding:0 12px; border:1px solid var(--border-default); border-radius:6px; background:{{ findBg }}; color:{{ findColor }}; font:500 12px var(--font-content); cursor:pointer;">찾기</button>
+            </div>
+            <button title="지도 안내" style="position:absolute; right:12px; top:12px; width:32px; height:32px; border:1px solid var(--border-default); border-radius:6px; background:var(--bg-primary); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-secondary);"><i class="ti ti-info-circle" style="font-size:16px;"></i></button>
+            <button title="현위치 포커싱" style="position:absolute; right:12px; bottom:12px; width:40px; height:40px; border:1px solid var(--border-default); border-radius:8px; background:var(--bg-primary); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--brand-primary);"><i class="ti ti-current-location" style="font-size:20px;"></i></button>
+
+            <sc-if value="{{ showOption }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute; left:12px; top:52px; width:210px; background:var(--bg-primary); border:1px solid var(--border-default); border-radius:8px; padding:12px; box-shadow:0 2px 8px rgba(54,59,64,0.25);">
+                <div style="font:700 12px var(--font-content); color:var(--text-primary); margin-bottom:6px;">지도유형</div>
+                <div style="height:30px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; display:flex; align-items:center; justify-content:space-between; font:400 12px var(--font-content); color:var(--text-secondary); margin-bottom:10px;">위성지도<i class="ti ti-chevron-down" style="font-size:14px; color:var(--text-tertiary);"></i></div>
+                <div style="font:700 12px var(--font-content); color:var(--text-primary); margin-bottom:6px;">지도옵션</div>
+                <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:10px;">
+                  <sc-for list="{{ mapOpts }}" as="o" hint-placeholder-count="4">
+                    <span onClick="{{ o.onClick }}" style="display:flex; align-items:center; gap:6px; cursor:pointer; font:400 12px var(--font-content); color:var(--text-secondary);"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Checkbox" checked="{{ o.on }}" size="16px" style="pointer-events:none;" hint-size="16px,16px"></x-import>{{ o.label }}</span>
+                  </sc-for>
+                </div>
+                <div style="font:700 12px var(--font-content); color:var(--text-primary); margin-bottom:6px;">표시항목</div>
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                  <sc-for list="{{ dispOpts }}" as="o" hint-placeholder-count="4">
+                    <span onClick="{{ o.onClick }}" style="display:flex; align-items:center; gap:6px; cursor:pointer; font:400 12px var(--font-content); color:var(--text-secondary);"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Checkbox" checked="{{ o.on }}" size="16px" style="pointer-events:none;" hint-size="16px,16px"></x-import>{{ o.label }}</span>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ showFind }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute; left:12px; right:12px; top:52px; background:var(--bg-primary); border:1px solid var(--border-default); border-radius:8px; padding:12px; box-shadow:0 2px 8px rgba(54,59,64,0.25); display:flex; flex-direction:column; gap:8px;">
+                <input class="mb-input" placeholder="명칭 또는 코드를 입력해주세요." style="height:38px;">
+                <div style="display:flex; gap:8px;">
+                  <button style="flex:1; height:36px; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 13px var(--font-content); cursor:pointer;">조회</button>
+                  <button onClick="{{ toggleFind }}" style="flex:1; height:36px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); cursor:pointer;">닫기</button>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ showAlarmPop }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute; right:12px; top:52px; width:260px; background:var(--bg-primary); border:1px solid var(--border-default); border-radius:8px; padding:12px; box-shadow:0 2px 8px rgba(54,59,64,0.25); display:flex; flex-direction:column; gap:6px;">
+                <span class="mb-cap">{{ alarmAgo }}</span>
+                <span style="font:500 13px/1.5 var(--font-content); color:var(--text-primary);">{{ alarmText }}</span>
+                <a href="#" onClick="{{ confirmAlarm }}" style="font:500 12px var(--font-content); text-decoration:underline;">확인 ›</a>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ showVehicleCard }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute; left:12px; right:12px; bottom:60px; background:var(--bg-primary); border:1px solid var(--border-default); border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(54,59,64,0.25);">
+                <div style="height:38px; display:flex; align-items:center; gap:8px; padding:0 12px; border-bottom:1px solid var(--border-default); background:var(--gray-5);">
+                  <span style="font:700 14px var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">TP01</span>
+                  <span style="height:20px; padding:0 8px; border-radius:999px; background:var(--status-error-bg); color:var(--red-dark); font:700 11px/20px var(--font-content);">긴급호출</span>
+                  <button onClick="{{ clickVehicle }}" title="닫기" style="margin-left:auto; border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:2px;"><i class="ti ti-x" style="font-size:15px;"></i></button>
+                </div>
+                <sc-for list="{{ vehicleRows }}" as="r" hint-placeholder-count="8">
+                  <div class="mb-row">
+                    <div class="mb-k">{{ r.k }}</div>
+                    <div class="mb-v">{{ r.v }}</div>
+                  </div>
+                </sc-for>
+                <div style="padding:10px 12px; display:flex; gap:8px;">
+                  <a href="tel:01011111111" style="flex:1; height:38px; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 13px var(--font-content); display:flex; align-items:center; justify-content:center; gap:5px;"><i class="ti ti-phone" style="font-size:15px;"></i>운전자 통화</a>
+                  <a href="tel:01022222222" style="flex:1; height:38px; border-radius:6px; border:1px solid var(--border-input); background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); display:flex; align-items:center; justify-content:center; gap:5px;"><i class="ti ti-phone" style="font-size:15px;"></i>신호수 통화</a>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ showObstacleCard }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute; left:12px; right:12px; bottom:60px; background:var(--bg-primary); border:1px solid var(--border-default); border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(54,59,64,0.25);">
+                <div style="height:38px; display:flex; align-items:center; gap:8px; padding:0 12px; border-bottom:1px solid var(--border-default); background:var(--gray-5);">
+                  <span style="font:700 14px var(--font-content); color:var(--text-primary);">방해요소</span>
+                  <span style="height:20px; padding:0 8px; border-radius:999px; background:var(--status-error-bg); color:var(--red-dark); font:700 11px/20px var(--font-content);">위험</span>
+                  <button onClick="{{ clickObstacle }}" title="닫기" style="margin-left:auto; border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:2px;"><i class="ti ti-x" style="font-size:15px;"></i></button>
+                </div>
+                <div class="mb-row"><div class="mb-k">유형</div><div class="mb-v">폐기물</div></div>
+                <div class="mb-row"><div class="mb-k">위치</div><div class="mb-v">AA1004</div></div>
+                <div class="mb-row"><div class="mb-k">내용</div><div class="mb-v">빠른 처리 필요</div></div>
+                <div class="mb-cap" style="height:74px; margin:10px 12px; border-radius:6px; background:var(--gray-10); display:flex; align-items:center; justify-content:center; gap:6px;"><i class="ti ti-photo" style="font-size:18px;"></i>첨부 사진</div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <!-- ===== 지도 위치 선택 ===== -->
+        <sc-if value="{{ isMapPick }}" hint-placeholder-val="{{ false }}">
+          <div style="flex:1; min-height:0; display:flex; flex-direction:column;">
+            <div style="flex:1; min-height:0; position:relative; background:var(--gray-10);">
+              <div style="position:absolute; inset:0; pointer-events:none;">
+                <div style="position:absolute; left:0; right:0; top:46%; height:20px; background:var(--gray-0); opacity:0.85;"></div>
+                <div style="position:absolute; left:14%; top:14%; width:44%; height:24%; border:1px solid var(--gray-40); background:rgba(255,255,255,0.4); padding:5px;"><span style="font:700 11px var(--font-content); color:var(--gray-40);">O1</span></div>
+                <div style="position:absolute; left:20%; top:58%; width:42%; height:22%; border:1.5px solid var(--brand-primary); background:rgba(237,113,0,0.14); padding:5px;"><span style="font:700 11px var(--font-content); color:var(--brand-pressed);">O1b1</span></div>
+              </div>
+              <div style="position:absolute; left:44%; top:50%; width:30px; height:30px; border-radius:50%; background:var(--text-primary); border:2px solid #fff; display:flex; align-items:center; justify-content:center;"><i class="ti ti-navigation" style="font-size:15px; color:#fff;"></i></div>
+            </div>
+            <div style="flex-shrink:0; padding:14px; border-top:1px solid var(--border-default); display:flex; flex-direction:column; gap:10px;">
+              <button style="height:42px; border:1px solid var(--border-input); border-radius:8px; background:var(--bg-primary); color:var(--text-secondary); font:500 14px var(--font-content); cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;"><i class="ti ti-current-location" style="font-size:17px;"></i>현재 위치로 지정</button>
+              <input class="mb-input" placeholder="주변 지번정보 또는 블록정보를 입력" value="O1b1" style="height:42px;">
+              <span style="font:400 12px/1.5 var(--font-content); color:var(--red-dark);">제보내용은 승인 후 대시보드 지도에 표시됩니다.</span>
+              <button class="mb-cta" onClick="{{ finishMapPick }}" style="background:var(--brand-primary); color:#fff;">위치 선택 완료</button>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- ===== 폼·목록 화면 ===== -->
+        <sc-if value="{{ isForm }}" hint-placeholder-val="{{ true }}">
+          <div class="mb-body">
+
+            <sc-if value="{{ isDispatchNew }}" hint-placeholder-val="{{ false }}">
+              <div class="mb-card">
+                <div class="mb-row"><div class="mb-k">배차요청일</div><div class="mb-v">2026-06-15</div></div>
+                <div class="mb-row"><div class="mb-k">배차유형</div><div class="mb-v" style="color:var(--red-dark); font-weight:500;">긴급배차</div></div>
+                <div class="mb-row"><div class="mb-k">작업구분 *</div><div class="mb-v"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ workOptions }}" value="{{ workKind }}" onChange="{{ setWorkKind }}" hint-size="140px,28px"></x-import></div></div>
+                <div class="mb-row"><div class="mb-k">이동구분 *</div><div class="mb-v"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ moveOptions }}" value="{{ moveKind }}" onChange="{{ setMoveKind }}" hint-size="140px,28px"></x-import></div></div>
+                <div class="mb-row"><div class="mb-k">대상코드 *</div><div class="mb-v"><input placeholder="코드입력" value="516-B" style="width:120px; height:30px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;"><a href="#">찾기</a></div></div>
+                <div class="mb-row"><div class="mb-k">출발 · 도착지 *</div><div class="mb-v"><a href="#" onClick="{{ goMapPick }}">위치찾기</a></div></div>
+              </div>
+              <button class="mb-cta" onClick="{{ submitDispatch }}" style="background:var(--red-main); color:#fff;">호출요청</button>
+              <button class="mb-cta" onClick="{{ goDispatchList }}" style="background:var(--bg-primary); border:1px solid var(--border-input); color:var(--text-secondary);">신청내역</button>
+            </sc-if>
+
+            <sc-if value="{{ isDispatchDone }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex; flex-direction:column; align-items:center; gap:8px; padding:8px 0;">
+                <i class="ti ti-circle-check" style="font-size:40px; color:var(--green-dark);"></i>
+                <span style="font:700 16px var(--font-content); color:var(--text-primary);">신청이 완료되었습니다.</span>
+              </div>
+              <div class="mb-card">
+                <div class="mb-row"><div class="mb-k">배차요청일</div><div class="mb-v">2026-06-15</div></div>
+                <div class="mb-row"><div class="mb-k">배차유형</div><div class="mb-v" style="color:var(--red-dark); font-weight:500;">긴급배차</div></div>
+                <div class="mb-row"><div class="mb-k">작업구분</div><div class="mb-v">이동</div></div>
+                <div class="mb-row"><div class="mb-k">이동구분</div><div class="mb-v">블록</div></div>
+                <div class="mb-row"><div class="mb-k">대상코드</div><div class="mb-v"><a href="#">516-B</a></div></div>
+                <div class="mb-row"><div class="mb-k">출발 · 도착지</div><div class="mb-v">O1b1 → O1b2</div></div>
+              </div>
+              <button class="mb-cta" onClick="{{ goDispatchList }}" style="background:var(--brand-primary); color:#fff;">신청내역</button>
+            </sc-if>
+
+            <sc-if value="{{ isDispatchList }}" hint-placeholder-val="{{ false }}">
+              <div style="position:relative;">
+                <button onClick="{{ toggleDateDd }}" style="width:100%; height:42px; border:1px solid var(--border-input); border-radius:8px; background:var(--bg-primary); padding:0 12px; display:flex; align-items:center; justify-content:space-between; font:500 14px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums; cursor:pointer;">{{ pickedDate }}<i class="ti ti-chevron-down" style="font-size:16px; color:var(--text-tertiary);"></i></button>
+                <sc-if value="{{ showDateDd }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute; left:0; right:0; top:46px; z-index:20; background:var(--bg-primary); border:1px solid var(--border-default); border-radius:8px; padding:4px; box-shadow:0 2px 8px rgba(54,59,64,0.25);">
+                    <sc-for list="{{ dateOpts }}" as="d" hint-placeholder-count="4">
+                      <div onClick="{{ d.onSelect }}" style="height:36px; padding:0 10px; display:flex; align-items:center; border-radius:6px; cursor:pointer; font:400 13px var(--font-content); color:{{ d.color }}; font-variant-numeric:tabular-nums;">{{ d.label }}</div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+              <div class="mb-card">
+                <div class="mb-row"><div class="mb-k">배차요청일</div><div class="mb-v">{{ pickedDate }}</div></div>
+                <div class="mb-row"><div class="mb-k">배차유형</div><div class="mb-v" style="color:var(--red-dark); font-weight:500;">긴급배차</div></div>
+                <div class="mb-row"><div class="mb-k">작업구분</div><div class="mb-v">이동</div></div>
+                <div class="mb-row"><div class="mb-k">이동구분</div><div class="mb-v">블록</div></div>
+                <div class="mb-row"><div class="mb-k">대상코드</div><div class="mb-v"><a href="#">516-B</a></div></div>
+                <div class="mb-row"><div class="mb-k">출발 · 도착지</div><div class="mb-v">O1b1 → O1b2</div></div>
+                <div class="mb-row"><div class="mb-k">진행현황</div><div class="mb-v"><span style="color:{{ progColor }}; font-weight:500;">{{ progLabel }}</span><sc-if value="{{ canCancel }}" hint-placeholder-val="{{ false }}"><a href="#" style="color:var(--red-dark); text-decoration:underline;">신청취소</a></sc-if></div></div>
+              </div>
+              <sc-if value="{{ cancelBlocked }}" hint-placeholder-val="{{ false }}">
+                <span class="mb-cap">관리자 처리로 '처리완료'된 신청은 취소할 수 없습니다.</span>
+              </sc-if>
+              <button class="mb-cta" onClick="{{ goHome }}" style="background:var(--bg-primary); border:1px solid var(--border-input); color:var(--text-secondary);">홈으로 이동</button>
+            </sc-if>
+
+            <sc-if value="{{ isAdminDispatch }}" hint-placeholder-val="{{ false }}">
+              <div style="height:42px; border:1px solid var(--border-input); border-radius:8px; background:var(--bg-primary); padding:0 12px; display:flex; align-items:center; justify-content:space-between; font:500 14px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">2026-06-15<i class="ti ti-chevron-down" style="font-size:16px; color:var(--text-tertiary);"></i></div>
+              <div class="mb-card">
+                <div class="mb-row"><div class="mb-k">배차요청일</div><div class="mb-v">2026-06-15</div></div>
+                <div class="mb-row"><div class="mb-k">배차유형</div><div class="mb-v" style="color:var(--red-dark); font-weight:500;">긴급배차</div></div>
+                <div class="mb-row"><div class="mb-k">작업구분</div><div class="mb-v">이동</div></div>
+                <div class="mb-row"><div class="mb-k">이동구분</div><div class="mb-v">블록</div></div>
+                <div class="mb-row"><div class="mb-k">대상코드</div><div class="mb-v"><a href="#">516-B</a></div></div>
+                <div class="mb-row"><div class="mb-k">출발 · 도착지</div><div class="mb-v">O1b1 → O1b2</div></div>
+                <div class="mb-row"><div class="mb-k">차량배차</div><div class="mb-v"><span style="font-weight:500;">{{ pickedVehicle }}</span><a href="#" onClick="{{ toggleVehicleDlg }}">찾기</a></div></div>
+              </div>
+              <sc-if value="{{ showVehicleDlg }}" hint-placeholder-val="{{ false }}">
+                <div class="mb-card">
+                  <div style="height:36px; display:flex; align-items:center; padding:0 10px; border-bottom:1px solid var(--border-default); background:var(--gray-5);">
+                    <span style="font:700 13px var(--font-content); color:var(--text-primary);">차량정보</span>
+                    <button onClick="{{ toggleVehicleDlg }}" title="닫기" style="margin-left:auto; border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:2px;"><i class="ti ti-x" style="font-size:15px;"></i></button>
+                  </div>
+                  <sc-for list="{{ vehicleList }}" as="v" hint-placeholder-count="6">
+                    <div onClick="{{ v.onPick }}" style="display:flex; align-items:center; gap:8px; padding:10px; border-bottom:1px solid var(--border-default); cursor:pointer; font:400 12px var(--font-content); color:var(--text-secondary);">
+                      <span style="width:16px; height:16px; border-radius:50%; border:{{ v.radio }}; background:#fff; flex-shrink:0;"></span>
+                      <span style="flex:1; min-width:0; font-variant-numeric:tabular-nums;">{{ v.text }}</span>
+                      <span style="color:{{ v.stateColor }}; font-weight:500; white-space:nowrap;">{{ v.state }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <button class="mb-cta" style="background:var(--brand-primary); color:#fff;">확정</button>
+              <span class="mb-cap">확정 시 해당 차량 태블릿(HEL18-08)으로 알람이 전송됩니다.</span>
+              <button class="mb-cta" onClick="{{ goHome }}" style="background:var(--bg-primary); border:1px solid var(--border-input); color:var(--text-secondary);">홈으로 이동</button>
+            </sc-if>
+
+            <sc-if value="{{ isRecord }}" hint-placeholder-val="{{ false }}">
+              <div style="flex:1; display:flex; align-items:center; justify-content:center;">
+                <div style="padding:24px; background:var(--gray-5); border:1px solid var(--border-default); border-radius:8px; display:flex; flex-direction:column; align-items:center; gap:8px;">
+                  <i class="ti ti-clipboard-check" style="font-size:36px; color:var(--gray-40);"></i>
+                  <span style="font:500 14px var(--font-content); color:var(--text-secondary);">추가 계약 예정</span>
+                  <span class="mb-cap" style="text-align:center; line-height:1.6;">기획 내용 수급 필요<br>확정 후 상세 설계가 반영됩니다.</span>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ isReportNew }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <span class="mb-cap">사진을 첨부해주세요.</span>
+                <div style="height:104px; border:1px dashed var(--border-input); border-radius:8px; background:var(--gray-5); display:flex; align-items:center; justify-content:center; color:var(--text-tertiary);"><i class="ti ti-photo" style="font-size:28px;"></i></div>
+                <div style="display:flex; gap:8px;">
+                  <button style="flex:1; height:40px; border:1px solid var(--border-input); border-radius:8px; background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); cursor:pointer; display:flex; align-items:center; justify-content:center; gap:5px;"><i class="ti ti-camera" style="font-size:16px;"></i>사진 촬영</button>
+                  <button style="flex:1; height:40px; border:1px solid var(--border-input); border-radius:8px; background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); cursor:pointer; display:flex; align-items:center; justify-content:center; gap:5px;"><i class="ti ti-photo-plus" style="font-size:16px;"></i>라이브러리</button>
+                </div>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:6px;">
+                <span class="mb-cap">유형 *</span>
+                <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-m" options="{{ typeOptions }}" value="{{ obsType }}" onChange="{{ setObsType }}" hint-size="100%,40px"></x-import>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:6px;">
+                <span class="mb-cap">위치 *</span>
+                <div style="display:flex; align-items:center; gap:8px; height:42px; border:1px solid var(--border-input); border-radius:8px; padding:0 12px;">
+                  <span style="font:400 13px var(--font-content); color:var(--text-tertiary); font-variant-numeric:tabular-nums;">{{ obsLoc }}</span>
+                  <a href="#" onClick="{{ goMapPick }}" style="margin-left:auto; font:500 13px var(--font-content);">지도에서 찾기</a>
+                </div>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:6px;">
+                <span class="mb-cap">중요도 *</span>
+                <div style="display:flex; gap:14px;">
+                  <sc-for list="{{ levelOpts }}" as="l" hint-placeholder-count="3">
+                    <span onClick="{{ l.onClick }}" style="display:flex; align-items:center; gap:5px; cursor:pointer; font:400 13px var(--font-content); color:{{ l.color }};"><span style="width:16px; height:16px; border-radius:50%; border:{{ l.border }}; background:#fff; display:inline-block;"></span>{{ l.label }}</span>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:6px;">
+                <span class="mb-cap">내용</span>
+                <textarea placeholder="작업 영향, 위험 내용, 조치 요청사항 입력" style="width:100%; height:76px; border:1px solid var(--border-input); border-radius:8px; padding:10px 12px; font:400 13px var(--font-content); color:var(--text-secondary); resize:none;"></textarea>
+              </div>
+              <button class="mb-cta" onClick="{{ submitReport }}" style="background:var(--brand-primary); color:#fff;">제보 등록</button>
+              <button class="mb-cta" onClick="{{ goReportList }}" style="background:var(--bg-primary); border:1px solid var(--border-input); color:var(--text-secondary);">지난 제보내역 보기</button>
+            </sc-if>
+
+            <sc-if value="{{ isReportDone }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex; flex-direction:column; align-items:center; gap:8px; padding:8px 0;">
+                <i class="ti ti-circle-check" style="font-size:40px; color:var(--green-dark);"></i>
+                <span style="font:700 16px var(--font-content); color:var(--text-primary);">접수가 완료되었습니다.</span>
+                <span class="mb-cap" style="text-align:center;">승인 완료 시 지도와 대시보드에 반영됩니다.</span>
+              </div>
+              <div class="mb-card">
+                <div class="mb-row"><div class="mb-k">유형</div><div class="mb-v">적치물</div></div>
+                <div class="mb-row"><div class="mb-k">위치</div><div class="mb-v">O1b1<a href="#">위치보기</a></div></div>
+                <div class="mb-row"><div class="mb-k">중요도</div><div class="mb-v" style="color:var(--status-wait-text); font-weight:500;">주의</div></div>
+                <div class="mb-row"><div class="mb-k">상태</div><div class="mb-v" style="color:var(--blue-dark); font-weight:500;">접수</div></div>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <sc-for list="{{ steps }}" as="st" hint-placeholder-count="4">
+                  <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="width:22px; height:22px; border-radius:50%; background:{{ st.bg }}; color:{{ st.color }}; font:700 11px/22px var(--font-content); text-align:center; flex-shrink:0;">{{ st.n }}</span>
+                    <span style="font:400 13px var(--font-content); color:{{ st.textColor }};">{{ st.label }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <button class="mb-cta" onClick="{{ goReportList }}" style="background:var(--bg-primary); border:1px solid var(--border-input); color:var(--text-secondary);">지난 제보내역 보기</button>
+            </sc-if>
+
+            <sc-if value="{{ isReportList }}" hint-placeholder-val="{{ false }}">
+              <div style="position:relative;">
+                <button onClick="{{ toggleDateDd }}" style="width:100%; height:42px; border:1px solid var(--border-input); border-radius:8px; background:var(--bg-primary); padding:0 12px; display:flex; align-items:center; justify-content:space-between; font:500 14px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums; cursor:pointer;">{{ pickedDate }}<i class="ti ti-chevron-down" style="font-size:16px; color:var(--text-tertiary);"></i></button>
+                <sc-if value="{{ showDateDd }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute; left:0; right:0; top:46px; z-index:20; background:var(--bg-primary); border:1px solid var(--border-default); border-radius:8px; padding:4px; box-shadow:0 2px 8px rgba(54,59,64,0.25);">
+                    <sc-for list="{{ dateOpts }}" as="d" hint-placeholder-count="4">
+                      <div onClick="{{ d.onSelect }}" style="height:36px; padding:0 10px; display:flex; align-items:center; border-radius:6px; cursor:pointer; font:400 13px var(--font-content); color:{{ d.color }}; font-variant-numeric:tabular-nums;">{{ d.label }}</div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+              <div class="mb-card">
+                <div class="mb-row"><div class="mb-k">접수일</div><div class="mb-v">2026-06-15</div></div>
+                <div class="mb-row"><div class="mb-k">사진</div><div class="mb-v"><a href="#">Img01.jpg</a></div></div>
+                <div class="mb-row"><div class="mb-k">유형</div><div class="mb-v">자재</div></div>
+                <div class="mb-row"><div class="mb-k">위치</div><div class="mb-v">O1b1<a href="#">위치보기</a></div></div>
+                <div class="mb-row"><div class="mb-k">중요도</div><div class="mb-v" style="color:var(--status-wait-text); font-weight:500;">주의</div></div>
+                <div class="mb-row"><div class="mb-k">내용</div><div class="mb-v">{{ reportMemo }}</div></div>
+                <div class="mb-row"><div class="mb-k">상태</div><div class="mb-v"><span style="color:{{ reportStateColor }}; font-weight:500;">{{ reportState }}</span><sc-if value="{{ reportCanCancel }}" hint-placeholder-val="{{ false }}"><a href="#" style="color:var(--red-dark); text-decoration:underline;">신청취소</a></sc-if></div></div>
+              </div>
+              <sc-if value="{{ reportCancelBlocked }}" hint-placeholder-val="{{ false }}">
+                <span class="mb-cap">'승인완료' 상태의 제보는 취소할 수 없습니다.</span>
+              </sc-if>
+              <button class="mb-cta" onClick="{{ goHome }}" style="background:var(--bg-primary); border:1px solid var(--border-input); color:var(--text-secondary);">홈으로 이동</button>
+            </sc-if>
+
+            <sc-if value="{{ isReportAdmin }}" hint-placeholder-val="{{ false }}">
+              <div style="height:42px; border:1px solid var(--border-input); border-radius:8px; background:var(--bg-primary); padding:0 12px; display:flex; align-items:center; justify-content:space-between; font:500 14px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">2026-06-15<i class="ti ti-chevron-down" style="font-size:16px; color:var(--text-tertiary);"></i></div>
+              <div class="mb-card">
+                <div class="mb-row"><div class="mb-k">접수일</div><div class="mb-v">2026-06-15</div></div>
+                <div class="mb-row"><div class="mb-k">사진</div><div class="mb-v"><a href="#">Img01.jpg</a></div></div>
+                <div class="mb-row"><div class="mb-k">유형</div><div class="mb-v">자재</div></div>
+                <div class="mb-row"><div class="mb-k">위치</div><div class="mb-v">O1b1<a href="#">위치보기</a></div></div>
+                <div class="mb-row"><div class="mb-k">중요도</div><div class="mb-v" style="color:var(--status-wait-text); font-weight:500;">주의</div></div>
+                <div class="mb-row"><div class="mb-k">내용</div><div class="mb-v">정리가 필요</div></div>
+                <div class="mb-row"><div class="mb-k">상태</div><div class="mb-v" style="flex-direction:column; align-items:flex-start; gap:6px;">
+                  <sc-for list="{{ approveOpts }}" as="a" hint-placeholder-count="3">
+                    <span onClick="{{ a.onClick }}" style="display:flex; align-items:center; gap:5px; cursor:pointer; font:400 13px var(--font-content); color:{{ a.color }};"><span style="width:16px; height:16px; border-radius:50%; border:{{ a.border }}; background:#fff; display:inline-block;"></span>{{ a.label }}</span>
+                  </sc-for>
+                </div></div>
+              </div>
+              <button class="mb-cta" onClick="{{ approveDone }}" style="background:var(--brand-primary); color:#fff;">완료</button>
+              <span class="mb-cap">승인완료 시 대시보드 지도에 방해요소가 표기됩니다.</span>
+              <button class="mb-cta" onClick="{{ goHome }}" style="background:var(--bg-primary); border:1px solid var(--border-input); color:var(--text-secondary);">홈으로 이동</button>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <!-- ===== 드로어 ===== -->
+        <sc-if value="{{ showDrawer }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ toggleDrawer }}" style="position:absolute; inset:0; z-index:50; background:rgba(0,0,0,0.6);"></div>
+          <div style="position:absolute; left:0; top:0; bottom:0; z-index:60; width:272px; background:var(--bg-primary); display:flex; flex-direction:column; box-shadow:0 2px 8px rgba(54,59,64,0.25);">
+            <div style="height:56px; flex-shrink:0; display:flex; align-items:center; gap:10px; padding:0 14px; border-bottom:1px solid var(--border-default);">
+              <img src="_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/assets/logo-symbol.png" alt="한화오션에코텍" style="height:24px; width:auto;">
+              <span style="font-family:var(--font-title); font:700 14px var(--font-title); color:var(--text-primary);">물류Twin</span>
+              <button onClick="{{ toggleDrawer }}" title="닫기" style="margin-left:auto; border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:4px;"><i class="ti ti-x" style="font-size:18px;"></i></button>
+            </div>
+            <div style="flex:1; min-height:0; overflow:auto; padding:8px 0;">
+              <sc-for list="{{ menuRows }}" as="m" hint-placeholder-count="4">
+                <button class="mb-menu" onClick="{{ m.onClick }}" data-on="{{ m.on }}"><i class="ti {{ m.icon }}" style="font-size:20px; flex-shrink:0;"></i>{{ m.label }}</button>
+              </sc-for>
+            </div>
+            <div style="flex-shrink:0; padding:14px; border-top:1px solid var(--border-default); display:flex; flex-direction:column; gap:10px;">
+              <span style="font:400 13px var(--font-content); color:var(--text-tertiary);"><strong style="font-weight:500; color:var(--text-primary);">홍길동</strong>님 로그인 되었습니다.</span>
+              <button onClick="{{ doLogout }}" style="height:40px; border:1px solid var(--border-input); border-radius:8px; background:var(--bg-primary); color:var(--text-secondary); font:500 14px var(--font-content); cursor:pointer;">로그아웃</button>
+            </div>
+          </div>
+        </sc-if>
+      </sc-if>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:460,&quot;height&quot;:900},&quot;startScreen&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;}}">
+const SCREENS = [
+  { id: "HEL19-01", label: "로그인 · 메뉴", kind: "login" },
+  { id: "HEL19-01A", label: "2FA 인증", kind: "login2fa" },
+  { id: "HEL19-02", label: "대시보드", kind: "map", title: "대시보드" },
+  { id: "HEL20-01", label: "긴급배차 (신청)", kind: "form", sub: "dispatchNew", title: "긴급배차" },
+  { id: "HEL20-01-D", label: "긴급배차 (신청 완료)", kind: "form", sub: "dispatchDone", title: "긴급배차", hidden: true },
+  { id: "HEL20-02", label: "긴급배차 (신청내역)", kind: "form", sub: "dispatchList", title: "긴급배차" },
+  { id: "HEL20-03", label: "긴급배차 (관리자 접수·배차)", kind: "form", sub: "adminDispatch", title: "긴급배차" },
+  { id: "HEL20-04", label: "긴급호출 위치 포커싱", kind: "map", title: "대시보드", focus: true },
+  { id: "HEL21-01", label: "작업실적 (미정의)", kind: "form", sub: "record", title: "작업실적" },
+  { id: "HEL22-01", label: "방해요소 제보 (등록)", kind: "form", sub: "reportNew", title: "방해요소 제보" },
+  { id: "HEL22-01-D", label: "방해요소 제보 (접수 완료)", kind: "form", sub: "reportDone", title: "방해요소 제보", hidden: true },
+  { id: "HEL22-02", label: "방해요소 (지난 제보내역)", kind: "form", sub: "reportList", title: "방해요소 제보" },
+  { id: "HEL22-03", label: "방해요소 (관리자 승인)", kind: "form", sub: "reportAdmin", title: "방해요소" },
+  { id: "HEL22-01-M", label: "방해요소 (지도 위치 선택)", kind: "mapPick", title: "위치 선택", hidden: true },
+];
+
+const MENU = [
+  { key: "map", label: "대시보드", icon: "ti-layout-dashboard", go: "HEL19-02" },
+  { key: "dispatch", label: "긴급배차", icon: "ti-truck-delivery", go: "HEL20-01" },
+  { key: "record", label: "작업실적", icon: "ti-clipboard-check", go: "HEL21-01" },
+  { key: "report", label: "방해요소 제보", icon: "ti-alert-triangle", go: "HEL22-01" },
+];
+
+const VEHICLES = [
+  { form: "지게차", code: "HTP06001", name: "10T 지게차", state: "작업중" },
+  { form: "트랜스포터", code: "HTP06002", name: "550T 트랜스포터", state: "대기중" },
+  { form: "크레인", code: "HTP06003", name: "100T 크레인", state: "대기중" },
+  { form: "고소차", code: "HTP06004", name: "1T 고소차", state: "작업중" },
+  { form: "트랜스포터", code: "HTP06005", name: "10T 트랜스포터", state: "작업중" },
+  { form: "지게차", code: "HTP06006", name: "2T 지게차", state: "대기중" },
+];
+
+const DATES = ["2026-06-15", "2026-06-14", "2026-06-10", "2026-06-08"];
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const sc = SCREENS.find((s) => s.id === props.startScreen) || SCREENS[0];
+    this.state = {
+      screen: sc.id,
+      drawer: false,
+      alarmOpen: sc.id === "HEL20-03" || sc.id === "HEL20-04" || sc.id === "HEL22-03",
+      option: false, find: false,
+      mapOpts: { road: false, cad: false, jibun: false, stack: false },
+      dispItems: { mat: true, block: true, obstacle: true, resource: true },
+      vehicleCard: false, obstacleCard: false, vehicleDlg: false,
+      pickedVehicle: "HTP06001", pickedDate: "2026-06-15", dateDd: false,
+      workKind: "move", moveKind: "block",
+      obsType: "material", obsLevel: "warn", obsLoc: "선택 위치 없음.",
+      approve: "done",
+      returnTo: null,
+    };
+  }
+
+  go(id) {
+    const sc = SCREENS.find((s) => s.id === id);
+    if (!sc) return;
+    this.setState({
+      screen: id, drawer: false,
+      alarmOpen: id === "HEL20-03" || id === "HEL20-04" || id === "HEL22-03",
+      option: false, find: false, vehicleCard: false, obstacleCard: false, vehicleDlg: false, dateDd: false,
+    });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const cur = SCREENS.find((x) => x.id === s.screen) || SCREENS[0];
+    const sub = cur.sub || "";
+    const isReportAdminApproved = cur.id === "HEL22-03" && s.approve === "done";
+
+    const optDefs = [["road", "차도지번"], ["cad", "CAD 도면"], ["jibun", "지번 표시"], ["stack", "적치 여부"]];
+    const dispDefs = [["mat", "자재"], ["block", "블록"], ["obstacle", "방해요소"], ["resource", "운송자원"]];
+
+    const levelDefs = [["normal", "일반", "var(--text-secondary)"], ["warn", "주의", "var(--status-wait-text)"], ["danger", "위험", "var(--red-dark)"]];
+    const approveDefs = [["done", "승인완료", "var(--green-dark)"], ["reject", "반려", "var(--red-dark)"], ["wait", "승인대기", "var(--text-tertiary)"]];
+
+    const dateIdx = DATES.indexOf(s.pickedDate);
+    const isPast = dateIdx > 0;
+
+    return {
+      screenLabel: cur.id.replace("-D", "").replace("-M", "") + " " + cur.label,
+      isLogin: cur.kind === "login",
+      is2fa: cur.kind === "login2fa",
+      isApp: cur.kind !== "login" && cur.kind !== "login2fa",
+      isMap: cur.kind === "map",
+      isMapPick: cur.kind === "mapPick",
+      isForm: cur.kind === "form",
+      pageTitle: cur.title || "",
+      doLogin: () => this.go("HEL19-01A"),
+      doVerify: () => this.go("HEL19-02"),
+      backToLogin: () => this.go("HEL19-01"),
+      doLogout: () => this.go("HEL19-01"),
+      showDrawer: s.drawer,
+      toggleDrawer: () => this.setState({ drawer: !s.drawer }),
+      menuRows: MENU.map((m) => ({
+        label: m.label, icon: m.icon,
+        on: (m.key === "map" && cur.kind === "map") || (m.key === "dispatch" && sub.indexOf("dispatch") === 0) || (m.key === "record" && sub === "record") || (m.key === "report" && sub.indexOf("report") === 0),
+        onClick: () => this.go(m.go),
+      })),
+      toggleAlarm: () => this.setState({ alarmOpen: !s.alarmOpen }),
+      showAlarmPop: s.alarmOpen && cur.kind === "map",
+      alarmAgo: cur.id === "HEL22-03" ? "1분 전" : "5분 전",
+      alarmText: cur.id === "HEL20-04" ? "긴급호출 1건 접수되었습니다." : cur.id === "HEL22-03" ? "방해요소 1건 접수되었습니다." : "긴급배차 1건 접수되었습니다.",
+      confirmAlarm: () => {
+        if (cur.id === "HEL20-04") this.setState({ alarmOpen: false, vehicleCard: true });
+        else this.go("HEL20-03");
+      },
+      toggleOption: () => this.setState({ option: !s.option, find: false }),
+      toggleFind: () => this.setState({ find: !s.find, option: false }),
+      showOption: s.option,
+      showFind: s.find,
+      optBg: s.option ? "var(--status-wait-bg)" : "var(--bg-primary)",
+      optColor: s.option ? "var(--brand-primary)" : "var(--text-secondary)",
+      findBg: s.find ? "var(--status-wait-bg)" : "var(--bg-primary)",
+      findColor: s.find ? "var(--brand-primary)" : "var(--text-secondary)",
+      mapOpts: optDefs.map(([k, label]) => ({
+        label: label, on: !!s.mapOpts[k],
+        onClick: () => {
+          const next = Object.assign({}, s.mapOpts);
+          next[k] = !next[k];
+          this.setState({ mapOpts: next });
+        },
+      })),
+      dispOpts: dispDefs.map(([k, label]) => ({
+        label: label, on: !!s.dispItems[k],
+        onClick: () => {
+          const next = Object.assign({}, s.dispItems);
+          next[k] = !next[k];
+          this.setState({ dispItems: next });
+        },
+      })),
+      tpLeft: cur.focus ? 42 : 30,
+      tpTop: cur.focus ? 36 : 40,
+      tpBorder: cur.focus ? "2px solid #fff" : "none",
+      clickVehicle: () => this.setState({ vehicleCard: !s.vehicleCard, obstacleCard: false }),
+      showVehicleCard: s.vehicleCard,
+      vehicleRows: [
+        { k: "중기그룹", v: "트레일러" }, { k: "중기형태", v: "5T 트레일러" }, { k: "장비번호", v: "12호3456" },
+        { k: "운전자", v: "홍길동 (010-1111-1111)" }, { k: "신호수", v: "심청이 (010-2222-2222)" },
+        { k: "작업구분", v: "이동" }, { k: "이동구분", v: "블록" }, { k: "작업대상", v: "블록 (BL204)" },
+      ],
+      showObstacle: !!s.dispItems.obstacle && (cur.id === "HEL19-02" || isReportAdminApproved),
+      clickObstacle: () => this.setState({ obstacleCard: !s.obstacleCard, vehicleCard: false }),
+      showObstacleCard: s.obstacleCard,
+      isDispatchNew: sub === "dispatchNew",
+      isDispatchDone: sub === "dispatchDone",
+      isDispatchList: sub === "dispatchList",
+      isAdminDispatch: sub === "adminDispatch",
+      isRecord: sub === "record",
+      isReportNew: sub === "reportNew",
+      isReportDone: sub === "reportDone",
+      isReportList: sub === "reportList",
+      isReportAdmin: sub === "reportAdmin",
+      workOptions: [{ value: "move", label: "이동" }, { value: "arrange", label: "정리" }, { value: "release", label: "불출" }],
+      workKind: s.workKind,
+      setWorkKind: (v) => this.setState({ workKind: typeof v === "string" ? v : (v && v.target ? v.target.value : v) }),
+      moveOptions: [{ value: "block", label: "블록" }, { value: "material", label: "자재" }, { value: "jig", label: "치구" }],
+      moveKind: s.moveKind,
+      setMoveKind: (v) => this.setState({ moveKind: typeof v === "string" ? v : (v && v.target ? v.target.value : v) }),
+      submitDispatch: () => this.go("HEL20-01-D"),
+      goDispatchList: () => this.go("HEL20-02"),
+      goHome: () => this.go("HEL19-02"),
+      goMapPick: () => this.setState({ returnTo: s.screen, screen: "HEL22-01-M" }),
+      finishMapPick: () => this.setState({ screen: s.returnTo || "HEL22-01", obsLoc: "O1b1", returnTo: null }),
+      toggleDateDd: () => this.setState({ dateDd: !s.dateDd }),
+      showDateDd: s.dateDd,
+      pickedDate: s.pickedDate,
+      dateOpts: DATES.map((d) => ({
+        label: d, color: d === s.pickedDate ? "var(--brand-primary)" : "var(--text-secondary)",
+        onSelect: () => this.setState({ pickedDate: d, dateDd: false }),
+      })),
+      progLabel: isPast ? "처리완료" : "접수",
+      progColor: isPast ? "var(--brand-primary)" : "var(--blue-dark)",
+      canCancel: !isPast,
+      cancelBlocked: isPast,
+      toggleVehicleDlg: () => this.setState({ vehicleDlg: !s.vehicleDlg }),
+      showVehicleDlg: s.vehicleDlg,
+      pickedVehicle: s.pickedVehicle,
+      vehicleList: VEHICLES.map((v) => ({
+        text: v.form + " · " + v.code + " · " + v.name,
+        state: v.state,
+        stateColor: v.state === "대기중" ? "var(--green-dark)" : "var(--blue-dark)",
+        radio: s.pickedVehicle === v.code ? "4px solid var(--brand-primary)" : "1px solid var(--border-input)",
+        onPick: () => this.setState({ pickedVehicle: v.code, vehicleDlg: false }),
+      })),
+      typeOptions: [{ value: "material", label: "자재" }, { value: "block", label: "블록" }, { value: "jig", label: "치구" }, { value: "waste", label: "폐기물" }, { value: "etc", label: "기타" }],
+      obsType: s.obsType,
+      setObsType: (v) => this.setState({ obsType: typeof v === "string" ? v : (v && v.target ? v.target.value : v) }),
+      obsLoc: s.obsLoc,
+      levelOpts: levelDefs.map(([k, label, color]) => ({
+        label: label,
+        color: s.obsLevel === k ? color : "var(--text-tertiary)",
+        border: s.obsLevel === k ? "5px solid var(--brand-primary)" : "1px solid var(--border-input)",
+        onClick: () => this.setState({ obsLevel: k }),
+      })),
+      submitReport: () => this.go("HEL22-01-D"),
+      goReportList: () => this.go("HEL22-02"),
+      steps: [
+        { n: "1", label: "제보 접수", bg: "var(--brand-primary)", color: "#fff", textColor: "var(--text-primary)" },
+        { n: "2", label: "관리자 확인", bg: "var(--gray-10)", color: "var(--text-tertiary)", textColor: "var(--text-tertiary)" },
+        { n: "3", label: "승인 · 반려", bg: "var(--gray-10)", color: "var(--text-tertiary)", textColor: "var(--text-tertiary)" },
+        { n: "4", label: "대시보드 반영", bg: "var(--gray-10)", color: "var(--text-tertiary)", textColor: "var(--text-tertiary)" },
+      ],
+      reportMemo: isPast ? "-" : "정리가 필요",
+      reportState: isPast ? "승인완료" : "접수",
+      reportStateColor: isPast ? "var(--green-dark)" : "var(--blue-dark)",
+      reportCanCancel: !isPast,
+      reportCancelBlocked: isPast,
+      approveOpts: approveDefs.map(([k, label, color]) => ({
+        label: label,
+        color: s.approve === k ? color : "var(--text-tertiary)",
+        border: s.approve === k ? "5px solid var(--brand-primary)" : "1px solid var(--border-input)",
+        onClick: () => this.setState({ approve: k }),
+      })),
+      approveDone: () => this.go("HEL19-02"),
+      showPicker: !this.props.startScreen,
+      pickRows: SCREENS.filter((sc) => !sc.hidden).map((sc) => {
+        const on = sc.id === s.screen;
+        return {
+          short: sc.id.replace("HEL", ""), label: sc.id + " " + sc.label,
+          border: on ? "var(--brand-primary)" : "var(--border-input)",
+          bg: on ? "var(--status-wait-bg)" : "var(--bg-primary)",
+          color: on ? "var(--brand-primary)" : "var(--text-secondary)",
+          onClick: () => this.go(sc.id),
+        };
+      }),
+    };
+  }
+}
+</script>
 </body>
 </html>
