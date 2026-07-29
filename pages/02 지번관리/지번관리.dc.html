@@ -1280,7 +1280,7 @@ class Component extends DCLogic {
       useYn: { detail: true, form: true },
       dispItems: { material: true, block: true, obstacle: false, transport: false },
       physItems: [
-        { name: "한화오션에코텍", rect: { x1: 34, y1: 24, x2: 74, y2: 72 } },
+        { name: "한화오션에코텍", rect: { x1: 44, y1: 6, x2: 96, y2: 68 } },
       ],
       physSel: 0, physSearch: "", physName: "", physEditIdx: null,
       formRect: null, physDragging: false, physNewPos: null,
@@ -1390,8 +1390,8 @@ class Component extends DCLogic {
     const a = areas["p1"] || this.DEFAULT_PARENT_AREA;
     const p = (fx, fy) => [a.l + a.w * fx, a.t + a.h * fy];
     // 데모 폴리곤: 지도 중앙의 시각적 정사각형 (가로:세로 ≈ 1.55 보정) — 화면번호 10 박스와 동일한 인상.
-    const SQ_H = 52, SQ_W = 52 / 1.553;
-    const X0 = 50 - SQ_W / 2, X1 = 50 + SQ_W / 2, Y0 = 50 - SQ_H / 2, Y1 = 50 + SQ_H / 2;
+    const [X0, Y0] = p(0.15, 0.2);
+    const [X1, Y1] = p(0.85, 0.8);
     const openPoly = [[X0, Y0], [X1, Y0], [X1, Y1]];
     const poly = [[X0, Y0], [X1, Y0], [X1, Y1], [X0, Y1]];
     const yb = this.regionBox("p1");
@@ -1402,8 +1402,8 @@ class Component extends DCLogic {
       "HEL02-03": { page: "physForm", editMode: false },
       "HEL02-04": { page: "physForm", formRect: { x1: 28, y1: 26, x2: 58, y2: 54 } },
       "HEL02-05": { page: "physForm", formRect: { x1: 28, y1: 26, x2: 58, y2: 54 }, physName: "한화오션에코텍 2공장" },
-      "HEL02-06": { page: "physForm", editMode: true, physEditIdx: 0, physName: "한화오션에코텍", formRect: { x1: 34, y1: 24, x2: 74, y2: 72 } },
-      "HEL02-07": { page: "physForm", editMode: true, physEditIdx: 0, physName: "한화오션에코텍", formRect: { x1: 30, y1: 20, x2: 78, y2: 76 } },
+      "HEL02-06": { page: "physForm", editMode: true, physEditIdx: 0, physName: "한화오션에코텍", formRect: { x1: 44, y1: 6, x2: 96, y2: 68 } },
+      "HEL02-07": { page: "physForm", editMode: true, physEditIdx: 0, physName: "한화오션에코텍", formRect: { x1: 50, y1: 5, x2: 96, y2: 60 } },
       "HEL02-08": { page: "phys", modal: "physDel" },
       "HEL02-09": { page: "logi" },
       "HEL02-10": { page: "logi", logiSel: "j1" },
@@ -1451,13 +1451,41 @@ class Component extends DCLogic {
   }
 
   // ---- 가짜 API 계층 (실 API 연동 전 시나리오) ----
+  // 등록한 지번(물리/논리)을 대시보드 등 다른 화면과 공유 — localStorage 저장소
+  JIBUN_STORE = "twinJibunData";
+  loadJibun() {
+    try {
+      const raw = window.localStorage.getItem(this.JIBUN_STORE);
+      if (!raw) return null;
+      const d = JSON.parse(raw);
+      if (!d || !Array.isArray(d.physItems) || !Array.isArray(d.logiNodes)) return null;
+      return d;
+    } catch (e) { return null; }
+  }
+  saveJibun() {
+    try {
+      const s = this.state;
+      const raw = JSON.stringify({ physItems: s.physItems, logiNodes: s.logiNodes });
+      if (raw === this._lastJibun) return;
+      this._lastJibun = raw;
+      window.localStorage.setItem(this.JIBUN_STORE, raw);
+    } catch (e) {}
+  }
   componentDidMount() {
+    const saved = this.loadJibun();
+    if (saved) {
+      this._lastJibun = JSON.stringify({ physItems: saved.physItems, logiNodes: saved.logiNodes });
+      this.setState({ physItems: saved.physItems, logiNodes: saved.logiNodes });
+    }
     this.beginLoad("enter");
     this._onResize = () => this.measureMap();
     window.addEventListener("resize", this._onResize);
     this.measureMap();
   }
-  componentDidUpdate() { this.measureMap(); }
+  componentDidUpdate() {
+    this.measureMap();
+    this.saveJibun();
+  }
   // 지도 상자 실측 + 프리셋 formRect를 셀 경계에 스냅 — 표기된 끝지번이 그려진 격자와 항상 일치하도록.
   measureMap() {
     const el = this._physMapEl;
@@ -1623,6 +1651,13 @@ class Component extends DCLogic {
   // 모든 노드의 지도 영역(%)을 트리 계층에 맞춰 계산 — 자식은 항상 부모 영역 안에 중첩된다.
   // 목록 지도 기준 레이어: 루트 고정 박스에서 계층이 깊어질수록 같은 비율로 중첩 축소.
   // 목록/추가/수정 지도가 모두 이 값을 쓴다.
+  // 물리지번 이름으로 그 영역(안쪽 여백 포함)을 찾는다.
+  physRootArea(name) {
+    const it = (this.state.physItems || []).find((p) => p.name === name);
+    if (!it || !it.rect) return null;
+    const r = it.rect, w = r.x2 - r.x1, h = r.y2 - r.y1;
+    return { l: r.x1 + w * 0.04, t: r.y1 + h * 0.05, w: w * 0.92, h: h * 0.9 };
+  }
   chainAreas(nodes) {
     const areas = {};
     const stack = [];
@@ -1630,8 +1665,9 @@ class Component extends DCLogic {
       stack[n.lv] = n.key;
       const p = n.lv > 0 ? areas[stack[n.lv - 1]] : null;
       areas[n.key] = p
-        ? { l: p.l + p.w * 0.16, t: p.t + p.h * 0.26, w: p.w * 0.52, h: p.h * 0.5 }
-        : { l: 33, t: 14, w: 52, h: 66 };
+        ? { l: p.l + p.w * 0.12, t: p.t + p.h * 0.17, w: p.w * 0.74, h: p.h * 0.72 }
+        // 루트 논리지번 = 같은 이름의 물리지번 영역 안쪽
+        : (this.physRootArea(n.label) || { l: 46, t: 9, w: 48, h: 57 });
     });
     return areas;
   }
@@ -2367,13 +2403,25 @@ class Component extends DCLogic {
         if (!fr) return;
         const items = s.physItems.slice();
         const rect = { x1: frN.l, y1: frN.t, x2: frN.l + frN.w, y2: frN.t + frN.h };
+        const nodes = s.logiNodes.slice();
         if (isEdit && s.physEditIdx !== null) {
-          items[s.physEditIdx] = { name: s.physName || items[s.physEditIdx].name, rect };
-          this.go("phys", { physItems: items, physSel: s.physEditIdx });
+          const prev = items[s.physEditIdx].name;
+          const name = s.physName || prev;
+          items[s.physEditIdx] = { name, rect };
+          // 물리지번 이름 변경 시 대응하는 루트 논리지번도 동일하게 반영
+          const ri = nodes.findIndex((n) => n.lv === 0 && n.label === prev);
+          if (ri >= 0) nodes[ri] = Object.assign({}, nodes[ri], { label: name });
+          this.go("phys", { physItems: items, physSel: s.physEditIdx, logiNodes: nodes });
         } else {
           const pos = s.physNewPos === null ? items.length : Math.min(s.physNewPos, items.length);
-          items.splice(pos, 0, { name: s.physName || "새 물리지번 " + items.length, rect });
-          this.go("phys", { physItems: items, physSel: pos, physNewPos: null });
+          const name = s.physName || "새 물리지번 " + items.length;
+          items.splice(pos, 0, { name, rect });
+          // 물리지번 등록 시 동일 이름의 최상위(루트) 논리지번을 자동 생성
+          if (!nodes.some((n) => n.lv === 0 && n.label === name)) {
+            const seq = nodes.filter((n) => n.lv === 0).length + 1;
+            nodes.push({ key: "phys" + Date.now().toString(36), label: name, lv: 0, code: "P" + seq });
+          }
+          this.go("phys", { physItems: items, physSel: pos, physNewPos: null, logiNodes: nodes });
         }
       },
 
@@ -2482,8 +2530,18 @@ class Component extends DCLogic {
       deleteMsg: deleteMsgs[modal] || "",
       confirmDelete: () => this.withSave(() => {
         if (modal === "physDel" && s.physItems.length > 1) {
-          const items = s.physItems.slice(); items.splice(s.physSel, 1);
-          this.setState({ physItems: items, physSel: 0, modal: null });
+          const items = s.physItems.slice();
+          const gone = (items[s.physSel] || {}).name;
+          items.splice(s.physSel, 1);
+          // 물리지번 삭제 시 같은 이름의 루트 논리지번(및 그 하위)도 함께 제거
+          let nodes = s.logiNodes;
+          const ri = nodes.findIndex((n) => n.lv === 0 && n.label === gone);
+          if (ri >= 0) {
+            let end = ri + 1;
+            while (end < nodes.length && nodes[end].lv > 0) end++;
+            nodes = nodes.slice(0, ri).concat(nodes.slice(end));
+          }
+          this.setState({ physItems: items, physSel: 0, logiNodes: nodes, modal: null });
         } else if (modal === "logiDel") {
           const nn = s.logiNodes.slice();
           const ix = nn.findIndex((n) => n.key === s.logiSel);

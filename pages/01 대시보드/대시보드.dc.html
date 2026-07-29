@@ -107,29 +107,26 @@
       <div style="flex:1; min-height:0; padding:0 24px 24px;">
         <div style="height:100%; position:relative; border:1px solid var(--border-input); border-radius:6px; overflow:hidden; background:var(--gray-10);">
 
-          <!-- 야드 기본 도면 -->
+          <!-- 물리지번 (지번관리 등록 영역) -->
           <div style="position:absolute; inset:0; pointer-events:none;">
-            <div style="position:absolute; left:0; right:0; top:40%; height:26px; background:var(--gray-0); opacity:0.85;"></div>
-            <div style="position:absolute; top:0; bottom:0; left:32%; width:22px; background:var(--gray-0); opacity:0.85;"></div>
-            <span style="position:absolute; left:44%; top:8%; font:700 15px var(--font-content); color:var(--gray-40); letter-spacing:1px;">1YARD</span>
-            <span style="position:absolute; left:78%; top:64%; font:700 15px var(--font-content); color:var(--gray-40); letter-spacing:1px;">2YARD</span>
+            <sc-for list="{{ physAreas }}" as="p" hint-placeholder-count="1">
+              <div style="position:absolute; left:{{ p.l }}%; top:{{ p.t }}%; width:{{ p.w }}%; height:{{ p.h }}%; border:2px solid var(--blue-main); background:rgba(10,114,242,0.04);">
+                <span style="position:absolute; right:6px; top:6px; padding:1px 6px; border-radius:3px; background:rgba(255,255,255,0.9); font:700 12px var(--font-content); color:var(--blue-dark); white-space:nowrap;">물리지번 · {{ p.name }}</span>
+              </div>
+            </sc-for>
           </div>
 
-          <!-- 주요시설 (표시항목) -->
-          <sc-if value="{{ dispFacility }}" hint-placeholder-val="{{ true }}">
-            <div style="position:absolute; inset:0; pointer-events:none;">
-              <div style="position:absolute; left:36%; top:14%; width:16%; height:18%; border:1.5px solid var(--brand-primary); background:rgba(237,113,0,0.12); display:flex; align-items:center; justify-content:center; font:700 12px var(--font-content); color:var(--brand-pressed);">본관</div>
-              <div style="position:absolute; left:74%; top:44%; width:16%; height:16%; border:1.5px solid var(--brand-primary); background:rgba(237,113,0,0.12); display:flex; align-items:center; justify-content:center; font:700 12px var(--font-content); color:var(--brand-pressed);">액화가스실</div>
-            </div>
-          </sc-if>
-
-          <!-- 차도지번 (HEL01-02) -->
+          <!-- 차도지번 (HEL01-02) — 지번관리 등록 차도 -->
           <sc-if value="{{ optRoad }}" hint-placeholder-val="{{ false }}">
             <div style="position:absolute; inset:0; pointer-events:none;">
-              <div style="position:absolute; left:0; right:0; top:40%; height:26px; background:rgba(45,45,45,0.6);"></div>
-              <div style="position:absolute; top:0; bottom:0; left:32%; width:22px; background:rgba(45,45,45,0.6);"></div>
-              <span style="position:absolute; left:8%; top:40%; height:26px; display:flex; align-items:center; padding:0 6px; font:700 12px var(--font-content); color:#fff; white-space:nowrap;">정문~본관 도로</span>
-              <span style="position:absolute; left:33%; top:8%; padding:2px 6px; border-radius:3px; background:rgba(45,45,45,0.8); font:700 12px var(--font-content); color:#fff; white-space:nowrap;">본관~2YARD 도로</span>
+              <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute; inset:0; width:100%; height:100%;">
+                <sc-for list="{{ roadLines }}" as="r" hint-placeholder-count="4">
+                  <polyline points="{{ r.points }}" fill="none" stroke="rgba(45,45,45,0.6)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"></polyline>
+                </sc-for>
+              </svg>
+              <sc-for list="{{ roadLines }}" as="r" hint-placeholder-count="4">
+                <span style="position:absolute; left:{{ r.lx }}%; top:{{ r.ly }}%; transform:translate(-50%,-50%); padding:1px 5px; border-radius:3px; background:rgba(45,45,45,0.85); font:700 11px var(--font-content); color:#fff; white-space:nowrap;">{{ r.name }}</span>
+              </sc-for>
             </div>
           </sc-if>
 
@@ -148,42 +145,24 @@
           <sc-if value="{{ optJibun }}" hint-placeholder-val="{{ false }}">
             <div style="position:absolute; inset:0;">
               <sc-for list="{{ jibunAreas }}" as="a" hint-placeholder-count="8">
-                <div onClick="{{ a.onClick }}" title="{{ a.name }}" style="position:absolute; left:{{ a.l }}%; top:{{ a.t }}%; width:{{ a.w }}%; height:{{ a.h }}%; border:1.5px solid {{ a.color }}; background:{{ a.fill }}; display:flex; align-items:center; justify-content:center; cursor:pointer; font:700 11px var(--font-content); color:var(--text-primary); text-align:center; overflow:hidden;">{{ a.label }}</div>
+                <div onClick="{{ a.onClick }}" title="{{ a.name }}" style="position:absolute; left:{{ a.l }}%; top:{{ a.t }}%; width:{{ a.w }}%; height:{{ a.h }}%; border:1.5px solid {{ a.color }}; background:{{ a.fill }}; cursor:pointer;"><span style="position:absolute; left:{{ a.lx }}; top:{{ a.ly }}; transform:{{ a.ltr }}; padding:1px 5px; border-radius:3px; background:rgba(255,255,255,0.88); font:700 11px var(--font-content); color:{{ a.color }}; white-space:nowrap;">{{ a.label }}</span></div>
+              </sc-for>
+              <sc-for list="{{ jibunPolys }}" as="g" hint-placeholder-count="0">
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none;">
+                  <polygon points="{{ g.points }}" fill="{{ g.fill }}" stroke="{{ g.color }}" stroke-width="1.5" vector-effect="non-scaling-stroke"></polygon>
+                </svg>
+              </sc-for>
+              <sc-for list="{{ jibunPolys }}" as="g" hint-placeholder-count="0">
+                <span onClick="{{ g.onClick }}" title="{{ g.name }}" style="position:absolute; left:{{ g.cx }}%; top:{{ g.cy }}%; transform:translate(-50%,-50%); padding:1px 5px; border-radius:3px; background:rgba(255,255,255,0.88); font:700 11px var(--font-content); color:{{ g.color }}; white-space:nowrap; cursor:pointer;">{{ g.label }}</span>
               </sc-for>
             </div>
           </sc-if>
 
           <!-- 물리지번 격자 · 적치 여부 (HEL01-05) -->
           <sc-if value="{{ optStack }}" hint-placeholder-val="{{ false }}">
-            <div style="position:absolute; inset:0; pointer-events:none; background-image:{{ gridBgImage }};"></div>
-            <div style="position:absolute; inset:0; pointer-events:none;">
-              <div style="position:absolute; left:10%; top:18%; width:8%; height:12%; background:rgba(237,113,0,0.35);"></div>
-              <div style="position:absolute; left:19%; top:26%; width:7%; height:10%; background:rgba(237,113,0,0.35);"></div>
-              <div style="position:absolute; left:41%; top:54%; width:9%; height:12%; background:rgba(237,113,0,0.35);"></div>
-              <div style="position:absolute; left:74%; top:20%; width:8%; height:11%; background:rgba(237,113,0,0.35);"></div>
-            </div>
-          </sc-if>
-
-          <!-- 블록 · 운송자원 · 자재 · 방해요소 마커 -->
-          <sc-if value="{{ dispBlock }}" hint-placeholder-val="{{ true }}">
-            <div style="position:absolute; inset:0;">
-              <sc-for list="{{ blockMarkers }}" as="m" hint-placeholder-count="9">
-                <div onClick="{{ m.onClick }}" style="position:absolute; left:{{ m.l }}%; top:{{ m.t }}%; display:flex; align-items:center; gap:4px; height:22px; padding:0 8px; border-radius:4px; border:{{ m.border }}; background:var(--blue-dark); color:#fff; font:700 12px/1 var(--font-content); font-variant-numeric:tabular-nums; cursor:pointer; white-space:nowrap;"><i class="ti ti-box" style="font-size:13px;"></i>{{ m.code }}</div>
-              </sc-for>
-            </div>
-          </sc-if>
-          <sc-if value="{{ dispResource }}" hint-placeholder-val="{{ true }}">
-            <div style="position:absolute; inset:0;">
-              <sc-for list="{{ resMarkers }}" as="m" hint-placeholder-count="3">
-                <div onClick="{{ m.onClick }}" style="position:absolute; left:{{ m.l }}%; top:{{ m.t }}%; display:flex; align-items:center; gap:4px; height:24px; padding:0 8px; border-radius:999px; background:var(--brand-primary); color:#fff; font:700 12px/1 var(--font-content); font-variant-numeric:tabular-nums; cursor:pointer; white-space:nowrap;"><i class="ti {{ m.icon }}" style="font-size:14px;"></i>{{ m.code }}</div>
-              </sc-for>
-            </div>
-          </sc-if>
-          <sc-if value="{{ dispMat }}" hint-placeholder-val="{{ true }}">
-            <div onClick="{{ openMat }}" style="position:absolute; left:26%; top:62%; display:flex; align-items:center; gap:4px; height:22px; padding:0 8px; border-radius:4px; background:var(--orange-40); color:#fff; font:700 12px/1 var(--font-content); cursor:pointer; white-space:nowrap;"><i class="ti ti-package" style="font-size:13px;"></i>GJ1232</div>
-          </sc-if>
-          <sc-if value="{{ dispObstacle }}" hint-placeholder-val="{{ true }}">
-            <div onClick="{{ openObs }}" style="position:absolute; left:47%; top:34%; display:flex; align-items:center; gap:4px; height:22px; padding:0 8px; border-radius:4px; background:var(--red-main); color:#fff; font:500 12px/1 var(--font-content); cursor:pointer; white-space:nowrap;"><i class="ti ti-alert-triangle" style="font-size:13px;"></i>방해요소</div>
+            <sc-for list="{{ physAreas }}" as="p" hint-placeholder-count="1">
+              <div style="position:absolute; left:{{ p.l }}%; top:{{ p.t }}%; width:{{ p.w }}%; height:{{ p.h }}%; pointer-events:none; background-image:{{ gridBgImage }};"></div>
+            </sc-for>
           </sc-if>
 
           <!-- 내 위치 마커 (HEL01-07-01) -->
@@ -199,25 +178,18 @@
             <input placeholder="검색할 대상 코드를 입력해주세요." value="{{ searchText }}" onChange="{{ setSearch }}" style="flex:1; min-width:0; border:none; outline:none; background:transparent; font:400 13px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
           </div>
 
-          <!-- 적치여부 범례 (HEL01-05 ②) -->
-          <sc-if value="{{ optStack }}" hint-placeholder-val="{{ false }}">
-            <div style="position:absolute; right:56px; top:12px; z-index:14; display:flex; align-items:center; gap:12px; height:32px; padding:0 12px; background:var(--bg-primary); border:1px solid var(--border-default); border-radius:6px; font:400 12px var(--font-content);">
-              <span style="display:flex; align-items:center; gap:5px; white-space:nowrap;"><span style="width:10px; height:10px; border-radius:2px; background:rgba(237,113,0,0.55);"></span>사용중</span>
-              <span style="display:flex; align-items:center; gap:5px; white-space:nowrap;"><span style="width:10px; height:10px; border-radius:2px; border:1px solid var(--gray-40); background:#fff;"></span>적치 가능</span>
-            </div>
-          </sc-if>
+          <!-- 재질 안내 -->
 
           <!-- i 아이콘 + 범례 팝업 (HEL01-01 ⑤) -->
           <div class="lg-wrap" style="position:absolute; right:12px; top:12px; z-index:16;">
             <button title="아이콘 안내" style="width:32px; height:32px; border:1px solid var(--border-default); border-radius:6px; background:var(--bg-primary); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-secondary);"><i class="ti ti-info-circle" style="font-size:17px;"></i></button>
             <div class="lg-pop" style="position:absolute; right:0; top:38px; width:190px; flex-direction:column; gap:7px; padding:12px; background:var(--bg-primary); border:1px solid var(--border-default); border-radius:6px; box-shadow:0 2px 8px rgba(54,59,64,0.25); font:400 12px var(--font-content);">
-              <span style="display:flex; align-items:center; gap:7px;"><i class="ti ti-package" style="font-size:15px; color:var(--orange-40);"></i>자재</span>
-              <span style="display:flex; align-items:center; gap:7px;"><i class="ti ti-box" style="font-size:15px; color:var(--blue-dark);"></i>블록</span>
-              <span style="display:flex; align-items:center; gap:7px;"><i class="ti ti-alert-triangle" style="font-size:15px; color:var(--red-main);"></i>방해요소</span>
-              <span style="display:flex; align-items:center; gap:7px;"><i class="ti ti-truck-delivery" style="font-size:15px; color:var(--brand-primary);"></i>TP</span>
-              <span style="display:flex; align-items:center; gap:7px;"><i class="ti ti-forklift" style="font-size:15px; color:var(--brand-primary);"></i>지게차</span>
-              <span style="display:flex; align-items:center; gap:7px;"><i class="ti ti-crane" style="font-size:15px; color:var(--brand-primary);"></i>크레인</span>
-              <span style="margin-top:2px; padding-top:7px; border-top:1px solid var(--border-default); color:var(--text-tertiary); line-height:1.5;">운송자원은 GPS가 장착된 차량만 노출됩니다.</span>
+              <span style="display:flex; align-items:center; gap:7px;"><span style="width:11px; height:11px; border:2px solid var(--blue-main); background:rgba(10,114,242,0.06);"></span>물리지번</span>
+              <span style="display:flex; align-items:center; gap:7px;"><span style="width:11px; height:11px; border:1.5px solid #7C3AED; background:rgba(124,58,237,0.18);"></span>대지번</span>
+              <span style="display:flex; align-items:center; gap:7px;"><span style="width:11px; height:11px; border:1.5px solid #DB2777; background:rgba(219,39,119,0.18);"></span>중지번</span>
+              <span style="display:flex; align-items:center; gap:7px;"><span style="width:11px; height:11px; border:1.5px solid #19BFAE; background:rgba(25,191,174,0.18);"></span>소지번</span>
+              <span style="display:flex; align-items:center; gap:7px;"><span style="width:11px; height:11px; border-radius:2px; background:var(--gray-80);"></span>차도지번</span>
+              <span style="margin-top:2px; padding-top:7px; border-top:1px solid var(--border-default); color:var(--text-tertiary); line-height:1.5;">지번관리에 등록된 물리/논리지번을 그대로 표시합니다.</span>
             </div>
           </div>
 
@@ -248,10 +220,10 @@
                     </span>
                   </sc-for>
                 </div>
-                <div style="font:700 12px var(--font-content); color:var(--text-primary); margin-bottom:6px;">표시항목</div>
+                <div style="font:700 12px var(--font-content); color:var(--text-primary); margin-bottom:6px;">지번 계층</div>
                 <div style="display:flex; flex-direction:column; gap:5px; font-size:12px;">
-                  <sc-for list="{{ dispItemList }}" as="o" hint-placeholder-count="5">
-                    <span onClick="{{ o.onClick }}" style="display:flex; align-items:center; gap:6px; cursor:pointer; user-select:none; white-space:nowrap;"><span style="width:14px; height:14px; border-radius:50%; flex-shrink:0; border:1px solid {{ o.cbBorder }}; background:{{ o.cbBg }}; display:inline-flex; align-items:center; justify-content:center;"><i class="ti ti-check" style="font-size:9px; color:#fff; opacity:{{ o.cbOpacity }};"></i></span>{{ o.label }}</span>
+                  <sc-for list="{{ jibunList }}" as="a" hint-placeholder-count="5">
+                    <span onClick="{{ a.onClick }}" style="display:flex; align-items:center; gap:6px; cursor:pointer; user-select:none; white-space:nowrap; color:var(--text-secondary);"><span style="width:10px; height:10px; flex-shrink:0; border:1.5px solid {{ a.color }}; background:{{ a.fill }};"></span>{{ a.label }}</span>
                   </sc-for>
                 </div>
               </div>
@@ -327,14 +299,12 @@
               <span data-pip-resize="e" style="position:absolute; top:10px; bottom:10px; right:-3px; width:8px; cursor:ew-resize; z-index:2;"></span>
               <div data-pip-drag="1" style="flex-shrink:0; height:34px; display:flex; align-items:center; gap:8px; padding:0 10px; border-bottom:1px solid var(--border-default); background:var(--gray-5); border-radius:5px 5px 0 0; cursor:move; user-select:none;">
                 <i class="ti ti-arrows-move" style="font-size:14px; color:var(--text-tertiary);"></i>
-                <span style="font:700 12px var(--font-content); color:var(--text-primary); white-space:nowrap;">서브 MAP - 한화오션 창고</span>
+                <span style="font:700 12px var(--font-content); color:var(--text-primary); white-space:nowrap;">서브 MAP - {{ subMapTitle }}</span>
                 <button onClick="{{ closeSubMap }}" title="닫기" style="margin-left:auto; border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:4px;"><i class="ti ti-x" style="font-size:16px;"></i></button>
               </div>
               <div style="flex:1; min-height:0; position:relative; background:var(--gray-10); border-radius:0 0 5px 5px; overflow:hidden;">
-                <div style="position:absolute; inset:0; pointer-events:none;">
-                  <div style="position:absolute; left:14%; top:14%; width:30%; height:24%; border:1px solid var(--gray-40); background:rgba(255,255,255,0.4);"></div>
-                  <div style="position:absolute; left:56%; top:56%; width:30%; height:26%; border:1px solid var(--gray-40); background:rgba(255,255,255,0.4);"></div>
-                  <span style="position:absolute; left:16%; top:40%; font:700 11px var(--font-content); color:var(--gray-40);">창고 1</span>
+                <div style="position:absolute; left:8%; top:8%; right:8%; bottom:8%; pointer-events:none; border:2px solid var(--blue-main); background:rgba(10,114,242,0.04);">
+                  <span style="position:absolute; left:5px; top:4px; padding:1px 5px; border-radius:3px; background:rgba(255,255,255,0.9); font:700 11px var(--font-content); color:var(--blue-dark); white-space:nowrap;">물리지번 · {{ subMapTitle }}</span>
                 </div>
                 <sc-if value="{{ optCad }}" hint-placeholder-val="{{ false }}">
                   <div style="position:absolute; left:10%; top:10%; width:44%; height:44%; pointer-events:none; border:1.5px dashed var(--blue-dark); background-color:rgba(10,114,242,0.06); background-image:repeating-linear-gradient(0deg, rgba(10,114,242,0.18) 0 1px, transparent 1px 22px), repeating-linear-gradient(90deg, rgba(10,114,242,0.18) 0 1px, transparent 1px 22px);">
@@ -343,10 +313,6 @@
                 </sc-if>
                 <sc-if value="{{ optStack }}" hint-placeholder-val="{{ false }}">
                   <div style="position:absolute; inset:0; pointer-events:none; background-image:{{ gridBgImage }};"></div>
-                  <div style="position:absolute; inset:0; pointer-events:none;">
-                    <div style="position:absolute; left:18%; top:20%; width:14%; height:14%; background:rgba(237,113,0,0.35);"></div>
-                    <div style="position:absolute; left:62%; top:62%; width:13%; height:15%; background:rgba(237,113,0,0.35);"></div>
-                  </div>
                   <span style="position:absolute; left:6px; bottom:6px; padding:3px 6px; border-radius:3px; background:var(--text-primary); color:#fff; font:400 10px var(--font-content); font-variant-numeric:tabular-nums; white-space:nowrap;">물리지번 (012,031)</span>
                 </sc-if>
                 <sc-if value="{{ optRoad }}" hint-placeholder-val="{{ false }}">
@@ -359,7 +325,15 @@
                 <sc-if value="{{ optJibun }}" hint-placeholder-val="{{ false }}">
                   <div style="position:absolute; inset:0; pointer-events:none;">
                     <sc-for list="{{ subJibunAreas }}" as="a" hint-placeholder-count="4">
-                      <div title="{{ a.name }}" style="position:absolute; left:{{ a.l }}%; top:{{ a.t }}%; width:{{ a.w }}%; height:{{ a.h }}%; border:1.5px solid {{ a.color }}; background:{{ a.fill }}; display:flex; align-items:center; justify-content:center; font:700 11px var(--font-content); color:var(--text-primary); text-align:center; overflow:hidden;">{{ a.label }}</div>
+                      <div title="{{ a.name }}" style="position:absolute; left:{{ a.l }}%; top:{{ a.t }}%; width:{{ a.w }}%; height:{{ a.h }}%; border:1.5px solid {{ a.color }}; background:{{ a.fill }};"><span style="position:absolute; left:{{ a.lx }}; top:{{ a.ly }}; transform:{{ a.ltr }}; padding:1px 4px; border-radius:3px; background:rgba(255,255,255,0.88); font:700 10px var(--font-content); color:{{ a.color }}; white-space:nowrap;">{{ a.label }}</span></div>
+                    </sc-for>
+                    <sc-for list="{{ subJibunPolys }}" as="g" hint-placeholder-count="0">
+                      <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute; inset:0; width:100%; height:100%;">
+                        <polygon points="{{ g.points }}" fill="{{ g.fill }}" stroke="{{ g.color }}" stroke-width="1.5" vector-effect="non-scaling-stroke"></polygon>
+                      </svg>
+                    </sc-for>
+                    <sc-for list="{{ subJibunPolys }}" as="g" hint-placeholder-count="0">
+                      <span title="{{ g.name }}" style="position:absolute; left:{{ g.cx }}%; top:{{ g.cy }}%; transform:translate(-50%,-50%); padding:1px 4px; border-radius:3px; background:rgba(255,255,255,0.88); font:700 10px var(--font-content); color:{{ g.color }}; white-space:nowrap;">{{ g.label }}</span>
                     </sc-for>
                   </div>
                 </sc-if>
@@ -408,7 +382,7 @@
 
           <!-- 지번 정보 팝업 (HEL01-04 ②-1) -->
           <sc-if value="{{ showJibunPop }}" hint-placeholder-val="{{ false }}">
-            <div style="position:absolute; left:52%; top:22%; z-index:26; width:250px; background:var(--bg-primary); border:1px solid var(--border-default); border-radius:6px; overflow:hidden; box-shadow:0 2px 8px rgba(54,59,64,0.25);">
+            <div style="position:absolute; left:19%; top:14%; z-index:26; width:250px; background:var(--bg-primary); border:1px solid var(--border-default); border-radius:6px; overflow:hidden; box-shadow:0 2px 8px rgba(54,59,64,0.25);">
               <div style="display:flex; align-items:center; gap:8px; height:34px; padding:0 10px; border-bottom:1px solid var(--border-default); background:var(--gray-5);">
                 <i class="ti ti-map-pin" style="font-size:15px; color:var(--text-tertiary);"></i>
                 <span style="font:700 13px var(--font-content); color:var(--text-primary); white-space:nowrap;">{{ jibunPopName }}</span>
@@ -515,16 +489,70 @@ const MAP_TYPES = [
   { value: "outdoor", label: "야외지도" },
 ];
 
-const JIBUN_AREAS = [
-  { l: 7, t: 12, w: 11, h: 13, name: "적치A", code: "S1A1", lv: 3 },
-  { l: 18.5, t: 12, w: 11, h: 13, name: "적치F", code: "S1F1", lv: 3 },
-  { l: 7, t: 26, w: 22.5, h: 12, name: "의장AA", code: "I1A1", lv: 2 },
-  { l: 35, t: 46, w: 13, h: 15, name: "의장AD", code: "I1B1", lv: 4 },
-  { l: 48.5, t: 46, w: 13, h: 15, name: "의장 1BAY", code: "I1B2", lv: 3 },
-  { l: 35, t: 62, w: 26.5, h: 13, name: "의장 Bay2", code: "I1B3", lv: 3 },
-  { l: 72, t: 14, w: 20, h: 14, name: "공장 Bay4", code: "F1B4", lv: 2 },
-  { l: 72, t: 62, w: 20, h: 14, name: "적치K", code: "S1K1", lv: 4 },
+// 지번관리(HEL02)에서 등록한 지번을 공유 저장소에서 읽는다. 없으면 기본 더미.
+const JIBUN_STORE = "twinJibunData";
+const DEFAULT_JIBUN = {
+  physItems: [{ name: "한화오션에코텍", rect: { x1: 44, y1: 6, x2: 96, y2: 68 } }],
+  logiNodes: [
+    { key: "hwe", label: "한화오션에코텍", code: "HWE", lv: 0 },
+    { key: "y1", label: "1야드", code: "1Y", lv: 1 },
+    { key: "p1", label: "전처리1공장", code: "3F", lv: 2 },
+    { key: "j1", label: "적치1", code: "1Z", lv: 3 },
+    { key: "jb2", label: "2정반", code: "2J", lv: 4 },
+  ],
+};
+function readJibun() {
+  try {
+    const raw = window.localStorage.getItem(JIBUN_STORE);
+    if (!raw) return DEFAULT_JIBUN;
+    const d = JSON.parse(raw);
+    if (!d || !Array.isArray(d.physItems) || !Array.isArray(d.logiNodes)) return DEFAULT_JIBUN;
+    return d;
+  } catch (e) { return DEFAULT_JIBUN; }
+}
+function physBox(it) {
+  const r = it.rect || {};
+  return { l: r.x1, t: r.y1, w: r.x2 - r.x1, h: r.y2 - r.y1 };
+}
+// 지번관리 chainAreas와 동일한 중첩 계산 (루트 = 같은 이름의 물리지번 안쪽)
+function logiChainAreas(physItems, logiNodes) {
+  const areas = {}, stack = [];
+  logiNodes.forEach((n) => {
+    stack[n.lv] = n.key;
+    const p = n.lv > 0 ? areas[stack[n.lv - 1]] : null;
+    // 사용자가 직접 그린 영역(poly)이 있으면 그 바운딩 박스를 그대로 쓴다.
+    if (Array.isArray(n.poly) && n.poly.length >= 3) {
+      const xs = n.poly.map((v) => v[0]), ys = n.poly.map((v) => v[1]);
+      const l = Math.min.apply(null, xs), t = Math.min.apply(null, ys);
+      areas[n.key] = { l, t, w: Math.max.apply(null, xs) - l, h: Math.max.apply(null, ys) - t };
+    } else if (p) {
+      areas[n.key] = { l: p.l + p.w * 0.12, t: p.t + p.h * 0.17, w: p.w * 0.74, h: p.h * 0.72 };
+    } else {
+      const it = physItems.find((x) => x.name === n.label);
+      if (it) {
+        const b = physBox(it);
+        areas[n.key] = { l: b.l + b.w * 0.04, t: b.t + b.h * 0.05, w: b.w * 0.92, h: b.h * 0.9 };
+      } else {
+        areas[n.key] = { l: 46, t: 9, w: 48, h: 57 };
+      }
+    }
+  });
+  return areas;
+}
+// 지번관리에 등록된 차도지번
+const ROAD_LINES = [
+  { name: "정문 앞 간선도로", verts: [[6, 74], [30, 71], [58, 68], [88, 65]] },
+  { name: "1야드 진입로", verts: [[30, 71], [32, 50], [35, 28]] },
+  { name: "2야드 순환로", verts: [[58, 68], [71, 55], [79, 36], [64, 21]] },
+  { name: "안벽 접속로", verts: [[88, 65], [91, 43]] },
 ];
+const LOGI_DETAILS = {
+  hwe: { org: "기획팀", use: "기타", indoor: "-", area: "270,500" },
+  y1: { org: "기획팀", use: "작업장", indoor: "옥외", area: "83,200" },
+  p1: { org: "기획팀", use: "공장", indoor: "옥내", area: "2,875" },
+  j1: { org: "선각생산팀", use: "적치", indoor: "옥내", area: "1,875" },
+  jb2: { org: "의장생산팀", use: "생산", indoor: "옥내", area: "960" },
+};
 
 const BLOCKS = [
   { code: "BL201", l: 10, t: 17 }, { code: "BL202", l: 16, t: 30 }, { code: "BL203", l: 23, t: 20 },
@@ -591,7 +619,8 @@ class Component extends DCLogic {
       showSubDlg: false,
       showSubMap: false,
       pip: null,
-      subMapValue: "warehouse",
+      subMapValue: (DEFAULT_JIBUN.physItems[0] || {}).name || "",
+      jibun: DEFAULT_JIBUN,
       panelOpen: true,
       pops: {},
       jibunPop: null,
@@ -601,6 +630,28 @@ class Component extends DCLogic {
     }, this.screenState(props.startScreen) || {});
   }
 
+  componentDidMount() {
+    const j = readJibun();
+    this.setState({ jibun: j, subMapValue: (j.physItems[0] || {}).name || "" });
+    this._rawJibun = (() => { try { return window.localStorage.getItem(JIBUN_STORE); } catch (e) { return null; } })();
+    // 다른 화면(지번관리)에서 등록/수정한 지번을 즉시 반영 — storage 이벤트 + 폴링(iframe 통합 화면 대응)
+    const sync = () => {
+      let raw = null;
+      try { raw = window.localStorage.getItem(JIBUN_STORE); } catch (e) { return; }
+      if (raw === this._rawJibun) return;
+      this._rawJibun = raw;
+      const next = readJibun();
+      const keep = next.physItems.some((p) => p.name === this.state.subMapValue);
+      this.setState({ jibun: next, subMapValue: keep ? this.state.subMapValue : ((next.physItems[0] || {}).name || "") });
+    };
+    this._onStore = (e) => { if (!e || e.key === JIBUN_STORE) sync(); };
+    window.addEventListener("storage", this._onStore);
+    this._jibunPoll = setInterval(sync, 800);
+  }
+  componentWillUnmount() {
+    if (this._onStore) window.removeEventListener("storage", this._onStore);
+    if (this._jibunPoll) clearInterval(this._jibunPoll);
+  }
   screenState(id) {
     if (!id) return null;
     const base = {
@@ -611,9 +662,9 @@ class Component extends DCLogic {
       showMyLoc: false, showRotate: false, showSubDlg: false, showSubMap: false,
       panelOpen: true, pops: {}, jibunPop: null, mapTypeDd: false, searchText: "",
     };
-    if (id === "HEL01-01") return Object.assign(base, { searchText: "BL401" });
-    if (id === "HEL01-04") return Object.assign(base, { jibunPop: "의장AD" });
-    if (id === "HEL01-06") return Object.assign(base, { pops: { block: true, obstacle: true, resource: true, material: true } });
+    if (id === "HEL01-01") return Object.assign(base, { searchText: "3F" });
+    if (id === "HEL01-04") return Object.assign(base, { jibunPop: "p1" });
+    if (id === "HEL01-06") return Object.assign(base, { jibunPop: "j1" });
     if (id === "HEL01-07") return Object.assign(base, { mapType: "normal", mapTypeDd: true });
     if (id === "HEL01-07-01") return Object.assign(base, { showMyLoc: true, dispItems: { mat: true, block: true, obstacle: true, resource: true, facility: false } });
     if (id === "HEL01-08") return Object.assign(base, { showRotate: true });
@@ -752,25 +803,60 @@ class Component extends DCLogic {
       },
     }));
 
-    const lvColor = { 2: "#7C3AED", 3: "#DB2777", 4: "#19BFAE" };
-    const lvFill = { 2: "rgba(124,58,237,0.18)", 3: "rgba(219,39,119,0.18)", 4: "rgba(25,191,174,0.18)" };
-    const jibunAreas = JIBUN_AREAS.map((a) => ({
-      l: a.l, t: a.t, w: a.w, h: a.h, name: a.name,
-      label: s.nameToggle ? a.name : a.code,
-      color: lvColor[a.lv], fill: lvFill[a.lv],
-      onClick: () => this.setState({ jibunPop: a.name }),
-    }));
-
+    const lvColor = { 0: "#7C3AED", 1: "#7C3AED", 2: "#DB2777", 3: "#19BFAE", 4: "#19BFAE" };
+    const lvFill = { 0: "rgba(124,58,237,0.14)", 1: "rgba(124,58,237,0.18)", 2: "rgba(219,39,119,0.18)", 3: "rgba(25,191,174,0.18)", 4: "rgba(25,191,174,0.22)" };
+    const jibun = s.jibun || DEFAULT_JIBUN;
+    const physItems = jibun.physItems, logiNodes = jibun.logiNodes;
+    const areaMap = logiChainAreas(physItems, logiNodes);
     const focus = (s.searchText || "").trim().toUpperCase();
-    const blockMarkers = BLOCKS.map((b) => ({
-      code: b.code, l: b.l, t: b.t,
-      border: focus && b.code === focus ? "2px solid var(--brand-primary)" : "1px solid transparent",
-      onClick: () => this.setState({ pops: Object.assign({}, s.pops, { block: true }) }),
-    }));
-    const resMarkers = RESOURCES.map((r) => ({
-      code: r.code, l: r.l, t: r.t, icon: r.icon,
-      onClick: () => this.setState({ pops: Object.assign({}, s.pops, { resource: true }) }),
-    }));
+    // 계층마다 라벨 코너를 돌려 서로 겹치지 않게 한다 (TL → TR → BL → BR)
+    const CORNERS = [
+      { lx: "4px", ly: "3px", ltr: "none" },
+      { lx: "calc(100% - 4px)", ly: "3px", ltr: "translateX(-100%)" },
+      { lx: "4px", ly: "calc(100% - 3px)", ltr: "translateY(-100%)" },
+      { lx: "calc(100% - 4px)", ly: "calc(100% - 3px)", ltr: "translate(-100%,-100%)" },
+    ];
+    // 물리지번과 이름이 같은 루트 논리지번은 물리지번 박스와 동일한 영역 → 중복 표시하지 않음
+    const isPhysRoot = (n) => n.lv === 0 && physItems.some((p) => p.name === n.label);
+    const drawNodes = logiNodes.filter((n) => !isPhysRoot(n));
+    const jibunPolys = drawNodes.filter((n) => Array.isArray(n.poly) && n.poly.length >= 3).map((n) => {
+      const xs = n.poly.map((v) => v[0]), ys = n.poly.map((v) => v[1]);
+      return {
+        points: n.poly.map((v) => v[0] + "," + v[1]).join(" "),
+        color: lvColor[n.lv] || "#19BFAE", fill: lvFill[n.lv] || "rgba(25,191,174,0.22)",
+        cx: (xs.reduce((a, b) => a + b, 0) / xs.length).toFixed(1),
+        cy: (ys.reduce((a, b) => a + b, 0) / ys.length).toFixed(1),
+        name: n.label, label: s.nameToggle ? n.label : (n.code || n.label),
+        onClick: () => this.setState({ jibunPop: n.key }),
+      };
+    });
+    const jibunAreas = drawNodes.filter((n) => !(Array.isArray(n.poly) && n.poly.length >= 3)).map((n) => {
+      const a = areaMap[n.key];
+      const c = CORNERS[n.lv % 4];
+      const hit = focus && (String(n.code || "") === focus || String(n.label || "").toUpperCase() === focus);
+      return {
+        l: a.l.toFixed(1), t: a.t.toFixed(1), w: a.w.toFixed(1), h: a.h.toFixed(1), name: n.label,
+        label: (s.nameToggle ? n.label : (n.code || n.label)) + (hit ? " ◂" : ""),
+        color: lvColor[n.lv] || "#19BFAE", fill: lvFill[n.lv] || "rgba(25,191,174,0.22)",
+        lx: c.lx, ly: c.ly, ltr: c.ltr,
+        onClick: () => this.setState({ jibunPop: n.key }),
+      };
+    });
+    const physAreas = physItems.map((it) => {
+      const b = physBox(it);
+      return { name: it.name, l: b.l.toFixed(1), t: b.t.toFixed(1), w: b.w.toFixed(1), h: b.h.toFixed(1) };
+    });
+    const roadLines = ROAD_LINES.map((r) => {
+      const mid = r.verts[Math.floor(r.verts.length / 2)];
+      return { name: r.name, points: r.verts.map((v) => v[0] + "," + v[1]).join(" "), lx: mid[0], ly: mid[1] };
+    });
+    const popNode = logiNodes.find((n) => n.key === s.jibunPop) || null;
+    const popRoot = (() => {
+      if (!popNode) return "";
+      const i = logiNodes.indexOf(popNode);
+      for (let k = i; k >= 0; k--) { if (logiNodes[k].lv === 0) return logiNodes[k].label; }
+      return "";
+    })();
 
     const objPopups = Object.keys(POP_DEFS).filter((k) => s.pops[k]).map((k) => {
       const d = POP_DEFS[k];
@@ -844,30 +930,79 @@ class Component extends DCLogic {
       dispResource: !!s.dispItems.resource,
       dispFacility: !!s.dispItems.facility,
       jibunAreas: jibunAreas,
-      subJibunAreas: [
-        { l: 12, t: 12, w: 32, h: 26, name: "창고1 적치A", code: "W1A1", lv: 3 },
-        { l: 54, t: 14, w: 28, h: 22, name: "창고1 적치B", code: "W1B1", lv: 4 },
-        { l: 14, t: 58, w: 30, h: 24, name: "창고2 적치A", code: "W2A1", lv: 4 },
-        { l: 56, t: 56, w: 30, h: 28, name: "창고2 자재", code: "W2M1", lv: 2 },
-      ].map((a) => ({
-        l: a.l, t: a.t, w: a.w, h: a.h, name: a.name,
-        label: s.nameToggle ? a.name : a.code,
-        color: lvColor[a.lv], fill: lvFill[a.lv],
+      jibunPolys: jibunPolys,
+      jibunList: drawNodes.map((n) => ({
+        label: (s.nameToggle ? n.label : (n.code || n.label)),
+        color: lvColor[n.lv] || "#19BFAE", fill: lvFill[n.lv] || "rgba(25,191,174,0.22)",
+        onClick: () => this.setState({ jibunPop: n.key }),
       })),
-      blockMarkers: blockMarkers,
-      resMarkers: resMarkers,
+      subMapTitle: s.subMapValue || (physItems[0] ? physItems[0].name : "-"),
+      // 서브 MAP 안의 직접 그린 논리지번 — 폴리곤 좌표를 서브맵 좌표계로 정규화
+      subJibunPolys: (() => {
+        const target = s.subMapValue || (physItems[0] ? physItems[0].name : null);
+        const it = physItems.find((x) => x.name === target);
+        if (!it) return [];
+        const b = physBox(it);
+        const ri = logiNodes.findIndex((n) => n.lv === 0 && n.label === target);
+        if (ri < 0) return [];
+        let end = ri + 1;
+        while (end < logiNodes.length && logiNodes[end].lv > 0) end++;
+        const pad = 8, span = 100 - pad * 2;
+        const nx = (x) => pad + (x - b.l) / b.w * span;
+        const ny = (y) => pad + (y - b.t) / b.h * span;
+        return logiNodes.slice(ri, end).filter((n) => n.lv !== 0 && Array.isArray(n.poly) && n.poly.length >= 3).map((n) => {
+          const pts = n.poly.map((v) => [nx(v[0]), ny(v[1])]);
+          return {
+            points: pts.map((p) => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" "),
+            cx: (pts.reduce((a, p) => a + p[0], 0) / pts.length).toFixed(1),
+            cy: (pts.reduce((a, p) => a + p[1], 0) / pts.length).toFixed(1),
+            name: n.label, label: s.nameToggle ? n.label : (n.code || n.label),
+            color: lvColor[n.lv] || "#19BFAE", fill: lvFill[n.lv] || "rgba(25,191,174,0.22)",
+          };
+        });
+      })(),
+      // 서브 MAP = 선택한 물리지번 영역을 확대 — 그 안의 논리지번을 0~100%로 정규화
+      subJibunAreas: (() => {
+        const target = s.subMapValue || (physItems[0] ? physItems[0].name : null);
+        const it = physItems.find((x) => x.name === target);
+        if (!it) return [];
+        const b = physBox(it);
+        const ri = logiNodes.findIndex((n) => n.lv === 0 && n.label === target);
+        if (ri < 0) return [];
+        let end = ri + 1;
+        while (end < logiNodes.length && logiNodes[end].lv > 0) end++;
+        const pad = 8, span = 100 - pad * 2;
+        return logiNodes.slice(ri, end).filter((n) => n.lv !== 0 && !(Array.isArray(n.poly) && n.poly.length >= 3)).map((n) => {
+          const a = areaMap[n.key];
+          return {
+            l: (pad + (a.l - b.l) / b.w * span).toFixed(1),
+            t: (pad + (a.t - b.t) / b.h * span).toFixed(1),
+            w: (a.w / b.w * span).toFixed(1),
+            h: (a.h / b.h * span).toFixed(1),
+            name: n.label, label: s.nameToggle ? n.label : (n.code || n.label),
+            color: lvColor[n.lv] || "#19BFAE", fill: lvFill[n.lv] || "rgba(25,191,174,0.22)",
+            lx: CORNERS[n.lv % 4].lx, ly: CORNERS[n.lv % 4].ly, ltr: CORNERS[n.lv % 4].ltr,
+          };
+        });
+      })(),
+      physAreas: physAreas,
+      roadLines: roadLines,
       searchText: s.searchText,
       setSearch: (e) => this.setState({ searchText: e && e.target ? e.target.value : "" }),
       openMat: () => this.setState({ pops: Object.assign({}, s.pops, { material: true }) }),
       openObs: () => this.setState({ pops: Object.assign({}, s.pops, { obstacle: true }) }),
       objPopups: objPopups,
-      showJibunPop: !!s.jibunPop && !!s.mapOpts.jibun,
-      jibunPopName: s.jibunPop || "",
-      jibunPopRows: [
-        { k: "지번", v: "I1B1" }, { k: "관리조직", v: "기획팀 · 선각생산팀" }, { k: "용도구분", v: "생산 · 적치" },
-        { k: "생산품PCG", v: "HC1" }, { k: "생산공종", v: "취부" }, { k: "생산단계", v: "소조립" },
-        { k: "적치종류", v: "강재" }, { k: "시작일", v: "2026-01-01" }, { k: "종료일", v: "2026-12-31" },
-      ],
+      showJibunPop: !!popNode && !!s.mapOpts.jibun,
+      jibunPopName: popNode ? popNode.label : "",
+      jibunPopRows: popNode ? (() => {
+        const d = LOGI_DETAILS[popNode.key] || {};
+        return [
+          { k: "지번코드", v: popNode.code || "-" }, { k: "계층", v: "Lv" + popNode.lv },
+          { k: "상위 물리지번", v: popRoot || "-" }, { k: "관리조직", v: d.org || "-" },
+          { k: "용도구분", v: d.use || "-" }, { k: "옥내외", v: d.indoor || "-" },
+          { k: "면적", v: (d.area || "-") + " m²" },
+        ];
+      })() : [],
       closeJibunPop: () => this.setState({ jibunPop: null }),
       showMyLoc: s.showMyLoc,
       toggleMyLoc: () => this.setState({ showMyLoc: !s.showMyLoc }),
@@ -894,9 +1029,7 @@ class Component extends DCLogic {
       pipH: s.pip ? s.pip.h : 300,
       pipSize: s.pip ? s.pip.w + " × " + s.pip.h : "Drag",
       closeSubMap: () => this.setState({ showSubMap: false, pip: null }),
-      subMapOptions: [
-        { value: "warehouse", label: "한화오션 창고" },
-      ],
+      subMapOptions: physItems.map((it) => ({ value: it.name, label: it.name })),
       subMapValue: s.subMapValue,
       setSubMapValue: (v) => this.setState({ subMapValue: typeof v === "string" ? v : (v && v.target ? v.target.value : v) }),
       panelOpen: s.panelOpen,
