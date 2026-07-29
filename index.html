@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>물류Twin 통합 화면</title>
+  <link rel="stylesheet" href="_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.24.0/dist/tabler-icons.min.css">
+  <style>
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--gray-10, #f4f6f8);
+      color: var(--text-primary, #1f2328);
+      font-family: var(--font-primary, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    main {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+
+    .launcher {
+      width: min(920px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .title {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    h1 {
+      margin: 0;
+      font: 700 32px/1.25 var(--font-title, inherit);
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0;
+      color: var(--text-secondary, #525960);
+      font: 400 15px/1.6 var(--font-content, inherit);
+    }
+
+    .routes {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .route {
+      min-height: 132px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px;
+      border: 1px solid var(--border-default, #d8dde3);
+      border-radius: 8px;
+      background: var(--bg-primary, #fff);
+      color: inherit;
+      text-decoration: none;
+      box-shadow: 0 1px 3px rgba(31, 35, 40, 0.08);
+    }
+
+    .route:hover {
+      border-color: var(--brand-primary, #f37321);
+      box-shadow: 0 6px 18px rgba(31, 35, 40, 0.12);
+    }
+
+    .route strong {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font: 700 18px/1.35 var(--font-content, inherit);
+    }
+
+    .route span {
+      color: var(--text-tertiary, #6f7780);
+      font: 400 13px/1.5 var(--font-content, inherit);
+    }
+
+    .route i {
+      color: var(--brand-primary, #f37321);
+      font-size: 22px;
+    }
+
+    @media (max-width: 760px) {
+      main {
+        align-items: flex-start;
+        padding: 28px 16px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      .routes {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="launcher" aria-labelledby="page-title">
+      <div class="title">
+        <h1 id="page-title">물류Twin 통합 화면</h1>
+        <p>확인할 화면 유형을 선택하세요.</p>
+      </div>
+
+      <nav class="routes" aria-label="통합 화면 라우트">
+        <a class="route" href="/web-admin/">
+          <strong><i class="ti ti-layout-dashboard"></i>웹 관리자</strong>
+          <span>/web-admin/</span>
+        </a>
+        <a class="route" href="/tablet-pc/">
+          <strong><i class="ti ti-device-tablet"></i>태블릿 PC 앱</strong>
+          <span>/tablet-pc/</span>
+        </a>
+        <a class="route" href="/worker-mobile/">
+          <strong><i class="ti ti-device-mobile"></i>작업자용 모바일 앱</strong>
+          <span>/worker-mobile/</span>
+        </a>
+      </nav>
+    </section>
+  </main>
+</body>
+</html>

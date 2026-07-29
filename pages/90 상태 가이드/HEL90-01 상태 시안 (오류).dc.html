@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.24.0/dist/tabler-icons.min.css">
+<script src="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/_ds_bundle.js"></script>
+<style>
+  body { margin: 0; }
+  a { color: #0A72F2; text-decoration: none; }
+  a:hover { color: #0A72F2; text-decoration: underline; }
+</style>
+</helmet>
+
+<div style="min-height:100vh; background:var(--gray-5); font-family:var(--font-primary); color:var(--text-secondary); padding:32px 40px 64px; min-width:1360px;">
+  <div style="max-width:1560px; margin:0 auto;">
+    <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:6px;">
+      <span style="font:700 18px var(--font-content); color:var(--text-primary);">오류 상태 시안</span>
+      <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">지번관리 · 상태 UI 가이드 06 대응 · 정적 시안 (동작 없음)</span>
+    </div>
+    <div style="font:400 12px/1.7 var(--font-content); color:var(--text-tertiary); margin-bottom:24px; max-width:900px;">오류는 <b style="color:var(--text-secondary);">영향 범위</b>에 맞춰 크기를 정한다. 어떤 방식이든 무엇이 실패했는지 · 왜 · 지금 뭘 하면 되는지 세 가지를 담고, 오류코드는 작게 병기한다.</div>
+
+    <div style="display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:20px;">
+
+      <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:20px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+          <span style="font:700 14px var(--font-content); color:var(--text-primary);">01 · 필드 인라인</span>
+          <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">입력값이 잘못됨 · 버튼 없음(수정 유도)</span>
+        </div>
+        <div style="font:400 12px var(--font-content); color:var(--text-tertiary); margin-bottom:16px;">형식을 알려주고 예시를 함께 준다. 사용자를 탓하지 않는다.</div>
+        <div style="display:flex; flex-direction:column; gap:5px; max-width:320px;">
+          <label style="font-size:12px; color:var(--text-tertiary);">지번코드 <span style="color:#E40C01;">*</span></label>
+          <input value="A12-" readonly="readonly" style="height:32px; border:1px solid #E40C01; border-radius:4px; padding:0 10px; font:400 14px var(--font-content); color:var(--text-secondary);">
+          <div style="display:flex; align-items:center; gap:5px; font:400 12px var(--font-content); color:#E40C01;"><i class="ti ti-alert-circle" style="font-size:14px;"></i>지번코드 형식이 올바르지 않습니다. 예) A-12</div>
+        </div>
+      </div>
+
+      <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:20px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+          <span style="font:700 14px var(--font-content); color:var(--text-primary);">02 · 폼 상단 배너</span>
+          <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">여러 필드가 한꺼번에 틀림 · 항목 바로가기</span>
+        </div>
+        <div style="font:400 12px var(--font-content); color:var(--text-tertiary); margin-bottom:16px;">요약한 뒤 첫 항목으로 이동시킨다. 개별 필드 인라인 오류와 항상 함께 쓴다.</div>
+        <div style="background:#F5EAE7; border:1px solid #E40C01; border-radius:6px; padding:12px 14px;">
+          <div style="display:flex; align-items:center; gap:6px; font:700 14px var(--font-content); color:#E40C01; margin-bottom:8px;"><i class="ti ti-alert-triangle" style="font-size:16px;"></i>입력하지 않았거나 형식이 맞지 않는 항목이 2건 있습니다</div>
+          <div style="display:flex; gap:8px;">
+            <a href="#" style="display:inline-flex; align-items:center; gap:4px; height:26px; padding:0 10px; border:1px solid #E40C01; border-radius:6px; background:var(--bg-primary); color:#E40C01; font:500 12px var(--font-content);">지번코드 형식<i class="ti ti-arrow-right" style="font-size:13px;"></i></a>
+            <a href="#" style="display:inline-flex; align-items:center; gap:4px; height:26px; padding:0 10px; border:1px solid #E40C01; border-radius:6px; background:var(--bg-primary); color:#E40C01; font:500 12px var(--font-content);">운영 종료일자 누락<i class="ti ti-arrow-right" style="font-size:13px;"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:20px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+          <span style="font:700 14px var(--font-content); color:var(--text-primary);">03 · 영역 오류</span>
+          <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">목록·도면을 못 불러옴 · 다시 시도</span>
+        </div>
+        <div style="font:400 12px var(--font-content); color:var(--text-tertiary); margin-bottom:16px;">그 영역만 대체하고 필터·헤더는 살린다. 높이는 데이터가 있을 때와 같은 240px.</div>
+        <div style="border:1px solid var(--border-default); border-radius:6px; overflow:hidden;">
+          <div style="display:grid; grid-template-columns:2fr 1fr 1fr 1fr; background:var(--gray-10); border-bottom:1px solid var(--border-strong); font:500 14px var(--font-content); color:var(--text-primary); text-align:center;">
+            <div style="padding:9px 8px; border-right:1px solid var(--border-strong);">레벨 / 지번 / 명칭</div><div style="padding:9px 8px; border-right:1px solid var(--border-strong);">ID</div><div style="padding:9px 8px; border-right:1px solid var(--border-strong);">관리조직</div><div style="padding:9px 8px;">면적(㎡)</div>
+          </div>
+          <div style="min-height:240px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; padding:24px; text-align:center;">
+            <i class="ti ti-cloud-off" style="font-size:48px; color:#C6C6C6;"></i>
+            <div style="font:700 14px var(--font-content); color:var(--text-primary);">지번을 불러오지 못했습니다</div>
+            <div style="font:400 12px var(--font-content); color:var(--text-tertiary);">잠시 후 다시 시도해 주세요.</div>
+            <button style="margin-top:8px; height:32px; padding:0 16px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 14px var(--font-content); cursor:pointer; display:inline-flex; align-items:center; gap:6px;" style-hover="background:var(--gray-5);"><i class="ti ti-refresh" style="font-size:14px;"></i>다시 시도</button>
+            <div style="font:400 12px var(--font-content); color:var(--text-tertiary); font-variant-numeric:tabular-nums;">오류코드 JIB-5030</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:20px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+          <span style="font:700 14px var(--font-content); color:var(--text-primary);">04 · 토스트</span>
+          <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">가벼운 실패 · 4초 뒤 자동 사라짐</span>
+        </div>
+        <div style="font:400 12px var(--font-content); color:var(--text-tertiary); margin-bottom:16px;">이전 결과는 화면에 그대로 남긴다. 되돌릴 수 없는 작업의 실패에는 쓰지 않는다.</div>
+        <div style="background:var(--gray-5); border-radius:6px; padding:24px; display:flex; flex-direction:column; gap:12px; align-items:center;">
+          <div style="display:flex; align-items:center; gap:12px; background:#2D2D2D; border-radius:6px; padding:12px 16px; width:100%; max-width:420px; box-sizing:border-box;">
+            <i class="ti ti-alert-circle" style="font-size:18px; color:#FF9B4A;"></i>
+            <span style="font:400 14px var(--font-content); color:#fff;">정렬을 적용하지 못했습니다. 이전 결과를 표시합니다</span>
+            <button style="margin-left:auto; height:26px; padding:0 10px; border:1px solid rgba(255,255,255,0.35); border-radius:6px; background:transparent; color:#fff; font:500 12px var(--font-content); white-space:nowrap; cursor:pointer;">재시도</button>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px; background:#2D2D2D; border-radius:6px; padding:12px 16px; width:100%; max-width:420px; box-sizing:border-box;">
+            <i class="ti ti-trash" style="font-size:18px; color:#fff;"></i>
+            <span style="font:400 14px var(--font-content); color:#fff;">삭제되었습니다</span>
+            <button style="margin-left:auto; height:26px; padding:0 10px; border:1px solid rgba(255,255,255,0.35); border-radius:6px; background:transparent; color:#fff; font:500 12px var(--font-content); white-space:nowrap; cursor:pointer;">실행 취소</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:20px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+          <span style="font:700 14px var(--font-content); color:var(--text-primary);">05 · 모달 (동시 수정 충돌)</span>
+          <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">사용자가 선택해야 끝나는 실패 · 선택지 2개</span>
+        </div>
+        <div style="font:400 12px var(--font-content); color:var(--text-tertiary); margin-bottom:16px;">여러 명이 같은 지번을 만지는 업무라 반드시 설계한다. 남발 금지.</div>
+        <div style="background:rgba(0,0,0,0.6); border-radius:6px; padding:28px; display:flex; justify-content:center;">
+          <div style="width:420px; background:var(--bg-primary); border-radius:6px; padding:20px;">
+            <div style="display:flex; align-items:center; margin-bottom:14px;">
+              <span style="font:700 16px var(--font-content); color:var(--text-primary);">저장하지 못했습니다</span>
+              <button style="margin-left:auto; border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:4px;"><i class="ti ti-x" style="font-size:18px;"></i></button>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:8px; padding:4px 2px 18px; text-align:center;">
+              <i class="ti ti-users" style="font-size:40px; color:#C6C6C6;"></i>
+              <div style="font:400 14px/1.7 var(--font-content); color:var(--text-secondary);">다른 사용자가 먼저 수정했습니다.<br>최신 내용을 확인해 주세요.</div>
+              <div style="font:400 12px var(--font-content); color:var(--text-tertiary);">I1B1 · 김현수 07:38 수정 · 오류코드 JIB-4090</div>
+            </div>
+            <div style="display:flex; justify-content:center; gap:8px;">
+              <button style="min-width:120px; height:34px; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--brand-hover);">최신 내용 보기</button>
+              <button style="min-width:120px; height:34px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--gray-5);">내 내용으로 덮어쓰기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:20px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+          <span style="font:700 14px var(--font-content); color:var(--text-primary);">06 · 전체 화면</span>
+          <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">화면 자체를 열 수 없음 · 새로고침 / 목록으로</span>
+        </div>
+        <div style="font:400 12px var(--font-content); color:var(--text-tertiary); margin-bottom:16px;">없는 지번으로 진입, 네트워크 단절. 뒤로가기만 남기지 않는다.</div>
+        <div style="border:1px solid var(--border-default); border-radius:6px; min-height:300px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; padding:24px; text-align:center; background:var(--gray-5);">
+          <i class="ti ti-map-pin-off" style="font-size:48px; color:#C6C6C6;"></i>
+          <div style="font:700 14px var(--font-content); color:var(--text-primary);">요청하신 지번을 찾을 수 없습니다</div>
+          <div style="font:400 12px/1.7 var(--font-content); color:var(--text-tertiary);">삭제되었거나 접근할 수 없는 지번입니다.<br>지번 목록에서 다시 선택해 주세요.</div>
+          <div style="display:flex; gap:8px; margin-top:10px;">
+            <button style="height:32px; padding:0 16px; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--brand-hover);">지번 목록으로</button>
+            <button style="height:32px; padding:0 16px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 14px var(--font-content); cursor:pointer; display:inline-flex; align-items:center; gap:6px;" style-hover="background:var(--gray-5);"><i class="ti ti-refresh" style="font-size:14px;"></i>새로고침</button>
+          </div>
+          <div style="font:400 12px var(--font-content); color:var(--text-tertiary); font-variant-numeric:tabular-nums; margin-top:4px;">오류코드 JIB-4040</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="margin-top:28px; background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:20px;">
+      <div style="font:700 14px var(--font-content); color:var(--text-primary); margin-bottom:12px;">부가 상태 · 현장 환경</div>
+      <div style="display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:16px;">
+        <div>
+          <div style="font:400 12px var(--font-content); color:var(--text-tertiary); margin-bottom:8px;">오프라인 (모바일 상단 고정 배너)</div>
+          <div style="display:flex; align-items:center; gap:8px; background:#2D2D2D; border-radius:6px; padding:10px 14px;"><i class="ti ti-wifi-off" style="font-size:16px; color:#fff;"></i><span style="font:400 14px var(--font-content); color:#fff;">오프라인 · 연결되면 자동 전송</span></div>
+        </div>
+        <div>
+          <div style="font:400 12px var(--font-content); color:var(--text-tertiary); margin-bottom:8px;">실시간 수신 끊김 (장비 위치)</div>
+          <div style="display:flex; align-items:center; gap:8px; border:1px solid var(--border-default); border-radius:6px; padding:10px 14px; background:var(--bg-primary);"><span style="width:8px; height:8px; border-radius:50%; background:#BEBEBE;"></span><span style="font:400 14px var(--font-content); color:var(--text-secondary);">연결 끊김 · 재연결 시도 중</span><span style="margin-left:auto; font:400 12px var(--font-content); color:var(--text-tertiary); font-variant-numeric:tabular-nums;">마지막 갱신 07:41</span></div>
+        </div>
+        <div>
+          <div style="font:400 12px var(--font-content); color:var(--text-tertiary); margin-bottom:8px;">세션 만료 (작성 내용 보존)</div>
+          <div style="display:flex; align-items:center; gap:8px; background:#F5EAE7; border:1px solid #E40C01; border-radius:6px; padding:10px 14px;"><i class="ti ti-lock-exclamation" style="font-size:16px; color:#E40C01;"></i><span style="font:400 14px var(--font-content); color:#E40C01;">로그인이 만료되었습니다. 다시 로그인해 주세요</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1600,&quot;height&quot;:1400}}"></script>
+</body>
+</html>

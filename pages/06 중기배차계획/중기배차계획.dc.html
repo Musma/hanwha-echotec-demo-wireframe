@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.24.0/dist/tabler-icons.min.css">
+<script src="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/_ds_bundle.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; }
+  *, *::before, *::after { box-sizing: border-box; }
+  a { color: var(--blue-dark); text-decoration: none; }
+  a:hover { color: var(--blue-main); }
+  input::placeholder { color: var(--text-placeholder); }
+  button { white-space: nowrap; }
+  .dl-navbtn:hover { background: var(--bg-secondary) !important; }
+  .dl-nav { width: var(--lnb-w); flex-shrink: 0; background: var(--bg-primary); border-right: 1px solid var(--border-subtle); display: flex; flex-direction: column; padding: 12px 8px; overflow-y: auto; }
+  .dl-item { display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; margin: 2px 0; border: none; cursor: pointer; border-radius: var(--radius-btn); background: transparent; color: var(--text-secondary); font-family: var(--font-content); font-weight: 500; font-size: 14px; line-height: 1; width: 100%; text-align: left; }
+  .dl-item > span { flex-shrink: 0; text-overflow: clip; }
+  .dl-item[data-active="true"] { background: var(--status-wait-bg); color: var(--brand-primary); font-weight: 700; }
+  .dl-item[data-trail="true"] { color: var(--text-primary); font-weight: 700; }
+  .dl-item[data-depth="1"] { height: 36px; padding-left: 44px; font-size: 13px; font-weight: 400; }
+  .dl-item[data-depth="2"] { height: 32px; padding-left: 60px; font-size: 13px; font-weight: 400; color: var(--text-tertiary); }
+  .dl-chev { margin-left: auto; font-size: 16px; color: var(--text-tertiary); flex-shrink: 0; }
+  .dl-pick:hover { border-color: var(--brand-primary) !important; color: var(--brand-primary) !important; }
+  .sc-bar { position: absolute; height: 20px; border-radius: 4px; background: var(--orange-30); border: 1px solid var(--orange-40); color: var(--text-primary); display: flex; align-items: center; padding: 0 6px; font: 500 11px/1 var(--font-content); cursor: pointer; white-space: nowrap; }
+  .sc-bar[data-selected="true"] { background: var(--brand-pressed); border-color: var(--brand-pressed); color: #fff; }
+  .sc-bar[data-drag="true"] { outline: 1.5px dashed #DB2777; outline-offset: 1px; }
+  .sc-bar { cursor: pointer; user-select: none; }
+</style>
+</helmet>
+
+<div style="display:flex; flex-direction:column; height:100vh; min-width:1440px; width:100%; overflow:hidden; font-family:var(--font-primary); color:var(--text-secondary); background:var(--gray-5);" data-screen-label="{{ screenLabel }}">
+
+  <header style="height:var(--header-h-web); flex-shrink:0; background:var(--bg-primary); border-bottom:1px solid var(--border-subtle); display:flex; align-items:center; padding:0 20px 0 12px; gap:16px; z-index:20;">
+    <img src="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/assets/logo-horizontal.png" alt="한화오션에코텍" style="height:25px; width:auto; display:block; flex-shrink:0;">
+    <span style="font-family:var(--font-title); font-weight:700; font-size:14px; color:var(--text-primary); letter-spacing:-0.2px; white-space:nowrap;">물류Twin</span>
+    <div style="margin-left:auto; display:flex; align-items:center; gap:14px;">
+      <span style="font-size:14px; color:var(--text-tertiary); white-space:nowrap;"><strong style="font-weight:500; color:var(--text-primary);">홍길동</strong>님 로그인 되었습니다.</span>
+      <button title="로그아웃" style="border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:6px;"><i class="ti ti-logout" style="font-size:22px;"></i></button>
+      <a href="../10 알람/HEL12-01 알람목록 (알림 드롭다운).dc.html" title="알림" style="display:flex; padding:6px; color:var(--text-tertiary); position:relative;">
+        <i class="ti ti-bell" style="font-size:22px;"></i>
+        <span style="position:absolute; top:4px; right:4px; width:8px; height:8px; border-radius:50%; background:var(--red-main);"></span>
+      </a>
+    </div>
+  </header>
+
+  <div style="display:flex; flex:1; min-height:0;">
+    <nav class="dl-nav">
+      <sc-for list="{{ navRows }}" as="item" hint-placeholder-count="9">
+        <button class="dl-navbtn dl-item" onClick="{{ item.onClick }}" title="{{ item.label }}" data-active="{{ item.active }}" data-trail="{{ item.trail }}" data-depth="{{ item.depth }}">
+          <sc-if value="{{ item.showIcon }}" hint-placeholder-val="{{ true }}">
+            <i class="ti {{ item.icon }}" style="font-size:20px; flex-shrink:0;"></i>
+          </sc-if>
+          <span>{{ item.label }}</span>
+          <sc-if value="{{ item.hasChildren }}" hint-placeholder-val="{{ false }}">
+            <i class="ti {{ item.chevIcon }} dl-chev"></i>
+          </sc-if>
+        </button>
+      </sc-for>
+      <a href="../00 공통/HEL00-03 메뉴 (닫힘).dc.html" style="margin-top:auto; height:36px; flex-shrink:0; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); white-space:nowrap; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:4px; text-decoration:none;" style-hover="background:var(--gray-5);">
+        <i class="ti ti-chevron-left" style="font-size:15px;"></i>메뉴닫기
+      </a>
+    </nav>
+
+    <main style="flex:1; min-width:0; display:flex; flex-direction:column; overflow:hidden; position:relative;">
+      <div style="flex-shrink:0; display:flex; align-items:center; padding:14px 24px 0;">
+        <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Breadcrumb" items="{{ crumbItems }}" hint-size="380px,20px"></x-import>
+      </div>
+      <div style="flex-shrink:0; display:flex; align-items:center; gap:12px; padding:10px 24px 16px;">
+        <span style="font:700 16px/1.2 var(--font-content); color:var(--text-primary); white-space:nowrap;">{{ pageTitle }}</span>
+        <span style="height:20px; padding:0 8px; border-radius:999px; background:var(--gray-10); color:var(--text-tertiary); font:500 11px/20px var(--font-content); white-space:nowrap;">{{ roleLabel }}</span>
+        <sc-if value="{{ showPicker }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-left:auto; display:flex; align-items:center; gap:5px;">
+            <span style="font:400 11px var(--font-content); color:var(--text-tertiary); white-space:nowrap; flex-shrink:0;">화면 ID</span>
+            <sc-for list="{{ pickRows }}" as="p" hint-placeholder-count="5">
+              <button class="dl-pick" onClick="{{ p.onClick }}" title="{{ p.label }}" style="flex-shrink:0; height:24px; padding:0 8px; border:1px solid {{ p.border }}; border-radius:999px; background:{{ p.bg }}; color:{{ p.color }}; font:700 11px var(--font-content); font-variant-numeric:tabular-nums; cursor:pointer;">{{ p.short }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+
+      <!-- ===== 주간 (기획 검토중) ===== -->
+      <sc-if value="{{ isWeekly }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1; min-height:0; padding:0 24px 24px;">
+          <div style="height:100%; background:var(--surface); border:1px solid var(--border-default); border-radius:6px; display:flex; align-items:center; justify-content:center;">
+            <div style="width:420px; padding:32px; background:var(--gray-5); border:1px solid var(--border-default); border-radius:6px; display:flex; flex-direction:column; align-items:center; gap:10px;">
+              <i class="ti ti-file-description" style="font-size:40px; color:var(--gray-40);"></i>
+              <span style="font:500 14px var(--font-content); color:var(--text-secondary);">기획내용 검토중</span>
+              <span style="font:400 12px/1.6 var(--font-content); color:var(--text-tertiary); text-align:center;">주간중기배차계획 화면은 설계서상 기획 검토 단계입니다.<br>확정 후 상세 설계가 반영됩니다.</span>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ===== 일일 스케줄링표 ===== -->
+      <sc-if value="{{ isDaily }}" hint-placeholder-val="{{ true }}">
+        <div style="flex:1; min-height:0; overflow:auto; padding:0 24px 24px; display:flex; flex-direction:column; gap:16px;">
+
+          <div style="flex-shrink:0; display:grid; grid-template-columns:repeat(4, 1fr); gap:16px;">
+            <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+              <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">배차 신청 건수 (7일 이내)</span>
+              <span style="font:700 18px/1.2 var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">20 건</span>
+              <span style="font:400 12px/1.5 var(--font-content); color:var(--text-tertiary); font-variant-numeric:tabular-nums;">TP 1 · 트레일러 3 · 크레인 2 · 고소차 4 · 지게차 5</span>
+            </div>
+            <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+              <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">장비 가동율</span>
+              <span style="font:700 18px/1.2 var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">72 %</span>
+              <span style="font:400 12px/1 var(--font-content); color:var(--red-dark); font-variant-numeric:tabular-nums;">▲ 전일 대비 5 %</span>
+            </div>
+            <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+              <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">지연 · 미처리 건 수</span>
+              <span style="font:700 18px/1.2 var(--font-content); color:var(--red-dark); font-variant-numeric:tabular-nums;">5 건</span>
+              <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">요청시간 대비 24시간 초과 건 수</span>
+            </div>
+            <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+              <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">배차 대기 · 승인완료 · 운행중</span>
+              <span style="font:700 18px/1.2 var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">10 · 5 · 5 건</span>
+              <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">승인현황 기준</span>
+            </div>
+          </div>
+
+          <div style="flex-shrink:0; background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="width:62px; font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">조회일자</span>
+              <div style="display:flex; align-items:center; gap:6px;">
+                <div style="position:relative;">
+                  <input value="2026/05/01" style="width:112px; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 26px 0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                  <i class="ti ti-calendar" style="position:absolute; right:8px; top:7px; font-size:14px; color:var(--text-tertiary);"></i>
+                </div>
+                <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">~</span>
+                <div style="position:relative;">
+                  <input value="2026/05/20" style="width:112px; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 26px 0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                  <i class="ti ti-calendar" style="position:absolute; right:8px; top:7px; font-size:14px; color:var(--text-tertiary);"></i>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="width:62px; font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">장비코드</span>
+              <input placeholder="장비코드 입력" style="width:130px; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary);">
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="width:62px; font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">장비명</span>
+              <input placeholder="장비명 입력" value="{{ nameQuery }}" onChange="{{ setNameQuery }}" style="width:130px; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary);">
+            </div>
+            <div style="margin-left:auto; display:flex; gap:8px;">
+              <button onClick="{{ resetQuery }}" style="height:28px; padding:0 14px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); cursor:pointer;" style-hover="background:var(--gray-5);">초기화</button>
+              <button style="height:28px; padding:0 14px; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 13px var(--font-content); cursor:pointer;" style-hover="background:var(--brand-hover);">조회</button>
+            </div>
+          </div>
+
+          <div style="flex-shrink:0; background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+              <span style="font:500 16px/1.2 var(--font-content); color:var(--text-primary); white-space:nowrap;">배차 스케줄링표</span>
+              <span style="font:400 11px var(--font-content); color:var(--text-tertiary);">{{ scheduleHint }}</span>
+              <div style="margin-left:auto; display:flex; align-items:center; gap:12px; font:400 11px var(--font-content); color:var(--text-tertiary);">
+                <span style="display:flex; align-items:center; gap:5px; white-space:nowrap;"><span style="width:12px; height:8px; border-radius:2px; background:var(--orange-30);"></span>배차 건</span>
+                <span style="display:flex; align-items:center; gap:5px; white-space:nowrap;"><span style="width:12px; height:8px; border-radius:2px; background:var(--brand-pressed);"></span>선택 · 시간조정</span>
+              </div>
+            </div>
+
+            <div style="border:1px solid var(--border-default); border-radius:4px; overflow-x:auto;">
+              <div style="min-width:1240px;">
+                <div style="display:grid; grid-template-columns:90px 130px repeat(12, 1fr); background:var(--gray-20); font:700 11px var(--font-content); color:var(--text-primary);">
+                  <div style="padding:6px 6px; text-align:center; grid-row:span 2; display:flex; align-items:center; justify-content:center;">장비코드</div>
+                  <div style="padding:6px 6px; text-align:center; grid-row:span 2; display:flex; align-items:center; justify-content:center; border-left:1px solid var(--gray-10);">장비명</div>
+                  <div style="grid-column:span 6; padding:6px; text-align:center; border-left:1px solid var(--gray-10); border-bottom:1px solid var(--gray-10); font-variant-numeric:tabular-nums;">2026.06.20</div>
+                  <div style="grid-column:span 6; padding:6px; text-align:center; border-left:1px solid var(--gray-10); border-bottom:1px solid var(--gray-10); font-variant-numeric:tabular-nums;">2026.06.21</div>
+                  <sc-for list="{{ slots }}" as="t" hint-placeholder-count="12">
+                    <div style="padding:5px 2px; text-align:center; border-left:1px solid var(--gray-10); font:400 10px var(--font-content); color:var(--text-tertiary); font-variant-numeric:tabular-nums;">{{ t.label }}</div>
+                  </sc-for>
+                </div>
+                <sc-for list="{{ machines }}" as="m" hint-placeholder-count="5">
+                  <div style="display:grid; grid-template-columns:90px 130px repeat(12, 1fr); border-top:1px solid var(--gray-10); background:{{ m.rowBg }}; font:400 12px var(--font-content); color:var(--text-secondary);">
+                    <div style="padding:10px 6px; display:flex; align-items:center; justify-content:center; font-variant-numeric:tabular-nums;">{{ m.code }}</div>
+                    <div style="padding:10px 6px; display:flex; align-items:center; border-left:1px solid var(--gray-5);">{{ m.name }}</div>
+                    <div style="grid-column:span 12; position:relative; height:44px; border-left:1px solid var(--gray-5); background-image:repeating-linear-gradient(90deg, var(--gray-10) 0 1px, transparent 1px 8.3333%);">
+                      <div onClick="{{ m.b1Click }}" title="{{ m.b1Label }}" data-selected="{{ m.b1Selected }}" data-drag="{{ m.b1Drag }}" class="sc-bar" style="left:{{ m.b1Left }}%; width:{{ m.b1Width }}%; top:2px;">
+                        <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ m.b1Label }}</span>
+                        <sc-if value="{{ m.b1Selected }}" hint-placeholder-val="{{ false }}">
+                          <span onPointerDown="{{ m.b1DragStart }}" title="시작시간 조정" style="position:absolute; left:-5px; top:-3px; width:10px; height:24px; border-radius:3px; background:var(--bg-primary); border:1.5px solid var(--brand-pressed); cursor:ew-resize; touch-action:none;"></span>
+                          <span onPointerDown="{{ m.b1DragEnd }}" title="종료시간 조정" style="position:absolute; right:-5px; top:-3px; width:10px; height:24px; border-radius:3px; background:var(--bg-primary); border:1.5px solid var(--brand-pressed); cursor:ew-resize; touch-action:none;"></span>
+                          <span onClick="{{ m.b1Close }}" title="선택 취소" style="position:absolute; right:-7px; top:-8px; width:16px; height:16px; border-radius:50%; background:var(--bg-primary); border:1px solid var(--border-input); color:var(--text-secondary); display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="ti ti-x" style="font-size:10px;"></i></span>
+                        </sc-if>
+                        <sc-if value="{{ m.b1Drag }}" hint-placeholder-val="{{ false }}">
+                          <span style="position:absolute; left:0; bottom:-16px; transform:translateX(-50%); padding:1px 5px; border-radius:3px; background:var(--text-primary); color:#fff; font:700 10px var(--font-content); font-variant-numeric:tabular-nums; white-space:nowrap;">{{ m.b1Start }}</span>
+                          <span style="position:absolute; right:0; bottom:-16px; transform:translateX(50%); padding:1px 5px; border-radius:3px; background:var(--text-primary); color:#fff; font:700 10px var(--font-content); font-variant-numeric:tabular-nums; white-space:nowrap;">{{ m.b1End }}</span>
+                          <span style="position:absolute; right:-46px; top:0; display:flex; align-items:center; gap:3px; height:20px; font:500 10px var(--font-content); color:#DB2777; white-space:nowrap;"><i class="ti ti-arrows-horizontal" style="font-size:12px;"></i>Drag</span>
+                        </sc-if>
+                      </div>
+                      <sc-if value="{{ m.hasB2 }}" hint-placeholder-val="{{ false }}">
+                        <div title="{{ m.b2Label }}" class="sc-bar" style="left:{{ m.b2Left }}%; width:{{ m.b2Width }}%; top:22px;">
+                          <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ m.b2Label }}</span>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex; align-items:center; gap:10px; margin-top:12px;">
+                <span style="font:400 11px var(--font-content); color:var(--text-tertiary);">{{ adminHint }}</span>
+                <sc-if value="{{ hasSelection }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-left:auto; display:flex; align-items:center; gap:8px;">
+                    <button onClick="{{ stepBack }}" style="height:28px; padding:0 12px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 12px var(--font-content); cursor:pointer;" style-hover="background:var(--gray-5);">− 10분</button>
+                    <button onClick="{{ stepFwd }}" style="height:28px; padding:0 12px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 12px var(--font-content); cursor:pointer;" style-hover="background:var(--gray-5);">+ 10분</button>
+                    <span style="font:500 12px var(--font-content); color:var(--brand-primary); font-variant-numeric:tabular-nums; white-space:nowrap;">{{ selectedRange }}</span>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1920,&quot;height&quot;:1080},&quot;startScreen&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;}}">
+const NAV_TREE = [
+  { key: "dashboard", label: "대시보드", icon: "ti-layout-dashboard", url: "HEL01-01 대시보드 (기본).dc.html" },
+  { key: "jibun", label: "지번관리", icon: "ti-map-pin", children: [
+    { key: "jibun-phys", label: "물리지번 목록", url: "HEL02-00 물리지번 목록.dc.html" },
+    { key: "jibun-logi", label: "논리지번 목록", url: "HEL02-09 논리지번 목록.dc.html" },
+    { key: "jibun-list", label: "지번 목록", url: "HEL03-01 지번 목록.dc.html" },
+    { key: "jibun-plan", label: "활용계획", url: "HEL04-01 활용계획.dc.html" },
+  ]},
+  { key: "material", label: "자재관리", icon: "ti-package-import", children: [
+    { key: "mat-inbound", label: "입고예정정보", children: [
+      { key: "mat-in-outfit", label: "의장재", url: "HEL05-01 의장재 (입고예정정보).dc.html" },
+      { key: "mat-in-equip", label: "기기장비재", url: "HEL05-02 기기장비재 (입고예정정보).dc.html" },
+      { key: "mat-in-steel", label: "강재", url: "HEL05-03 강재 (입고예정정보).dc.html" },
+    ]},
+    { key: "mat-avail", label: "재고가용성정보", url: "HEL05-04 재고가용성정보.dc.html" },
+    { key: "mat-core", label: "핵심자재 관리", url: "HEL13-01 핵심자재 관리 (목록).dc.html" },
+    { key: "mat-loc", label: "적치위치 관리", url: "HEL05-05 적치위치 관리.dc.html" },
+  ]},
+  { key: "block", label: "블록관리", icon: "ti-box", url: "HEL06-01 블록관리 (목록).dc.html" },
+  { key: "transport", label: "운송수단 관리", icon: "ti-truck-delivery", children: [
+    { key: "tr-req", label: "중기배차신청", url: "HEL07-01 중기배차신청 (사용자).dc.html" },
+    { key: "tr-plan", label: "중기배차계획", children: [
+      { key: "tr-plan-daily", label: "일일중기배차계획", go: "daily" },
+      { key: "tr-plan-weekly", label: "주간중기배차계획", go: "weekly" },
+    ]},
+    { key: "tr-result", label: "배차실적" },
+    { key: "tr-util", label: "장비가동률" },
+    { key: "tr-res", label: "운송자원정보관리", children: [
+      { key: "tr-res-master", label: "운송자원 마스터 관리" },
+      { key: "tr-res-fuel", label: "유류실적 관리" },
+      { key: "tr-res-jig", label: "치구 마스터 관리" },
+      { key: "tr-res-week", label: "주간배차 마스터 관리" },
+    ]},
+  ]},
+  { key: "system", label: "시스템관리", icon: "ti-settings", children: [
+    { key: "sys-alarm", label: "알람조건 설정", url: "HEL12-03 알람조건 설정.dc.html" },
+    { key: "sys-role", label: "사용자권한 설정" },
+    { key: "sys-history", label: "히스토리 관리" },
+  ]},
+];
+
+const SCREENS = [
+  { id: "HEL08-01", label: "일일 (사용자화면)", kind: "daily", role: "user" },
+  { id: "HEL08-02", label: "주간 (사용자화면)", kind: "weekly", role: "user" },
+  { id: "HEL08-03", label: "일일 (관리자 · 선택)", kind: "daily", role: "admin", select: true },
+  { id: "HEL08-04", label: "일일 (관리자 · 드래그)", kind: "daily", role: "admin", select: true, drag: true },
+  { id: "HEL08-05", label: "주간 (관리자화면)", kind: "weekly", role: "admin" },
+];
+
+// 08:00~20:00 · 2시간 단위 6칸 × 2일 = 12칸 (칸당 120분)
+const SLOTS = ["08–10", "10–12", "12–14", "14–16", "16–18", "18–20"];
+const DAY_START = 8 * 60;
+const SLOT_MIN = 120;
+const TOTAL_MIN = SLOT_MIN * 12;
+
+const MACHINES = [
+  { code: "151", name: "5T지게차", bars: [{ day: 0, from: 9 * 60, to: 11 * 60, org: "평강산업", user: "홍길동" }] },
+  { code: "150", name: "10T지게차", bars: [{ day: 0, from: 13 * 60, to: 15 * 60 + 30, org: "평강산업", user: "심청이" }] },
+  { code: "149", name: "10T트랜스포터", bars: [
+    { day: 0, from: 16 * 60, to: 18 * 60, org: "최고중기", user: "김최고", key: "sel" },
+    { day: 0, from: 17 * 60, to: 19 * 60, org: "중기산업", user: "김중기", overlap: true },
+  ]},
+  { code: "148", name: "5T고소차", bars: [{ day: 1, from: 10 * 60, to: 12 * 60, org: "한라IMS", user: "김한라" }] },
+  { code: "139", name: "20T지게차", bars: [{ day: 1, from: 14 * 60, to: 16 * 60 + 30, org: "중기산업", user: "임산업" }] },
+];
+
+const fmt = (min) => {
+  const h = Math.floor(min / 60), m = min % 60;
+  return (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m);
+};
+
+const SCREEN_DIRS = { HEL00: "00 공통", HEL01: "01 대시보드", HEL02: "02 지번관리", HEL03: "02 지번관리", HEL04: "02 지번관리", HEL05: "03 자재관리", HEL13: "03 자재관리", HEL06: "04 블록관리", HEL07: "05 중기배차신청", HEL08: "06 중기배차계획", HEL09: "07 배차실적", HEL10: "07 배차실적", HEL23: "08 장비가동률", HEL11: "09 운송자원정보관리", HEL14: "09 운송자원정보관리", HEL15: "09 운송자원정보관리", HEL24: "09 운송자원정보관리", HEL12: "10 알람", HEL16: "11 시스템관리", HEL17: "11 시스템관리", HEL18: "12 태블릿 PC 앱", HEL19: "13 작업자용 모바일 앱", HEL20: "13 작업자용 모바일 앱", HEL21: "13 작업자용 모바일 앱", HEL22: "13 작업자용 모바일 앱" };
+function resolveUrl(u) {
+  const dir = SCREEN_DIRS[String(u || "").slice(0, 5)];
+  return dir ? "../" + dir + "/" + u : u;
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const sc = SCREENS.find((s) => s.id === props.startScreen) || SCREENS[0];
+    this.state = {
+      screen: sc.id,
+      lnbOpen: { transport: true, "tr-plan": true },
+      nameQuery: sc.role === "admin" ? "" : "5T지게차",
+      selected: sc.select ? "149" : null,
+      dragging: !!sc.drag,
+      edits: {},
+    };
+  }
+
+  // 배차 마대 양 끝 드래그 → 시작/종료 시간 조정 (10분 스낥)
+  resizeStart(code, edge, day, from, to, e) {
+    if (e.stopPropagation) e.stopPropagation();
+    if (e.preventDefault) e.preventDefault();
+    const track = e.currentTarget.parentElement.parentElement;
+    const rect = track.getBoundingClientRect();
+    const dayStart = day * SLOT_MIN * 6;
+    const set = (from2, to2) => {
+      const edits = Object.assign({}, this.state.edits);
+      edits[code] = { from: from2, to: to2 };
+      this.setState({ edits: edits, selected: code, dragging: true, screen: "HEL08-04" });
+    };
+    const move = (ev) => {
+      const frac = Math.min(1, Math.max(0, (ev.clientX - rect.left) / rect.width));
+      let t = Math.round((DAY_START + frac * TOTAL_MIN - dayStart) / 10) * 10;
+      t = Math.min(DAY_START + SLOT_MIN * 6, Math.max(DAY_START, t));
+      const e2 = this.state.edits[code] || { from: from, to: to };
+      if (edge === "start") set(Math.min(t, e2.to - 10), e2.to);
+      else set(e2.from, Math.max(t, e2.from + 10));
+    };
+    const up = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+    set(from, to);
+  }
+
+  go(id) {
+    const sc = SCREENS.find((s) => s.id === id);
+    if (!sc) return;
+    this.setState({
+      screen: id,
+      nameQuery: sc.role === "admin" ? "" : "5T지게차",
+      selected: sc.select ? "149" : null,
+      dragging: !!sc.drag,
+      edits: {},
+    });
+  }
+
+  applyRange(code, from, to) {
+    const edits = Object.assign({}, this.state.edits);
+    edits[code] = { from: from, to: to };
+    this.setState({ edits: edits });
+  }
+
+  cur() { return SCREENS.find((s) => s.id === this.state.screen) || SCREENS[0]; }
+
+  renderVals() {
+    const s = this.state;
+    const cur = this.cur();
+    const isAdmin = cur.role === "admin";
+    const lnbOpen = s.lnbOpen;
+
+    const navRows = [];
+    const walk = (nodes, depth) => {
+      for (const n of nodes) {
+        const has = !!(n.children && n.children.length);
+        const isOpen = !!lnbOpen[n.key];
+        const active = (n.go === "daily" && cur.kind === "daily") || (n.go === "weekly" && cur.kind === "weekly");
+        navRows.push({
+          label: n.label, icon: n.icon || "", showIcon: depth === 0, depth: String(depth),
+          active: active, trail: n.key === "transport" || n.key === "tr-plan",
+          hasChildren: has, chevIcon: isOpen ? "ti-chevron-up" : "ti-chevron-down",
+          onClick: () => {
+            if (has) {
+              const next = Object.assign({}, lnbOpen);
+              next[n.key] = !isOpen;
+              this.setState({ lnbOpen: next });
+            } else if (n.go) {
+              const target = SCREENS.find((x) => x.kind === n.go && x.role === cur.role);
+              if (target) this.go(target.id);
+            } else if (n.url) { window.location.href = encodeURI(resolveUrl(n.url)); }
+          },
+        });
+        if (has && isOpen) walk(n.children, depth + 1);
+      }
+    };
+    walk(NAV_TREE, 0);
+
+    const q = (s.nameQuery || "").trim();
+    const geo = (b, from, to) => {
+      const startAbs = b.day * SLOT_MIN * 6 + (from - DAY_START);
+      const endAbs = b.day * SLOT_MIN * 6 + (to - DAY_START);
+      return {
+        left: (startAbs / TOTAL_MIN * 100).toFixed(2),
+        width: ((endAbs - startAbs) / TOTAL_MIN * 100).toFixed(2),
+      };
+    };
+    const machines = MACHINES.map((m) => {
+      const focus = q && m.name.indexOf(q) >= 0;
+      const b1 = m.bars[0];
+      const b2 = m.bars[1];
+      const selected = isAdmin && s.selected === m.code;
+      const ed = s.edits[m.code];
+      const from1 = ed ? ed.from : b1.from;
+      const to1 = ed ? ed.to : b1.to;
+      const g1 = geo(b1, from1, to1);
+      const g2 = b2 ? geo(b2, b2.from, b2.to) : { left: "0", width: "0" };
+      return {
+        code: m.code, name: m.name,
+        rowBg: focus ? "var(--status-wait-bg)" : "transparent",
+        b1Label: b1.org + " / " + b1.user,
+        b1Left: g1.left, b1Width: g1.width,
+        b1Selected: selected, b1Drag: selected,
+        b1Start: fmt(from1), b1End: fmt(to1),
+        b1Click: () => {
+          if (!isAdmin) return;
+          this.setState({ selected: m.code, dragging: true, screen: "HEL08-04" });
+        },
+        b1DragStart: (e) => this.resizeStart(m.code, "start", b1.day, from1, to1, e),
+        b1DragEnd: (e) => this.resizeStart(m.code, "end", b1.day, from1, to1, e),
+        b1Close: (e) => {
+          if (e && e.stopPropagation) e.stopPropagation();
+          this.setState({ selected: null, dragging: false, screen: "HEL08-03" });
+        },
+        hasB2: !!b2,
+        b2Label: b2 ? b2.org + " / " + b2.user : "",
+        b2Left: g2.left, b2Width: g2.width,
+      };
+    });
+
+    let selRange = null;
+    if (s.selected) {
+      const sm = MACHINES.find((x) => x.code === s.selected);
+      if (sm) selRange = s.edits[s.selected] || { from: sm.bars[0].from, to: sm.bars[0].to };
+    }
+
+    return {
+      screenLabel: cur.id + " 중기배차계획 " + cur.label,
+      pageTitle: cur.kind === "daily" ? "일일중기배차계획" : "주간중기배차계획",
+      roleLabel: isAdmin ? "관리자 화면" : "사용자 화면",
+      crumbItems: [{ label: "HOME" }, { label: "운송수단 관리" }, { label: "중기배차계획" }, { label: cur.kind === "daily" ? "일일중기배차계획" : "주간중기배차계획" }],
+      navRows: navRows,
+      isDaily: cur.kind === "daily",
+      isWeekly: cur.kind === "weekly",
+      isAdmin: isAdmin,
+      slots: SLOTS.concat(SLOTS).map((l) => ({ label: l })),
+      machines: machines,
+      nameQuery: s.nameQuery,
+      setNameQuery: (e) => this.setState({ nameQuery: e && e.target ? e.target.value : "" }),
+      resetQuery: () => this.setState({ nameQuery: "" }),
+      scheduleHint: isAdmin ? "배차 막대를 클릭한 뒤 양쪽 핸들을 드래그해 시간을 조정합니다 · 조정 단위 10분" : "승인된 배차 건을 장비 · 시간대별로 조회합니다",
+      adminHint: s.selected ? "막대 양 끝 핸들을 좌우로 드래그하면 시작 · 종료 시간이 조정됩니다 · 변경 내역은 사용자화면에도 반영됩니다" : "조정할 배차 막대를 선택해 주십시오.",
+      hasSelection: !!s.selected,
+      selectedRange: selRange ? fmt(selRange.from) + " ~ " + fmt(selRange.to) : "",
+      stepBack: () => selRange && this.applyRange(s.selected, selRange.from, Math.max(selRange.from + 10, selRange.to - 10)),
+      stepFwd: () => selRange && this.applyRange(s.selected, selRange.from, Math.min(20 * 60, selRange.to + 10)),
+      showPicker: !this.props.startScreen,
+      pickRows: SCREENS.map((sc) => {
+        const on = sc.id === s.screen;
+        return {
+          short: sc.id.replace("HEL08-", ""), label: sc.id + " " + sc.label,
+          border: on ? "var(--brand-primary)" : "var(--border-input)",
+          bg: on ? "var(--status-wait-bg)" : "var(--bg-primary)",
+          color: on ? "var(--brand-primary)" : "var(--text-secondary)",
+          onClick: () => this.go(sc.id),
+        };
+      }),
+    };
+  }
+}
+</script>
+</body>
+</html>

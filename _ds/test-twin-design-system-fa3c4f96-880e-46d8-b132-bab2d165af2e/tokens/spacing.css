@@ -1,0 +1,50 @@
+/* ============================================================
+   한화오션에코텍 물류Twin — Spacing, Radius, Layout tokens
+   Source: DESIGN.md §5-2 (spacing, 4px grid) / §5-3 (radius) / §5 (layout)
+   PPT 확정: radius-input 4px, radius-btn 6px.  나머지 추정값.
+   ============================================================ */
+
+:root {
+  /* ---- Spacing (4px grid, DESIGN §5-2) ---- */
+  --space-1: 4px;   /* icon–text gap */
+  --space-2: 8px;   /* badge inner, min element gap */
+  --space-3: 12px;  /* card inner gap */
+  --space-4: 16px;  /* page gutter, card padding (default) */
+  --space-5: 20px;  /* large inner gap */
+  --space-6: 24px;  /* section gap */
+  --space-8: 32px;  /* screen block gap */
+
+  /* ---- Radius (DESIGN §5-3) ---- */
+  --radius-input: 4px;   /* PPT 확정 — input, select, square checkbox */
+  --radius-btn:   6px;   /* PPT 확정 — buttons, modal, web card */
+  --radius-md:    12px;  /* 추정값 — mobile card, toast */
+  --radius-sheet: 20px;  /* 추정값 — bottom sheet top corners */
+  --radius-full:  999px; /* pill badge, avatar, circular checkbox */
+
+  /* ---- Layout dimensions (DESIGN §5) ---- */
+  --header-h-web:    56px;  /* web GNB header */
+  --header-h-mobile: 56px;  /* mobile app bar (+ safe area) */
+  --lnb-w:           240px; /* web left nav */
+  --lnb-w-collapsed: 64px;  /* collapsed rail (reference A-2) */
+  --drawer-w:        280px; /* mobile drawer */
+  --bottomnav-h:     56px;  /* mobile bottom nav (+ safe area) */
+  --tabletouch-min:  44px;  /* min touch target */
+
+  /* ---- Control heights ---- */
+  --btn-h-web-xl: 44px; --btn-h-web-l: 32px; --btn-h-web-m: 28px; --btn-h-web-s: 26px; --btn-h-web-xs: 24px;
+  --btn-h-cta: 48px;    /* mobile fixed CTA (추정값) */
+  --btn-h-m:   44px;    /* mobile default (= web XL) */
+  --btn-h-s:   32px;    /* mobile secondary (= web L) */
+  --input-h-web-l: 44px; --input-h-web-m: 32px; --input-h-web-s: 24px;
+  --input-h-mobile: 48px; --input-h-search: 44px;
+  --table-row-h: 46px;  /* web table row (PPT 확정) */
+  --checkbox-size: 24px; /* circular checkbox outer (DESIGN §6-4) */
+  --radio-size:    24px; /* radio outer circle (DESIGN §6-4) */
+  --radio-dot:     12px; /* radio selected inner dot */
+
+  /* ---- Motion (DESIGN §7) ---- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */
+  --dur-modal: 180ms;   /* @kind other */
+  --dur-sheet: 240ms;   /* @kind other */
+  --dur-fast:  120ms;   /* @kind other */
+}

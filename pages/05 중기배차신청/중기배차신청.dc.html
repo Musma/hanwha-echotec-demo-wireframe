@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.24.0/dist/tabler-icons.min.css">
+<script src="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/_ds_bundle.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; }
+  *, *::before, *::after { box-sizing: border-box; }
+  a { color: var(--blue-dark); text-decoration: none; }
+  a:hover { color: var(--blue-main); }
+  input::placeholder { color: var(--text-placeholder); }
+  button { white-space: nowrap; }
+  .dl-navbtn:hover { background: var(--bg-secondary) !important; }
+  .dl-nav { width: var(--lnb-w); flex-shrink: 0; background: var(--bg-primary); border-right: 1px solid var(--border-subtle); display: flex; flex-direction: column; padding: 12px 8px; overflow-y: auto; }
+  .dl-item { display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; margin: 2px 0; border: none; cursor: pointer; border-radius: var(--radius-btn); background: transparent; color: var(--text-secondary); font-family: var(--font-content); font-weight: 500; font-size: 14px; line-height: 1; width: 100%; text-align: left; }
+  .dl-item > span { flex-shrink: 0; text-overflow: clip; }
+  .dl-item[data-active="true"] { background: var(--status-wait-bg); color: var(--brand-primary); font-weight: 700; }
+  .dl-item[data-trail="true"] { color: var(--text-primary); font-weight: 700; }
+  .dl-item[data-depth="1"] { height: 36px; padding-left: 44px; font-size: 13px; font-weight: 400; }
+  .dl-item[data-depth="2"] { height: 32px; padding-left: 60px; font-size: 13px; font-weight: 400; color: var(--text-tertiary); }
+  .dl-chev { margin-left: auto; font-size: 16px; color: var(--text-tertiary); flex-shrink: 0; }
+  .dl-pick:hover { border-color: var(--brand-primary) !important; color: var(--brand-primary) !important; }
+  .tr-row:hover { background: var(--gray-5); }
+  .dl-mapbtn:hover { background: var(--gray-5) !important; }
+</style>
+</helmet>
+
+<div style="display:flex; flex-direction:column; height:100vh; min-width:1440px; width:100%; overflow:hidden; font-family:var(--font-primary); color:var(--text-secondary); background:var(--gray-5);" data-screen-label="{{ screenLabel }}">
+
+  <header style="height:var(--header-h-web); flex-shrink:0; background:var(--bg-primary); border-bottom:1px solid var(--border-subtle); display:flex; align-items:center; padding:0 20px 0 12px; gap:16px; z-index:20;">
+    <img src="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/assets/logo-horizontal.png" alt="한화오션에코텍" style="height:25px; width:auto; display:block; flex-shrink:0;">
+    <span style="font-family:var(--font-title); font-weight:700; font-size:14px; color:var(--text-primary); letter-spacing:-0.2px; white-space:nowrap;">물류Twin</span>
+    <div style="margin-left:auto; display:flex; align-items:center; gap:14px;">
+      <div style="display:flex; align-items:center; gap:6px; padding:4px; background:var(--gray-5); border-radius:6px;">
+        <button onClick="{{ setUserRole }}" style="height:24px; padding:0 10px; border:none; border-radius:4px; background:{{ userRoleBg }}; color:{{ userRoleColor }}; font:500 12px var(--font-content); cursor:pointer;">사용자</button>
+        <button onClick="{{ setAdminRole }}" style="height:24px; padding:0 10px; border:none; border-radius:4px; background:{{ adminRoleBg }}; color:{{ adminRoleColor }}; font:500 12px var(--font-content); cursor:pointer;">관리자</button>
+      </div>
+      <span style="font-size:14px; color:var(--text-tertiary); white-space:nowrap;"><strong style="font-weight:500; color:var(--text-primary);">홍길동</strong>님 로그인 되었습니다.</span>
+      <button title="로그아웃" style="border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:6px;"><i class="ti ti-logout" style="font-size:22px;"></i></button>
+      <a href="../10 알람/HEL12-01 알람목록 (알림 드롭다운).dc.html" title="알림" style="display:flex; padding:6px; color:var(--text-tertiary); position:relative;">
+        <i class="ti ti-bell" style="font-size:22px;"></i>
+        <span style="position:absolute; top:4px; right:4px; width:8px; height:8px; border-radius:50%; background:var(--red-main);"></span>
+      </a>
+    </div>
+  </header>
+
+  <div style="display:flex; flex:1; min-height:0;">
+    <nav class="dl-nav">
+      <sc-for list="{{ navRows }}" as="item" hint-placeholder-count="9">
+        <button class="dl-navbtn dl-item" onClick="{{ item.onClick }}" title="{{ item.label }}" data-active="{{ item.active }}" data-trail="{{ item.trail }}" data-depth="{{ item.depth }}">
+          <sc-if value="{{ item.showIcon }}" hint-placeholder-val="{{ true }}">
+            <i class="ti {{ item.icon }}" style="font-size:20px; flex-shrink:0;"></i>
+          </sc-if>
+          <span>{{ item.label }}</span>
+          <sc-if value="{{ item.hasChildren }}" hint-placeholder-val="{{ false }}">
+            <i class="ti {{ item.chevIcon }} dl-chev"></i>
+          </sc-if>
+        </button>
+      </sc-for>
+      <a href="../00 공통/HEL00-03 메뉴 (닫힘).dc.html" style="margin-top:auto; height:36px; flex-shrink:0; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); white-space:nowrap; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:4px; text-decoration:none;" style-hover="background:var(--gray-5);">
+        <i class="ti ti-chevron-left" style="font-size:15px;"></i>메뉴닫기
+      </a>
+    </nav>
+
+    <main style="flex:1; min-width:0; display:flex; flex-direction:column; overflow:hidden; position:relative;">
+      <div style="flex-shrink:0; display:flex; align-items:center; padding:14px 24px 0;">
+        <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Breadcrumb" items="{{ crumbItems }}" hint-size="300px,20px"></x-import>
+      </div>
+      <div style="flex-shrink:0; display:flex; align-items:center; gap:12px; padding:10px 24px 16px;">
+        <span style="font:700 16px/1.2 var(--font-content); color:var(--text-primary); white-space:nowrap;">중기배차신청</span>
+        <span style="height:20px; padding:0 8px; border-radius:999px; background:var(--gray-10); color:var(--text-tertiary); font:500 11px/20px var(--font-content); white-space:nowrap;">{{ roleLabel }}</span>
+        <sc-if value="{{ showPicker }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-left:auto; display:flex; align-items:center; gap:5px; overflow-x:auto; padding-bottom:2px;">
+            <span style="font:400 11px var(--font-content); color:var(--text-tertiary); white-space:nowrap; flex-shrink:0;">화면 ID</span>
+            <sc-for list="{{ pickRows }}" as="p" hint-placeholder-count="8">
+              <button class="dl-pick" onClick="{{ p.onClick }}" title="{{ p.label }}" style="flex-shrink:0; height:24px; padding:0 8px; border:1px solid {{ p.border }}; border-radius:999px; background:{{ p.bg }}; color:{{ p.color }}; font:700 11px var(--font-content); font-variant-numeric:tabular-nums; cursor:pointer;">{{ p.short }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="flex:1; min-height:0; overflow:auto; padding:0 24px 24px; display:flex; flex-direction:column; gap:16px;">
+
+        <div style="flex-shrink:0; display:grid; grid-template-columns:repeat(4, 1fr); gap:16px;">
+          <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">배차 신청 건수 (7일 이내)</span>
+            <span style="font:700 18px/1.2 var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">20 건</span>
+            <span style="font:400 12px/1.5 var(--font-content); color:var(--text-tertiary); font-variant-numeric:tabular-nums;">TP 1 · 트레일러 3 · 크레인 2 · 고소차 4 · 지게차 5</span>
+          </div>
+          <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">장비 가동율</span>
+            <span style="font:700 18px/1.2 var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">72 %</span>
+            <span style="font:400 12px/1 var(--font-content); color:var(--red-dark); font-variant-numeric:tabular-nums;">▲ 전일 대비 5 %</span>
+          </div>
+          <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">지연 · 미처리 건 수</span>
+            <span style="font:700 18px/1.2 var(--font-content); color:var(--red-dark); font-variant-numeric:tabular-nums;">5 건</span>
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">요청시간 대비 24시간 초과 건 수</span>
+          </div>
+          <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">배차 대기 · 승인완료 · 운행중</span>
+            <span style="font:700 18px/1.2 var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">10 · 5 · 5 건</span>
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">승인현황 기준</span>
+          </div>
+        </div>
+
+        <div style="flex-shrink:0; background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="width:66px; font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">배차유형</span>
+            <div style="width:130px;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ typeOptions }}" value="{{ f_type }}" onChange="{{ set_type }}" hint-size="100%,28px"></x-import></div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="width:66px; font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">요청일자</span>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <div style="position:relative;">
+                <input value="2026/05/01" style="width:112px; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 26px 0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                <i class="ti ti-calendar" style="position:absolute; right:8px; top:7px; font-size:14px; color:var(--text-tertiary);"></i>
+              </div>
+              <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">~</span>
+              <div style="position:relative;">
+                <input value="2026/05/20" style="width:112px; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 26px 0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                <i class="ti ti-calendar" style="position:absolute; right:8px; top:7px; font-size:14px; color:var(--text-tertiary);"></i>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="width:66px; font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">{{ thirdLabel }}</span>
+            <div style="width:130px;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ thirdOptions }}" value="{{ f_third }}" onChange="{{ set_third }}" hint-size="100%,28px"></x-import></div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="width:66px; font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">중기그룹</span>
+            <div style="width:130px;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ groupOptions }}" value="{{ f_group }}" onChange="{{ set_group }}" hint-size="100%,28px"></x-import></div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="width:66px; font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">신청자</span>
+            <input placeholder="신청자명 입력" style="width:120px; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary);">
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="width:66px; font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">승인현황</span>
+            <div style="width:130px;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ statusOptions }}" value="{{ f_status }}" onChange="{{ set_status }}" hint-size="100%,28px"></x-import></div>
+          </div>
+          <div style="margin-left:auto; display:flex; gap:8px;">
+            <button style="height:28px; padding:0 14px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); cursor:pointer;" style-hover="background:var(--gray-5);">초기화</button>
+            <button style="height:28px; padding:0 14px; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 13px var(--font-content); cursor:pointer;" style-hover="background:var(--brand-hover);">조회</button>
+          </div>
+        </div>
+
+        <div style="flex-shrink:0; background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+            <span style="font:500 16px/1.2 var(--font-content); color:var(--text-primary); white-space:nowrap;">신청목록</span>
+            <span style="font:400 12px var(--font-content); color:var(--text-tertiary); font-variant-numeric:tabular-nums;">(12 / 522)</span>
+            <sc-if value="{{ isUser }}" hint-placeholder-val="{{ true }}">
+              <span style="font:400 11px var(--font-content); color:var(--text-tertiary);">본인이 신청한 내역만 조회됩니다.</span>
+            </sc-if>
+            <div style="margin-left:auto; display:flex; gap:8px;">
+              <button onClick="{{ openUrgent }}" style="height:28px; padding:0 14px; border:none; border-radius:6px; background:var(--red-main); color:#fff; font:500 13px var(--font-content); cursor:pointer;" style-hover="background:var(--red-dark);">긴급배차</button>
+              <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ trySelDelete }}" style="height:28px; padding:0 14px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); cursor:pointer;" style-hover="background:var(--gray-5);">선택 삭제</button>
+              </sc-if>
+              <button onClick="{{ openReg }}" style="height:28px; padding:0 14px; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 13px var(--font-content); cursor:pointer;" style-hover="background:var(--brand-hover);">등록</button>
+              <button onClick="{{ openExcel }}" style="height:28px; padding:0 14px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); cursor:pointer; display:flex; align-items:center; gap:5px;" style-hover="background:var(--gray-5);"><i class="ti ti-file-spreadsheet" style="font-size:14px;"></i>Excel</button>
+            </div>
+          </div>
+
+          <div style="border:1px solid var(--border-default); border-radius:4px; overflow-x:auto;">
+            <div style="min-width:{{ tableMinWidth }};">
+              <div style="display:grid; grid-template-columns:{{ gridCols }}; background:var(--gray-20); font:700 12px var(--font-content); color:var(--text-primary);">
+                <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+                  <div style="padding:9px 8px; display:flex; align-items:center; justify-content:center;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Checkbox" checked="{{ allChecked }}" size="16px" onChange="{{ toggleAll }}" hint-size="16px,16px"></x-import></div>
+                </sc-if>
+                <sc-for list="{{ cols }}" as="c" hint-placeholder-count="15">
+                  <div style="padding:9px 8px; text-align:center; border-left:1px solid var(--gray-10); white-space:nowrap;">{{ c.label }}</div>
+                </sc-for>
+              </div>
+              <sc-for list="{{ rows }}" as="r" hint-placeholder-count="8">
+                <div class="tr-row" style="display:grid; grid-template-columns:{{ gridCols }}; border-top:1px solid var(--gray-10); font:400 12px var(--font-content); color:var(--text-secondary);">
+                  <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+                    <div style="padding:9px 8px; display:flex; align-items:center; justify-content:center;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Checkbox" checked="{{ r.checked }}" size="16px" onChange="{{ r.onCheck }}" hint-size="16px,16px"></x-import></div>
+                  </sc-if>
+                  <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="15">
+                    <div style="padding:9px 8px; border-left:1px solid var(--gray-5); display:flex; align-items:center; justify-content:{{ c.justify }}; font-variant-numeric:tabular-nums; white-space:nowrap; overflow:hidden;">
+                      <sc-if value="{{ c.isStatus }}" hint-placeholder-val="{{ false }}">
+                        <a href="#" onClick="{{ c.onClick }}" style="color:{{ c.color }}; font-weight:500; text-decoration:underline;">{{ c.v }}</a>
+                      </sc-if>
+                      <sc-if value="{{ c.isText }}" hint-placeholder-val="{{ true }}">{{ c.v }}</sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:center; margin-top:12px; gap:8px;">
+            <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex; gap:8px; align-items:center;">
+                <button onClick="{{ openApprove }}" style="height:32px; padding:0 16px; border:none; border-radius:6px; background:var(--blue-dark); color:#fff; font:500 14px var(--font-content); cursor:pointer;">일괄 승인</button>
+                <button style="height:32px; padding:0 16px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--gray-5);">일괄 반려</button>
+                <button onClick="{{ tryCancelApprove }}" style="height:32px; padding:0 16px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--gray-5);">승인취소</button>
+                <span style="font:400 11px var(--font-content); color:var(--text-tertiary);">선택된 건에 따라 버튼이 활성화됩니다.</span>
+              </div>
+            </sc-if>
+            <div style="margin-left:auto;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Pagination" page="{{ page }}" total="{{ 10 }}" onChange="{{ setPage }}" hint-size="280px,32px"></x-import></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== HEL07-02 엑셀 업로드 팝업 ===== -->
+      <sc-if value="{{ showExcel }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute; inset:0; z-index:40; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center;">
+          <div style="width:420px; background:var(--bg-primary); border-radius:6px; overflow:hidden;">
+            <div style="height:44px; display:flex; align-items:center; padding:0 16px; border-bottom:1px solid var(--border-default);">
+              <span style="font:700 16px var(--font-content); color:var(--text-primary);">엑셀 업로드</span>
+              <button onClick="{{ closeModal }}" title="닫기" style="margin-left:auto; border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:4px;"><i class="ti ti-x" style="font-size:18px;"></i></button>
+            </div>
+            <div style="padding:16px; display:flex; flex-direction:column;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <div style="flex:1; min-width:0; height:32px; border:1px solid var(--border-input); border-radius:4px; padding:0 10px; display:flex; align-items:center; font:400 13px var(--font-content); color:var(--text-tertiary);">첨부파일 없음.</div>
+                <button style="height:32px; padding:0 14px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); cursor:pointer;" style-hover="background:var(--gray-5);">파일찾기</button>
+              </div>
+              <div style="margin-top:12px;"><a href="#" style="font:400 12px var(--font-content); text-decoration:underline;">양식 다운로드</a></div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ===== HEL07-03 상세보기 팝업 ===== -->
+      <sc-if value="{{ showDetail }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute; inset:0; z-index:40; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; padding:24px;">
+          <div style="width:560px; max-height:100%; background:var(--bg-primary); border-radius:6px; overflow:hidden; display:flex; flex-direction:column;">
+            <div style="flex-shrink:0; height:44px; display:flex; align-items:center; padding:0 16px; border-bottom:1px solid var(--border-default);">
+              <span style="font:700 16px var(--font-content); color:var(--text-primary);">상세보기</span>
+              <button onClick="{{ closeModal }}" title="닫기" style="margin-left:auto; border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:4px;"><i class="ti ti-x" style="font-size:18px;"></i></button>
+            </div>
+            <div style="flex:1; min-height:0; overflow:auto; padding:16px; display:flex; flex-direction:column; gap:16px;">
+              <sc-for list="{{ detailSections }}" as="sec" hint-placeholder-count="3">
+                <div>
+                  <div style="font:500 14px var(--font-content); color:var(--text-primary); margin-bottom:8px;">{{ sec.title }}</div>
+                  <div style="border:1px solid var(--border-default); border-radius:4px; overflow:hidden;">
+                    <sc-for list="{{ sec.rows }}" as="r" hint-placeholder-count="6">
+                      <div style="display:grid; grid-template-columns:150px 1fr; border-bottom:1px solid var(--border-default);">
+                        <div style="background:var(--gray-5); padding:8px 10px; font:400 12px var(--font-content); color:var(--text-tertiary); display:flex; align-items:center;">{{ r.k }}</div>
+                        <div style="padding:8px 10px; font:400 12px var(--font-content); color:{{ r.color }}; font-variant-numeric:tabular-nums; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                          <span>{{ r.v }}</span>
+                          <sc-if value="{{ r.hasLoc }}" hint-placeholder-val="{{ false }}">
+                            <a href="#" onClick="{{ openLocMap }}" style="text-decoration:underline;">위치보기</a>
+                          </sc-if>
+                          <sc-if value="{{ r.hasChange }}" hint-placeholder-val="{{ false }}">
+                            <span style="color:var(--brand-primary); font-weight:500;">(변경 : {{ r.change }})</span>
+                          </sc-if>
+                        </div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+              <sc-if value="{{ detailIsWait }}" hint-placeholder-val="{{ false }}">
+                <span style="font:400 11px var(--font-content); color:var(--text-tertiary);">작성자 본인이 작성한 신청에 한해 수정 · 삭제가 가능합니다.</span>
+              </sc-if>
+            </div>
+            <div style="flex-shrink:0; padding:12px 16px; border-top:1px solid var(--border-default); display:flex; justify-content:center; gap:8px;">
+              <sc-if value="{{ detailIsWait }}" hint-placeholder-val="{{ false }}">
+                <button style="height:32px; padding:0 20px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--gray-5);">수정</button>
+                <button style="height:32px; padding:0 20px; border:1px solid var(--red-main); border-radius:6px; background:var(--bg-primary); color:var(--red-dark); font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--red-lighter);">삭제</button>
+              </sc-if>
+              <button onClick="{{ closeModal }}" style="height:32px; padding:0 24px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--gray-5);">목록</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ===== HEL07-05 배차 정보 팝업 ===== -->
+      <sc-if value="{{ showApprove }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute; inset:0; z-index:40; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; padding:24px;">
+          <div style="width:1180px; max-height:100%; background:var(--bg-primary); border-radius:6px; overflow:hidden; display:flex; flex-direction:column;">
+            <div style="flex-shrink:0; height:44px; display:flex; align-items:center; padding:0 16px; border-bottom:1px solid var(--border-default);">
+              <span style="font:700 16px var(--font-content); color:var(--text-primary);">배차 정보</span>
+              <button onClick="{{ closeModal }}" title="닫기" style="margin-left:auto; border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:4px;"><i class="ti ti-x" style="font-size:18px;"></i></button>
+            </div>
+            <div style="flex:1; min-height:0; overflow:auto; padding:16px;">
+              <div style="font:500 14px var(--font-content); color:var(--text-primary); margin-bottom:8px;">배차승인 리스트</div>
+              <div style="border:1px solid var(--border-default); border-radius:4px; overflow-x:auto; overflow-y:hidden;">
+                <div style="min-width:1300px;">
+                <div style="display:grid; grid-template-columns:70px 80px 80px 90px 100px 70px 100px 130px 90px 110px 90px 90px 90px 80px; background:var(--gray-20); font:700 11px var(--font-content); color:var(--text-primary);">
+                  <div style="padding:8px 6px; text-align:center;">요청번호</div>
+                  <div style="padding:8px 6px; text-align:center;">배차유형</div>
+                  <div style="padding:8px 6px; text-align:center;">지역구분</div>
+                  <div style="padding:8px 6px; text-align:center;">요청일자</div>
+                  <div style="padding:8px 6px; text-align:center;">이동 카테고리</div>
+                  <div style="padding:8px 6px; text-align:center;">이동구분</div>
+                  <div style="padding:8px 6px; text-align:center;">블록/자재번호</div>
+                  <div style="padding:8px 6px; text-align:center;">출발지</div>
+                  <div style="padding:8px 6px; text-align:center;">중기그룹</div>
+                  <div style="padding:8px 6px; text-align:center;">중기형태</div>
+                  <div style="padding:8px 6px; text-align:center;">시작예정시간</div>
+                  <div style="padding:8px 6px; text-align:center;">종료예정시간</div>
+                  <div style="padding:8px 6px; text-align:center;">사용조직</div>
+                  <div style="padding:8px 6px; text-align:center;">신청자</div>
+                </div>
+                <sc-for list="{{ approveRows }}" as="a" hint-placeholder-count="2">
+                  <div>
+                    <div style="display:grid; grid-template-columns:70px 80px 80px 90px 100px 70px 100px 130px 90px 110px 90px 90px 90px 80px; border-top:1px solid var(--gray-10); font:400 11px var(--font-content); color:var(--text-secondary);">
+                      <div style="padding:8px 6px; display:flex; align-items:center; font-variant-numeric:tabular-nums;">{{ a.no }}</div>
+                      <div style="padding:8px 6px; display:flex; align-items:center;">{{ a.type }}</div>
+                      <div style="padding:8px 6px; display:flex; align-items:center; justify-content:center;">{{ a.region }}</div>
+                      <div style="padding:8px 6px; display:flex; align-items:center; font-variant-numeric:tabular-nums;">{{ a.date }}</div>
+                      <div style="padding:8px 6px; display:flex; align-items:center;">{{ a.cat }}</div>
+                      <div style="padding:8px 6px; display:flex; align-items:center;">{{ a.move }}</div>
+                      <div style="padding:8px 6px; display:flex; align-items:center; font-variant-numeric:tabular-nums;">{{ a.code }}</div>
+                      <div style="padding:8px 6px; display:flex; align-items:center; font-variant-numeric:tabular-nums;">{{ a.from }}</div>
+                      <div style="padding:8px 6px; display:flex; align-items:center;">{{ a.group }}</div>
+                      <div style="padding:8px 6px; display:flex; align-items:center; font-variant-numeric:tabular-nums;">{{ a.kind }}</div>
+                      <div style="padding:8px 6px; display:flex; align-items:center; justify-content:flex-end; font-variant-numeric:tabular-nums;">{{ a.start }}</div>
+                      <div style="padding:8px 6px; display:flex; align-items:center; justify-content:flex-end; font-variant-numeric:tabular-nums;">{{ a.end }}</div>
+                      <div style="padding:8px 6px; display:flex; align-items:center;">{{ a.org }}</div>
+                      <div style="padding:8px 6px; display:flex; align-items:center;">{{ a.user }}</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:8px; padding:8px 10px; background:var(--gray-5); border-top:1px solid var(--gray-10);">
+                      <span style="font:500 11px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">배차 정보 :</span>
+                      <input placeholder="장비코드 또는 장비명을 입력해주세요." value="{{ a.vehicle }}" onChange="{{ a.onVehicle }}" style="flex:1; min-width:0; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary);">
+                      <a href="#" onClick="{{ a.onSearch }}" style="font:500 12px var(--font-content); text-decoration:underline; white-space:nowrap;">검색</a>
+                    </div>
+                  </div>
+                </sc-for>
+                </div>
+              </div>
+
+              <sc-if value="{{ showVehicle }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:16px; border:1px solid var(--border-default); border-radius:6px; overflow:hidden;">
+                  <div style="height:36px; display:flex; align-items:center; padding:0 12px; border-bottom:1px solid var(--border-default); background:var(--gray-5);">
+                    <span style="font:700 13px var(--font-content); color:var(--text-primary);">차량정보</span>
+                    <button onClick="{{ closeVehicle }}" title="닫기" style="margin-left:auto; border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:3px;"><i class="ti ti-x" style="font-size:15px;"></i></button>
+                  </div>
+                  <div style="display:grid; grid-template-columns:140px 140px 1fr 70px; background:var(--gray-20); font:700 12px var(--font-content); color:var(--text-primary);">
+                    <div style="padding:8px; text-align:center;">중기형태</div>
+                    <div style="padding:8px; text-align:center;">장비코드</div>
+                    <div style="padding:8px; text-align:center;">장비명</div>
+                    <div style="padding:8px; text-align:center;">선택</div>
+                  </div>
+                  <sc-for list="{{ vehicleRows }}" as="v" hint-placeholder-count="6">
+                    <div class="tr-row" style="display:grid; grid-template-columns:140px 140px 1fr 70px; border-top:1px solid var(--gray-10); font:400 12px var(--font-content); color:var(--text-secondary);">
+                      <div style="padding:8px; display:flex; align-items:center;">{{ v.kind }}</div>
+                      <div style="padding:8px; display:flex; align-items:center; font-variant-numeric:tabular-nums;">{{ v.code }}</div>
+                      <div style="padding:8px; display:flex; align-items:center;">{{ v.name }}</div>
+                      <div style="padding:8px; display:flex; align-items:center; justify-content:center;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Checkbox" checked="{{ v.on }}" size="16px" onChange="{{ v.onPick }}" hint-size="16px,16px"></x-import></div>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </div>
+            <div style="flex-shrink:0; padding:12px 16px; border-top:1px solid var(--border-default); display:flex; justify-content:center; gap:8px;">
+              <button onClick="{{ closeModal }}" style="height:32px; padding:0 20px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--gray-5);">취소</button>
+              <button onClick="{{ closeModal }}" style="height:32px; padding:0 20px; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--brand-hover);">등록</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ===== HEL07-06 / -06-01 등록 팝업 ===== -->
+      <sc-if value="{{ showReg }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute; inset:0; z-index:40; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; padding:24px;">
+          <div style="width:640px; max-height:100%; background:var(--bg-primary); border-radius:6px; overflow:hidden; display:flex; flex-direction:column;">
+            <div style="flex-shrink:0; height:44px; display:flex; align-items:center; padding:0 16px; border-bottom:1px solid var(--border-default);">
+              <span style="font:700 16px var(--font-content); color:var(--text-primary);">등록</span>
+              <button onClick="{{ closeModal }}" title="닫기" style="margin-left:auto; border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:4px;"><i class="ti ti-x" style="font-size:18px;"></i></button>
+            </div>
+            <div style="flex:1; min-height:0; overflow:auto; padding:16px; display:flex; flex-direction:column; gap:16px;">
+
+              <div>
+                <div style="font:500 14px var(--font-content); color:var(--text-primary); margin-bottom:8px;">신청자 정보</div>
+                <div style="border:1px solid var(--border-default); border-radius:4px; overflow:hidden;">
+                  <div style="display:grid; grid-template-columns:140px 1fr 140px 1fr;">
+                    <div style="background:var(--gray-5); padding:8px 10px; font:400 12px var(--font-content); color:var(--text-tertiary); border-bottom:1px solid var(--border-default);">배차요청번호</div>
+                    <div style="padding:8px 10px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums; border-bottom:1px solid var(--border-default);">1520</div>
+                    <div style="background:var(--gray-5); padding:8px 10px; font:400 12px var(--font-content); color:var(--text-tertiary); border-bottom:1px solid var(--border-default);">배차신청일시</div>
+                    <div style="padding:8px 10px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums; border-bottom:1px solid var(--border-default);">2026/05/25 09:00</div>
+                    <div style="background:var(--gray-5); padding:8px 10px; font:400 12px var(--font-content); color:var(--text-tertiary);">사용조직</div>
+                    <div style="padding:8px 10px; font:400 12px var(--font-content); color:var(--text-secondary);">평강산업</div>
+                    <div style="background:var(--gray-5); padding:8px 10px; font:400 12px var(--font-content); color:var(--text-tertiary);">신청자</div>
+                    <div style="padding:8px 10px; font:400 12px var(--font-content); color:var(--text-secondary);">홍길동</div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div style="font:500 14px var(--font-content); color:var(--text-primary); margin-bottom:8px;">배차요청 정보</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">배차요청일 <span style="color:var(--red-main);">*</span></span>
+                    <div style="position:relative;">
+                      <input value="2026/06/15" style="width:100%; height:30px; border:1px solid var(--border-input); border-radius:4px; padding:0 28px 0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                      <i class="ti ti-calendar" style="position:absolute; right:8px; top:8px; font-size:14px; color:var(--text-tertiary);"></i>
+                    </div>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">중기그룹 <span style="color:var(--red-main);">*</span></span>
+                    <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ regGroupOptions }}" value="{{ regGroup }}" onChange="{{ setRegGroup }}" hint-size="100%,30px"></x-import>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">배차구분 <span style="color:var(--red-main);">*</span></span>
+                    <div style="height:30px; border:1px solid var(--border-default); border-radius:4px; background:var(--gray-5); padding:0 8px; display:flex; align-items:center; font:400 12px var(--font-content); color:var(--text-tertiary);">일반배차 (자동)</div>
+                  </div>
+                  <sc-if value="{{ regShowRegion }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex; flex-direction:column; gap:5px;">
+                      <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">지역구분 <span style="color:var(--red-main);">*</span></span>
+                      <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ regionOptions }}" value="{{ regRegion }}" onChange="{{ setRegRegion }}" hint-size="100%,30px"></x-import>
+                    </div>
+                  </sc-if>
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">이동 카테고리 <span style="color:var(--red-main);">*</span></span>
+                    <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ catOptions }}" value="{{ regCat }}" onChange="{{ setRegCat }}" hint-size="100%,30px"></x-import>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">이동구분 <span style="color:var(--red-main);">*</span></span>
+                    <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ moveOptions }}" value="{{ regMove }}" onChange="{{ setRegMove }}" hint-size="100%,30px"></x-import>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">중기형태 <span style="color:var(--red-main);">*</span></span>
+                    <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ formOptions }}" value="{{ regForm }}" onChange="{{ setRegForm }}" hint-size="100%,30px"></x-import>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">적재톤수 <span style="color:var(--red-main);">*</span></span>
+                    <input placeholder="적재톤수를 입력해주세요." style="width:100%; height:30px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary);">
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div style="font:500 14px var(--font-content); color:var(--text-primary); margin-bottom:8px;">작업정보</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">블록번호 <span style="color:var(--red-main);">*</span></span>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                      <input value="51" style="flex:1; min-width:0; height:30px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                      <a href="#" onClick="{{ openBlockSearch }}" style="font:500 12px var(--font-content); text-decoration:underline; white-space:nowrap;">검색</a>
+                    </div>
+                  </div>
+                  <sc-if value="{{ regIsMaterial }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex; flex-direction:column; gap:5px;">
+                      <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">자재번호 <span style="color:var(--red-main);">*</span></span>
+                      <div style="display:flex; align-items:center; gap:6px;">
+                        <input value="456G" style="flex:1; min-width:0; height:30px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                        <a href="#" onClick="{{ openMatSearch }}" style="font:500 12px var(--font-content); text-decoration:underline; white-space:nowrap;">검색</a>
+                      </div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ regIsBlock }}" hint-placeholder-val="{{ true }}">
+                    <div style="display:flex; flex-direction:column; gap:5px;">
+                      <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">Assy 번호</span>
+                      <input placeholder="Assy번호를 입력해주세요." style="width:100%; height:30px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary);">
+                    </div>
+                  </sc-if>
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">공사번호</span>
+                    <input placeholder="공사번호를 입력해주세요." style="width:100%; height:30px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary);">
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">작업 Stage</span>
+                    <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ stageOptions }}" value="{{ regStage }}" onChange="{{ setRegStage }}" hint-size="100%,30px"></x-import>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">출발 · 도착지</span>
+                    <div style="display:flex; align-items:center; gap:10px; height:30px;">
+                      <a href="#" onClick="{{ openLocMap }}" style="font:500 12px var(--font-content); text-decoration:underline; white-space:nowrap;">위치찾기</a>
+                      <span onClick="{{ toggleUndecided }}" style="display:flex; align-items:center; gap:5px; cursor:pointer; font:400 12px var(--font-content); color:var(--text-secondary); white-space:nowrap;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Checkbox" checked="{{ regUndecided }}" size="14px" style="pointer-events:none;" hint-size="14px,14px"></x-import>미정</span>
+                    </div>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">치구 구분</span>
+                    <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ jigTypeOptions }}" value="{{ regJigType }}" onChange="{{ setRegJigType }}" hint-size="100%,30px"></x-import>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">치구 종류</span>
+                    <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ jigKindOptions }}" value="{{ regJigKind }}" onChange="{{ setRegJigKind }}" hint-size="100%,30px"></x-import>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">치구 수량</span>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                      <input value="{{ regJigQty }}" onChange="{{ setRegJigQty }}" style="width:70px; height:30px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums; text-align:right;">
+                      <div style="display:flex; flex-direction:column; gap:2px;">
+                        <button onClick="{{ jigUp }}" style="width:20px; height:14px; border:1px solid var(--border-input); border-radius:3px 3px 0 0; background:var(--bg-primary); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-tertiary); padding:0;"><i class="ti ti-chevron-up" style="font-size:11px;"></i></button>
+                        <button onClick="{{ jigDown }}" style="width:20px; height:14px; border:1px solid var(--border-input); border-radius:0 0 3px 3px; background:var(--bg-primary); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-tertiary); padding:0;"><i class="ti ti-chevron-down" style="font-size:11px;"></i></button>
+                      </div>
+                      <span style="font:400 11px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">치구 마스터 연동</span>
+                    </div>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">시작예정시간 <span style="color:var(--red-main);">*</span></span>
+                    <input value="10:45" style="width:100%; height:30px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">종료예정시간 <span style="color:var(--red-main);">*</span></span>
+                    <input value="11:45" style="width:100%; height:30px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                  </div>
+                </div>
+              </div>
+
+              <sc-if value="{{ showCodeSearch }}" hint-placeholder-val="{{ false }}">
+                <div style="border:1px solid var(--border-default); border-radius:6px; overflow:hidden;">
+                  <div style="height:36px; display:flex; align-items:center; padding:0 12px; border-bottom:1px solid var(--border-default); background:var(--gray-5);">
+                    <span style="font:700 13px var(--font-content); color:var(--text-primary);">{{ codeSearchTitle }}</span>
+                    <button onClick="{{ closeCodeSearch }}" title="닫기" style="margin-left:auto; border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:3px;"><i class="ti ti-x" style="font-size:15px;"></i></button>
+                  </div>
+                  <div style="display:grid; grid-template-columns:80px 120px 1fr 70px; background:var(--gray-20); font:700 12px var(--font-content); color:var(--text-primary);">
+                    <div style="padding:8px; text-align:center;">구분</div>
+                    <div style="padding:8px; text-align:center;">{{ codeCol2 }}</div>
+                    <div style="padding:8px; text-align:center;">{{ codeCol3 }}</div>
+                    <div style="padding:8px; text-align:center;">선택</div>
+                  </div>
+                  <sc-for list="{{ codeRows }}" as="c" hint-placeholder-count="6">
+                    <div class="tr-row" style="display:grid; grid-template-columns:80px 120px 1fr 70px; border-top:1px solid var(--gray-10); font:400 12px var(--font-content); color:var(--text-secondary);">
+                      <div style="padding:8px; display:flex; align-items:center; justify-content:center;">{{ c.kind }}</div>
+                      <div style="padding:8px; display:flex; align-items:center; font-variant-numeric:tabular-nums;"><span style="background:var(--status-wait-bg); color:var(--brand-pressed); font-weight:700;">{{ c.hit }}</span>{{ c.rest }}</div>
+                      <div style="padding:8px; display:flex; align-items:center;">{{ c.name }}</div>
+                      <div style="padding:8px; display:flex; align-items:center; justify-content:center;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Checkbox" checked="{{ c.on }}" size="16px" onChange="{{ c.onPick }}" hint-size="16px,16px"></x-import></div>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </div>
+            <div style="flex-shrink:0; padding:12px 16px; border-top:1px solid var(--border-default); display:flex; justify-content:center; gap:8px;">
+              <button onClick="{{ closeModal }}" style="height:32px; padding:0 20px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--gray-5);">완료</button>
+              <button onClick="{{ closeModal }}" style="height:32px; padding:0 20px; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--brand-hover);">등록</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ===== HEL07-07 긴급배차 팝업 ===== -->
+      <sc-if value="{{ showUrgent }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute; inset:0; z-index:40; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; padding:24px;">
+          <div style="width:540px; max-height:100%; background:var(--bg-primary); border-radius:6px; overflow:hidden; display:flex; flex-direction:column;">
+            <div style="flex-shrink:0; height:44px; display:flex; align-items:center; gap:8px; padding:0 16px; border-bottom:1px solid var(--border-default);">
+              <i class="ti ti-alert-triangle" style="font-size:17px; color:var(--red-main);"></i>
+              <span style="font:700 16px var(--font-content); color:var(--text-primary);">긴급배차</span>
+              <button onClick="{{ closeModal }}" title="닫기" style="margin-left:auto; border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:4px;"><i class="ti ti-x" style="font-size:18px;"></i></button>
+            </div>
+            <div style="flex:1; min-height:0; overflow:auto; padding:16px; display:flex; flex-direction:column; gap:16px;">
+              <div>
+                <div style="font:500 14px var(--font-content); color:var(--text-primary); margin-bottom:8px;">신청자 정보</div>
+                <div style="border:1px solid var(--border-default); border-radius:4px; overflow:hidden; display:grid; grid-template-columns:130px 1fr;">
+                  <div style="background:var(--gray-5); padding:8px 10px; font:400 12px var(--font-content); color:var(--text-tertiary); border-bottom:1px solid var(--border-default);">배차요청번호</div>
+                  <div style="padding:8px 10px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums; border-bottom:1px solid var(--border-default);">1520</div>
+                  <div style="background:var(--gray-5); padding:8px 10px; font:400 12px var(--font-content); color:var(--text-tertiary); border-bottom:1px solid var(--border-default);">배차신청일시</div>
+                  <div style="padding:8px 10px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums; border-bottom:1px solid var(--border-default);">2026/05/25 09:00</div>
+                  <div style="background:var(--gray-5); padding:8px 10px; font:400 12px var(--font-content); color:var(--text-tertiary); border-bottom:1px solid var(--border-default);">사용조직</div>
+                  <div style="padding:8px 10px; font:400 12px var(--font-content); color:var(--text-secondary); border-bottom:1px solid var(--border-default);">평강산업</div>
+                  <div style="background:var(--gray-5); padding:8px 10px; font:400 12px var(--font-content); color:var(--text-tertiary);">신청자</div>
+                  <div style="padding:8px 10px; font:400 12px var(--font-content); color:var(--text-secondary);">홍길동</div>
+                </div>
+              </div>
+              <div>
+                <div style="font:500 14px var(--font-content); color:var(--text-primary); margin-bottom:8px;">긴급배차 정보</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">배차요청일</span>
+                    <div style="position:relative;">
+                      <input value="2026-06-15" style="width:100%; height:30px; border:1px solid var(--border-input); border-radius:4px; padding:0 28px 0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                      <i class="ti ti-calendar" style="position:absolute; right:8px; top:8px; font-size:14px; color:var(--text-tertiary);"></i>
+                    </div>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">배차구분 <span style="color:var(--red-main);">*</span></span>
+                    <div style="height:30px; border:1px solid var(--border-default); border-radius:4px; background:var(--status-error-bg); padding:0 8px; display:flex; align-items:center; font:500 12px var(--font-content); color:var(--red-dark);">긴급배차</div>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">이동 카테고리 <span style="color:var(--red-main);">*</span></span>
+                    <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ catOptions }}" value="{{ regCat }}" onChange="{{ setRegCat }}" hint-size="100%,30px"></x-import>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">이동구분 <span style="color:var(--red-main);">*</span></span>
+                    <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ moveOptions }}" value="{{ regMove }}" onChange="{{ setRegMove }}" hint-size="100%,30px"></x-import>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">대상코드 <span style="color:var(--red-main);">*</span></span>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                      <input value="51" style="flex:1; min-width:0; height:30px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                      <a href="#" onClick="{{ openBlockSearch }}" style="font:500 12px var(--font-content); text-decoration:underline; white-space:nowrap;">검색</a>
+                    </div>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">출발 · 도착지</span>
+                    <div style="display:flex; align-items:center; height:30px;">
+                      <a href="#" onClick="{{ openLocMap }}" style="font:500 12px var(--font-content); text-decoration:underline; white-space:nowrap;">위치찾기</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <sc-if value="{{ showCodeSearch }}" hint-placeholder-val="{{ false }}">
+                <div style="border:1px solid var(--border-default); border-radius:6px; overflow:hidden;">
+                  <div style="height:36px; display:flex; align-items:center; padding:0 12px; border-bottom:1px solid var(--border-default); background:var(--gray-5);">
+                    <span style="font:700 13px var(--font-content); color:var(--text-primary);">{{ codeSearchTitle }}</span>
+                    <button onClick="{{ closeCodeSearch }}" title="닫기" style="margin-left:auto; border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:3px;"><i class="ti ti-x" style="font-size:15px;"></i></button>
+                  </div>
+                  <div style="display:grid; grid-template-columns:80px 120px 1fr 70px; background:var(--gray-20); font:700 12px var(--font-content); color:var(--text-primary);">
+                    <div style="padding:8px; text-align:center;">구분</div>
+                    <div style="padding:8px; text-align:center;">{{ codeCol2 }}</div>
+                    <div style="padding:8px; text-align:center;">{{ codeCol3 }}</div>
+                    <div style="padding:8px; text-align:center;">선택</div>
+                  </div>
+                  <sc-for list="{{ codeRows }}" as="c" hint-placeholder-count="6">
+                    <div class="tr-row" style="display:grid; grid-template-columns:80px 120px 1fr 70px; border-top:1px solid var(--gray-10); font:400 12px var(--font-content); color:var(--text-secondary);">
+                      <div style="padding:8px; display:flex; align-items:center; justify-content:center;">{{ c.kind }}</div>
+                      <div style="padding:8px; display:flex; align-items:center; font-variant-numeric:tabular-nums;"><span style="background:var(--status-wait-bg); color:var(--brand-pressed); font-weight:700;">{{ c.hit }}</span>{{ c.rest }}</div>
+                      <div style="padding:8px; display:flex; align-items:center;">{{ c.name }}</div>
+                      <div style="padding:8px; display:flex; align-items:center; justify-content:center;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Checkbox" checked="{{ c.on }}" size="16px" onChange="{{ c.onPick }}" hint-size="16px,16px"></x-import></div>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </div>
+            <div style="flex-shrink:0; padding:12px 16px; border-top:1px solid var(--border-default); display:flex; justify-content:center; gap:8px;">
+              <button onClick="{{ closeModal }}" style="height:32px; padding:0 20px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--gray-5);">취소</button>
+              <button onClick="{{ closeModal }}" style="height:32px; padding:0 20px; border:none; border-radius:6px; background:var(--red-main); color:#fff; font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--red-dark);">등록</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ===== 위치찾기 지도 팝업 ===== -->
+      <sc-if value="{{ showLocMap }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute; inset:0; z-index:50; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center;">
+          <div style="width:640px; background:var(--bg-primary); border-radius:6px; overflow:hidden;">
+            <div style="height:44px; display:flex; align-items:center; padding:0 16px; border-bottom:1px solid var(--border-default);">
+              <span style="font:700 16px var(--font-content); color:var(--text-primary);">위치찾기</span>
+              <span style="margin-left:8px; font:400 12px var(--font-content); color:var(--text-tertiary);">지도에서 출발지 · 도착지를 클릭해 선택합니다.</span>
+              <button onClick="{{ closeLocMap }}" title="닫기" style="margin-left:auto; border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:4px;"><i class="ti ti-x" style="font-size:18px;"></i></button>
+            </div>
+            <div style="height:340px; position:relative; background:var(--gray-10);">
+              <div style="position:absolute; inset:0; pointer-events:none;">
+                <div style="position:absolute; left:0; right:0; top:44%; height:20px; background:var(--gray-0); opacity:0.85;"></div>
+                <div style="position:absolute; left:16%; top:14%; width:28%; height:24%; border:1px solid var(--gray-40); background:rgba(255,255,255,0.4); display:flex; align-items:center; justify-content:center; font:700 12px var(--font-content); color:var(--gray-40);">AB1000</div>
+                <div style="position:absolute; left:52%; top:56%; width:28%; height:26%; border:1px solid var(--gray-40); background:rgba(255,255,255,0.4); display:flex; align-items:center; justify-content:center; font:700 12px var(--font-content); color:var(--gray-40);">AB1022</div>
+              </div>
+              <div style="position:absolute; left:26%; top:22%; display:flex; align-items:center; gap:4px; height:22px; padding:0 8px; border-radius:4px; background:var(--brand-primary); color:#fff; font:700 12px/1 var(--font-content);">출발지</div>
+              <div style="position:absolute; left:60%; top:64%; display:flex; align-items:center; gap:4px; height:22px; padding:0 8px; border-radius:4px; background:var(--blue-dark); color:#fff; font:700 12px/1 var(--font-content);">도착지</div>
+              <div style="position:absolute; right:10px; bottom:10px; display:flex; flex-direction:column; gap:6px;">
+                <button class="dl-mapbtn" title="초기화" style="width:28px; height:28px; border:1px solid var(--border-default); border-radius:6px; background:var(--bg-primary); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-secondary);"><i class="ti ti-refresh" style="font-size:15px;"></i></button>
+                <button class="dl-mapbtn" title="전체화면" style="width:28px; height:28px; border:1px solid var(--border-default); border-radius:6px; background:var(--bg-primary); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-secondary);"><i class="ti ti-maximize" style="font-size:15px;"></i></button>
+                <button class="dl-mapbtn" title="확대" style="width:28px; height:28px; border:1px solid var(--border-default); border-radius:6px; background:var(--bg-primary); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-secondary);"><i class="ti ti-plus" style="font-size:15px;"></i></button>
+                <button class="dl-mapbtn" title="축소" style="width:28px; height:28px; border:1px solid var(--border-default); border-radius:6px; background:var(--bg-primary); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-secondary);"><i class="ti ti-minus" style="font-size:15px;"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ===== 안내 팝업 (승인취소 조건) ===== -->
+      <sc-if value="{{ showNotice }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute; inset:0; z-index:60; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center;">
+          <div style="width:360px; background:var(--bg-primary); border-radius:6px; overflow:hidden;">
+            <div style="height:44px; display:flex; align-items:center; padding:0 16px; border-bottom:1px solid var(--border-default);">
+              <span style="font:700 16px var(--font-content); color:var(--text-primary);">안내</span>
+            </div>
+            <div style="padding:20px 16px; font:400 13px/1.6 var(--font-content); color:var(--text-secondary);">{{ noticeText }}</div>
+            <div style="padding:0 16px 16px; display:flex; justify-content:flex-end;">
+              <button onClick="{{ closeNotice }}" style="height:32px; padding:0 20px; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--brand-hover);">닫기</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1920,&quot;height&quot;:1080},&quot;startScreen&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;}}">
+const NAV_TREE = [
+  { key: "dashboard", label: "대시보드", icon: "ti-layout-dashboard", url: "HEL01-01 대시보드 (기본).dc.html" },
+  { key: "jibun", label: "지번관리", icon: "ti-map-pin", children: [
+    { key: "jibun-phys", label: "물리지번 목록", url: "HEL02-00 물리지번 목록.dc.html" },
+    { key: "jibun-logi", label: "논리지번 목록", url: "HEL02-09 논리지번 목록.dc.html" },
+    { key: "jibun-list", label: "지번 목록", url: "HEL03-01 지번 목록.dc.html" },
+    { key: "jibun-plan", label: "활용계획", url: "HEL04-01 활용계획.dc.html" },
+  ]},
+  { key: "material", label: "자재관리", icon: "ti-package-import", children: [
+    { key: "mat-inbound", label: "입고예정정보", children: [
+      { key: "mat-in-outfit", label: "의장재", url: "HEL05-01 의장재 (입고예정정보).dc.html" },
+      { key: "mat-in-equip", label: "기기장비재", url: "HEL05-02 기기장비재 (입고예정정보).dc.html" },
+      { key: "mat-in-steel", label: "강재", url: "HEL05-03 강재 (입고예정정보).dc.html" },
+    ]},
+    { key: "mat-avail", label: "재고가용성정보", url: "HEL05-04 재고가용성정보.dc.html" },
+    { key: "mat-core", label: "핵심자재 관리", url: "HEL13-01 핵심자재 관리 (목록).dc.html" },
+    { key: "mat-loc", label: "적치위치 관리", url: "HEL05-05 적치위치 관리.dc.html" },
+  ]},
+  { key: "block", label: "블록관리", icon: "ti-box", url: "HEL06-01 블록관리 (목록).dc.html" },
+  { key: "transport", label: "운송수단 관리", icon: "ti-truck-delivery", children: [
+    { key: "tr-req", label: "중기배차신청", self: true },
+    { key: "tr-plan", label: "중기배차계획", children: [
+      { key: "tr-plan-daily", label: "일일중기배차계획" },
+      { key: "tr-plan-weekly", label: "주간중기배차계획" },
+    ]},
+    { key: "tr-result", label: "배차실적" },
+    { key: "tr-util", label: "장비가동률" },
+    { key: "tr-res", label: "운송자원정보관리", children: [
+      { key: "tr-res-master", label: "운송자원 마스터 관리" },
+      { key: "tr-res-fuel", label: "유류실적 관리" },
+      { key: "tr-res-jig", label: "치구 마스터 관리" },
+      { key: "tr-res-week", label: "주간배차 마스터 관리" },
+    ]},
+  ]},
+  { key: "system", label: "시스템관리", icon: "ti-settings", children: [
+    { key: "sys-alarm", label: "알람조건 설정", url: "HEL12-03 알람조건 설정.dc.html" },
+    { key: "sys-role", label: "사용자권한 설정" },
+    { key: "sys-history", label: "히스토리 관리" },
+  ]},
+];
+
+const SCREENS = [
+  { id: "HEL07-01", label: "중기배차신청 (사용자)", role: "user", modal: null },
+  { id: "HEL07-02", label: "엑셀업로드 팝업", role: "user", modal: "excel" },
+  { id: "HEL07-03", label: "상세페이지 (사용자)", role: "user", modal: "detail" },
+  { id: "HEL07-04", label: "중기배차신청 (관리자)", role: "admin", modal: null },
+  { id: "HEL07-05", label: "배차 정보 팝업", role: "admin", modal: "approve" },
+  { id: "HEL07-06", label: "등록 팝업", role: "user", modal: "reg" },
+  { id: "HEL07-06-01", label: "등록 팝업 (지게차·자재)", role: "user", modal: "reg", variant: "forklift" },
+  { id: "HEL07-07", label: "긴급배차 신청 팝업", role: "admin", modal: "urgent" },
+];
+
+const COLS = [
+  ["요청번호", 80], ["배차 유형", 90], ["지역 구분", 90], ["요청일자", 100], ["이동 카테고리", 100],
+  ["이동구분", 80], ["블록·Assy·자재번호", 130], ["출발/도착지", 110], ["중기그룹", 100], ["중기 형태", 110],
+  ["시작예정시간", 100], ["종료예정시간", 100], ["사용조직", 100], ["신청자", 80], ["승인현황", 90],
+];
+
+const ROWS = [
+  ["1520", "일반 배차", "-", "2026-05-25", "선각 Assy", "블록", "512 / 512-A", "AB1204", "트랜스포터", "TP550 : 550T", "09:00", "10:00", "평강산업", "홍길동", "대기"],
+  ["1519", "일반 배차", "-", "2026-05-25", "의장", "자재", "456G123", "AB1102", "지게차", "FL10 : 10T", "10:00", "11:00", "평강산업", "심청이", "승인완료"],
+  ["1518", "지게차배차", "지역배차", "2026-05-24", "의장", "자재", "456G423", "AA1004", "지게차", "FL02 : 2T", "13:00", "14:00", "한라IMS", "김한라", "운행중"],
+  ["1517", "일반 배차", "-", "2026-05-24", "치구류", "치구", "JIG-204", "AB1020", "크레인", "ZC100 : 100T", "08:00", "09:00", "중기산업", "임산업", "승인완료"],
+  ["1516", "긴급 배차", "-", "2026-05-23", "선각 Assy", "블록", "511 / 511-B", "AB1208", "트랜스포터", "TP550 : 550T", "15:00", "16:00", "최고중기", "김최고", "지연"],
+  ["1515", "지게차배차", "지역외배차", "2026-05-23", "의장", "자재", "456G757", "AA1022", "지게차", "FL05 : 5T", "16:00", "17:00", "중기산업", "김중기", "반려"],
+  ["1514", "일반 배차", "-", "2026-05-22", "선각 Assy", "블록", "510 / 510-A", "AB1104", "고소차", "AL01 : 1T", "09:30", "10:30", "평강산업", "홍길동", "승인완료"],
+  ["1513", "일반 배차", "-", "2026-05-22", "치구류", "치구", "JIG-118", "AB1030", "트레일러", "TR05 : 5T", "11:00", "12:00", "한라IMS", "김한라", "대기"],
+];
+
+const STATUS_COLOR = { "대기": "var(--red-dark)", "승인완료": "var(--blue-dark)", "운행중": "var(--green-dark)", "반려": "var(--text-tertiary)", "지연": "var(--red-dark)" };
+
+const VEHICLES = [
+  { kind: "지게차", code: "HTP06001", name: "10T 지게차" },
+  { kind: "트랜스포터", code: "HTP06002", name: "550T 트랜스포터" },
+  { kind: "크레인", code: "HTP06003", name: "100T 크레인" },
+  { kind: "고소차", code: "HTP06004", name: "1T 고소차" },
+  { kind: "트랜스포터", code: "HTP06005", name: "10T 트랜스포터" },
+  { kind: "지게차", code: "HTP06006", name: "2T 지게차" },
+];
+
+const BLOCK_CODES = [
+  { kind: "블록", code: "512", name: "함수" }, { kind: "블록", code: "511", name: "함미" },
+  { kind: "블록", code: "510", name: "기관실" }, { kind: "블록", code: "518", name: "탕비실" },
+  { kind: "블록", code: "519", name: "함수" }, { kind: "블록", code: "513", name: "함수B" },
+];
+
+const MAT_CODES = [
+  { kind: "자재", code: "456G123", name: "Y1 : 의장재" }, { kind: "자재", code: "456G423", name: "Y1 : 의장재" },
+  { kind: "자재", code: "456G757", name: "G1 : 강재" }, { kind: "자재", code: "456G242", name: "G1 : 강재" },
+  { kind: "자재", code: "456G738", name: "S1 : 소비재" }, { kind: "자재", code: "456G964", name: "S1 : 소비재" },
+];
+
+const SCREEN_DIRS = { HEL00: "00 공통", HEL01: "01 대시보드", HEL02: "02 지번관리", HEL03: "02 지번관리", HEL04: "02 지번관리", HEL05: "03 자재관리", HEL13: "03 자재관리", HEL06: "04 블록관리", HEL07: "05 중기배차신청", HEL08: "06 중기배차계획", HEL09: "07 배차실적", HEL10: "07 배차실적", HEL23: "08 장비가동률", HEL11: "09 운송자원정보관리", HEL14: "09 운송자원정보관리", HEL15: "09 운송자원정보관리", HEL24: "09 운송자원정보관리", HEL12: "10 알람", HEL16: "11 시스템관리", HEL17: "11 시스템관리", HEL18: "12 태블릿 PC 앱", HEL19: "13 작업자용 모바일 앱", HEL20: "13 작업자용 모바일 앱", HEL21: "13 작업자용 모바일 앱", HEL22: "13 작업자용 모바일 앱" };
+function resolveUrl(u) {
+  const dir = SCREEN_DIRS[String(u || "").slice(0, 5)];
+  return dir ? "../" + dir + "/" + u : u;
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const sc = SCREENS.find((s) => s.id === props.startScreen) || SCREENS[0];
+    this.state = {
+      screen: sc.id,
+      role: sc.role,
+      modal: sc.modal,
+      lnbOpen: { transport: true },
+      page: 1,
+      checked: sc.modal === "approve" ? { 1: true, 2: true } : {},
+      detailIdx: 1,
+      f_type: "", f_third: "", f_group: "", f_status: "",
+      regGroup: sc.variant === "forklift" ? "forklift" : "tp",
+      regRegion: "local", regCat: "hull", regMove: sc.variant === "forklift" ? "material" : "block",
+      regForm: "tp550", regStage: "PE", regJigType: "trestle", regJigKind: "normal", regJigQty: "1",
+      regUndecided: false,
+      codeSearch: null,
+      codePick: {},
+      vehiclePick: null,
+      vehicles: { 1: "HTP06003 (100T 크레인)", 2: "HTP06001 (10T 지게차)" },
+      showLocMap: false,
+      notice: null,
+    };
+  }
+
+  go(id) {
+    const sc = SCREENS.find((s) => s.id === id);
+    if (!sc) return;
+    this.setState({
+      screen: id, role: sc.role, modal: sc.modal,
+      regGroup: sc.variant === "forklift" ? "forklift" : "tp",
+      regMove: sc.variant === "forklift" ? "material" : "block",
+      codeSearch: null, showLocMap: false, notice: null, vehiclePick: null,
+      detailIdx: id === "HEL07-03" ? 1 : this.state.detailIdx,
+      checked: sc.modal === "approve" ? { 1: true, 2: true } : this.state.checked,
+    });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const isAdmin = s.role === "admin";
+    const lnbOpen = s.lnbOpen;
+
+    const navRows = [];
+    const walk = (nodes, depth) => {
+      for (const n of nodes) {
+        const has = !!(n.children && n.children.length);
+        const isOpen = !!lnbOpen[n.key];
+        navRows.push({
+          label: n.label, icon: n.icon || "", showIcon: depth === 0, depth: String(depth),
+          active: !!n.self, trail: n.key === "transport",
+          hasChildren: has, chevIcon: isOpen ? "ti-chevron-up" : "ti-chevron-down",
+          onClick: () => {
+            if (has) {
+              const next = Object.assign({}, lnbOpen);
+              next[n.key] = !isOpen;
+              this.setState({ lnbOpen: next });
+            } else if (n.url) { window.location.href = encodeURI(resolveUrl(n.url)); }
+          },
+        });
+        if (has && isOpen) walk(n.children, depth + 1);
+      }
+    };
+    walk(NAV_TREE, 0);
+
+    const rows = ROWS.map((r, i) => ({
+      checked: !!s.checked[i],
+      onCheck: () => {
+        const next = Object.assign({}, s.checked);
+        next[i] = !next[i];
+        this.setState({ checked: next });
+      },
+      cells: r.map((v, ci) => {
+        if (ci === 14) {
+          return {
+            v: v, isStatus: true, isText: false, justify: "center", color: STATUS_COLOR[v] || "var(--text-secondary)",
+            onClick: () => this.setState({ screen: "HEL07-03", modal: "detail", detailIdx: i }),
+          };
+        }
+        const num = ci === 0;
+        return { v: v, isText: true, justify: num ? "flex-end" : "flex-start" };
+      }),
+    }));
+
+    const allChecked = ROWS.length > 0 && ROWS.every((_, i) => s.checked[i]);
+    const gridCols = (isAdmin ? "44px " : "") + COLS.map((c) => c[1] + "px").join(" ");
+    const tableMinWidth = (COLS.reduce((a, c) => a + c[1], 0) + (isAdmin ? 44 : 0)) + "px";
+
+    const d = ROWS[s.detailIdx] || ROWS[0];
+    const approved = d[14] === "승인완료" || d[14] === "운행중";
+    const detailSections = [
+      { title: "신청 정보", rows: [
+        { k: "배차요청번호", v: d[0], color: "var(--text-secondary)" },
+        { k: "배차신청일시", v: "2026/05/25 09:00", color: "var(--text-secondary)" },
+        { k: "사용조직", v: d[12], color: "var(--text-secondary)" },
+        { k: "신청자", v: d[13], color: "var(--text-secondary)" },
+        { k: "승인현황", v: d[14], color: STATUS_COLOR[d[14]] || "var(--text-secondary)" },
+        { k: "배차정보", v: approved ? "HTP06002 (550T 트랜스포터)" : "-", color: "var(--text-secondary)" },
+      ]},
+      { title: "배차요청 정보", rows: [
+        { k: "배차요청일", v: d[3], color: "var(--text-secondary)" },
+        { k: "배차유형", v: d[1], color: "var(--text-secondary)" },
+        { k: "지역구분", v: d[2], color: "var(--text-secondary)" },
+        { k: "작업구분", v: "이동", color: "var(--text-secondary)" },
+        { k: "이동구분", v: d[5], color: "var(--text-secondary)" },
+        { k: "중기그룹", v: d[8], color: "var(--text-secondary)" },
+        { k: "중기형태", v: d[9], color: "var(--text-secondary)" },
+        { k: "적재톤수", v: "5T", color: "var(--text-secondary)" },
+      ]},
+      { title: "작업정보", rows: [
+        { k: "블록·Assy·자재번호", v: d[6], color: "var(--text-secondary)" },
+        { k: "공사번호", v: "5154", color: "var(--text-secondary)" },
+        { k: "작업 Stage", v: "PE", color: "var(--text-secondary)" },
+        { k: "출발 · 도착지", v: d[7], color: "var(--text-secondary)", hasLoc: true },
+        { k: "치구 구분", v: "트레슬", color: "var(--text-secondary)" },
+        { k: "치구 종류", v: "일반용", color: "var(--text-secondary)" },
+        { k: "치구 수량", v: "3", color: "var(--text-secondary)" },
+        { k: "시작예정시간", v: d[10], color: "var(--text-secondary)", hasChange: approved, change: "10:00" },
+        { k: "종료예정시간", v: d[11], color: "var(--text-secondary)", hasChange: approved, change: "11:00" },
+      ]},
+    ];
+
+    const selIdx = Object.keys(s.checked).filter((k) => s.checked[k]).map(Number);
+    const approveRows = (selIdx.length ? selIdx : [1, 2]).map((i) => {
+      const r = ROWS[i] || ROWS[1];
+      return {
+        no: r[0], type: r[1], region: r[2], date: r[3], cat: r[4], move: r[5], code: r[6], from: r[7],
+        group: r[8], kind: r[9], start: r[10], end: r[11], org: r[12], user: r[13],
+        vehicle: s.vehicles[i] || "",
+        onVehicle: (e) => {
+          const next = Object.assign({}, s.vehicles);
+          next[i] = e && e.target ? e.target.value : "";
+          this.setState({ vehicles: next });
+        },
+        onSearch: () => this.setState({ vehiclePick: i }),
+      };
+    });
+
+    const codeList = s.codeSearch === "material" ? MAT_CODES : BLOCK_CODES;
+    const cq = s.codeSearch === "material" ? "456G" : "51";
+    const codeRows = codeList.map((c) => {
+      const on = c.code.indexOf(cq) === 0;
+      return {
+        kind: c.kind, name: c.name,
+        hit: on ? cq : "", rest: on ? c.code.slice(cq.length) : c.code,
+        on: !!s.codePick[c.code],
+        onPick: () => {
+          const next = Object.assign({}, s.codePick);
+          next[c.code] = !next[c.code];
+          this.setState({ codePick: next });
+        },
+      };
+    });
+
+    const cur = SCREENS.find((sc) => sc.id === s.screen) || SCREENS[0];
+    const sel = (v) => (e) => this.setState({ [v]: typeof e === "string" ? e : (e && e.target ? e.target.value : e) });
+
+    return {
+      screenLabel: cur.id + " " + cur.label,
+      crumbItems: [{ label: "HOME" }, { label: "운송수단 관리" }, { label: "중기배차신청" }],
+      navRows: navRows,
+      roleLabel: isAdmin ? "관리자 화면" : "사용자 화면",
+      isAdmin: isAdmin,
+      isUser: !isAdmin,
+      userRoleBg: isAdmin ? "transparent" : "var(--bg-primary)",
+      userRoleColor: isAdmin ? "var(--text-tertiary)" : "var(--brand-primary)",
+      adminRoleBg: isAdmin ? "var(--bg-primary)" : "transparent",
+      adminRoleColor: isAdmin ? "var(--brand-primary)" : "var(--text-tertiary)",
+      setUserRole: () => this.go("HEL07-01"),
+      setAdminRole: () => this.go("HEL07-04"),
+      thirdLabel: isAdmin ? "이동구분" : "작업구분",
+      thirdOptions: isAdmin
+        ? [{ value: "", label: "전체" }, { value: "block", label: "블록" }, { value: "material", label: "자재" }, { value: "jig", label: "치구" }]
+        : [{ value: "", label: "전체" }, { value: "move", label: "이동" }, { value: "arrange", label: "정리" }, { value: "release", label: "불출" }],
+      typeOptions: [{ value: "", label: "전체" }, { value: "normal", label: "일반 배차" }, { value: "urgent", label: "긴급 배차" }, { value: "forklift", label: "지게차배차" }],
+      groupOptions: [{ value: "", label: "전체" }, { value: "tp", label: "트랜스포터" }, { value: "trailer", label: "트레일러" }, { value: "crane", label: "크레인" }, { value: "aerial", label: "고소차" }, { value: "forklift", label: "지게차" }],
+      statusOptions: [{ value: "", label: "전체" }, { value: "wait", label: "대기" }, { value: "done", label: "승인완료" }, { value: "run", label: "운행중" }, { value: "reject", label: "반려" }, { value: "delay", label: "지연" }],
+      f_type: s.f_type, set_type: sel("f_type"),
+      f_third: s.f_third, set_third: sel("f_third"),
+      f_group: s.f_group, set_group: sel("f_group"),
+      f_status: s.f_status, set_status: sel("f_status"),
+      cols: COLS.map((c) => ({ label: c[0] })),
+      gridCols: gridCols,
+      tableMinWidth: tableMinWidth,
+      rows: rows,
+      allChecked: allChecked,
+      toggleAll: () => {
+        const next = {};
+        if (!allChecked) ROWS.forEach((_, i) => { next[i] = true; });
+        this.setState({ checked: next });
+      },
+      page: s.page,
+      setPage: (p) => this.setState({ page: p }),
+      openExcel: () => this.setState({ screen: "HEL07-02", modal: "excel" }),
+      openReg: () => this.setState({ screen: "HEL07-06", modal: "reg" }),
+      openUrgent: () => this.setState({ screen: "HEL07-07", modal: "urgent" }),
+      openApprove: () => this.setState({ screen: "HEL07-05", modal: "approve" }),
+      trySelDelete: () => this.setState({ notice: "선택한 신청 건을 삭제합니다. 관리자 권한에서만 사용 가능합니다." }),
+      tryCancelApprove: () => this.setState({ notice: "상태값이 '승인완료'인 경우만 승인 취소 가능합니다." }),
+      closeModal: () => this.setState({ modal: null, screen: isAdmin ? "HEL07-04" : "HEL07-01", codeSearch: null, vehiclePick: null }),
+      showExcel: s.modal === "excel",
+      showDetail: s.modal === "detail",
+      showApprove: s.modal === "approve",
+      showReg: s.modal === "reg",
+      showUrgent: s.modal === "urgent",
+      detailSections: detailSections,
+      detailIsWait: d[14] === "대기",
+      approveRows: approveRows,
+      showVehicle: s.vehiclePick !== null,
+      closeVehicle: () => this.setState({ vehiclePick: null }),
+      vehicleRows: VEHICLES.map((v, i) => ({
+        kind: v.kind, code: v.code, name: v.name, on: i === 0,
+        onPick: () => {
+          const next = Object.assign({}, s.vehicles);
+          if (s.vehiclePick !== null) next[s.vehiclePick] = v.code + " (" + v.name + ")";
+          this.setState({ vehicles: next, vehiclePick: null });
+        },
+      })),
+      regGroupOptions: [{ value: "tp", label: "T/P" }, { value: "trailer", label: "트레일러" }, { value: "crane", label: "크레인" }, { value: "aerial", label: "고소차" }, { value: "forklift", label: "지게차" }],
+      regGroup: s.regGroup, setRegGroup: sel("regGroup"),
+      regShowRegion: s.regGroup === "forklift",
+      regionOptions: [{ value: "local", label: "지역 배차" }, { value: "outer", label: "지역외 배차" }],
+      regRegion: s.regRegion, setRegRegion: sel("regRegion"),
+      catOptions: [{ value: "hull", label: "선각 Assy" }, { value: "outfit", label: "의장" }, { value: "jig", label: "치구류" }],
+      regCat: s.regCat, setRegCat: sel("regCat"),
+      moveOptions: [{ value: "material", label: "자재" }, { value: "block", label: "블록" }, { value: "jig", label: "치구" }],
+      regMove: s.regMove, setRegMove: sel("regMove"),
+      regIsMaterial: s.regMove === "material",
+      regIsBlock: s.regMove !== "material",
+      formOptions: [{ value: "tp550", label: "TP550 : 550T" }, { value: "fl10", label: "FL10 : 10T" }, { value: "fl05", label: "FL05 : 5T" }, { value: "zc100", label: "ZC100 : 100T" }],
+      regForm: s.regForm, setRegForm: sel("regForm"),
+      stageOptions: [{ value: "PE", label: "PE" }, { value: "ASSY", label: "ASSY" }, { value: "DOCK", label: "DOCK" }],
+      regStage: s.regStage, setRegStage: sel("regStage"),
+      jigTypeOptions: [{ value: "trestle", label: "트레슬" }, { value: "jig", label: "정반" }, { value: "support", label: "서포트" }],
+      regJigType: s.regJigType, setRegJigType: sel("regJigType"),
+      jigKindOptions: [{ value: "normal", label: "일반용" }, { value: "special", label: "특수용" }],
+      regJigKind: s.regJigKind, setRegJigKind: sel("regJigKind"),
+      regJigQty: s.regJigQty,
+      setRegJigQty: (e) => this.setState({ regJigQty: e && e.target ? e.target.value : s.regJigQty }),
+      jigUp: () => this.setState({ regJigQty: String((parseInt(s.regJigQty, 10) || 0) + 1) }),
+      jigDown: () => this.setState({ regJigQty: String(Math.max(0, (parseInt(s.regJigQty, 10) || 0) - 1)) }),
+      regUndecided: s.regUndecided,
+      toggleUndecided: () => this.setState({ regUndecided: !s.regUndecided }),
+      openBlockSearch: () => this.setState({ codeSearch: "block" }),
+      openMatSearch: () => this.setState({ codeSearch: "material" }),
+      showCodeSearch: s.codeSearch !== null,
+      codeSearchTitle: s.codeSearch === "material" ? "자재 번호" : "블록 번호",
+      codeCol2: s.codeSearch === "material" ? "자재번호" : "코드번호",
+      codeCol3: s.codeSearch === "material" ? "자재그룹" : "명칭",
+      codeRows: codeRows,
+      closeCodeSearch: () => this.setState({ codeSearch: null }),
+      showLocMap: s.showLocMap,
+      openLocMap: () => this.setState({ showLocMap: true }),
+      closeLocMap: () => this.setState({ showLocMap: false }),
+      showNotice: s.notice !== null,
+      noticeText: s.notice || "",
+      closeNotice: () => this.setState({ notice: null }),
+      showPicker: !this.props.startScreen,
+      pickRows: SCREENS.map((sc) => {
+        const on = sc.id === s.screen;
+        return {
+          short: sc.id.replace("HEL07-", ""), label: sc.id + " " + sc.label,
+          border: on ? "var(--brand-primary)" : "var(--border-input)",
+          bg: on ? "var(--status-wait-bg)" : "var(--bg-primary)",
+          color: on ? "var(--brand-primary)" : "var(--text-secondary)",
+          onClick: () => this.go(sc.id),
+        };
+      }),
+    };
+  }
+}
+</script>
+</body>
+</html>

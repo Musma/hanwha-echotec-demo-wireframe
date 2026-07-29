@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.24.0/dist/tabler-icons.min.css">
+<script src="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/_ds_bundle.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; }
+  *, *::before, *::after { box-sizing: border-box; }
+  a { color: var(--blue-dark); text-decoration: none; }
+  a:hover { color: var(--blue-main); }
+  input::placeholder { color: var(--text-placeholder); }
+  button { white-space: nowrap; }
+  .dl-navbtn:hover { background: var(--bg-secondary) !important; }
+  .dl-nav { width: var(--lnb-w); flex-shrink: 0; background: var(--bg-primary); border-right: 1px solid var(--border-subtle); display: flex; flex-direction: column; padding: 12px 8px; overflow-y: auto; }
+  .dl-item { display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; margin: 2px 0; border: none; cursor: pointer; border-radius: var(--radius-btn); background: transparent; color: var(--text-secondary); font-family: var(--font-content); font-weight: 500; font-size: 14px; line-height: 1; width: 100%; text-align: left; }
+  .dl-item > span { flex-shrink: 0; text-overflow: clip; }
+  .dl-item[data-active="true"] { background: var(--status-wait-bg); color: var(--brand-primary); font-weight: 700; }
+  .dl-item[data-trail="true"] { color: var(--text-primary); font-weight: 700; }
+  .dl-item[data-depth="1"] { height: 36px; padding-left: 44px; font-size: 13px; font-weight: 400; }
+  .dl-item[data-depth="2"] { height: 32px; padding-left: 60px; font-size: 13px; font-weight: 400; color: var(--text-tertiary); }
+  .dl-chev { margin-left: auto; font-size: 16px; color: var(--text-tertiary); flex-shrink: 0; }
+  .dl-pick:hover { border-color: var(--brand-primary) !important; color: var(--brand-primary) !important; }
+  .ut-cell { padding: 8px 6px; border-left: 1px solid var(--gray-5); display: flex; align-items: center; justify-content: flex-end; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .ut-head { padding: 8px 6px; text-align: center; border-left: 1px solid var(--gray-10); white-space: nowrap; }
+  .ut-row:hover { background: var(--gray-5); }
+</style>
+</helmet>
+
+<div style="display:flex; flex-direction:column; height:100vh; min-width:1440px; width:100%; overflow:hidden; font-family:var(--font-primary); color:var(--text-secondary); background:var(--gray-5);" data-screen-label="{{ screenLabel }}">
+
+  <header style="height:var(--header-h-web); flex-shrink:0; background:var(--bg-primary); border-bottom:1px solid var(--border-subtle); display:flex; align-items:center; padding:0 20px 0 12px; gap:16px; z-index:20;">
+    <img src="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/assets/logo-horizontal.png" alt="한화오션에코텍" style="height:25px; width:auto; display:block; flex-shrink:0;">
+    <span style="font-family:var(--font-title); font-weight:700; font-size:14px; color:var(--text-primary); letter-spacing:-0.2px; white-space:nowrap;">물류Twin</span>
+    <div style="margin-left:auto; display:flex; align-items:center; gap:14px;">
+      <span style="font-size:14px; color:var(--text-tertiary); white-space:nowrap;"><strong style="font-weight:500; color:var(--text-primary);">홍길동</strong>님 로그인 되었습니다.</span>
+      <button title="로그아웃" style="border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:6px;"><i class="ti ti-logout" style="font-size:22px;"></i></button>
+      <a href="../10 알람/HEL12-01 알람목록 (알림 드롭다운).dc.html" title="알림" style="display:flex; padding:6px; color:var(--text-tertiary); position:relative;">
+        <i class="ti ti-bell" style="font-size:22px;"></i>
+        <span style="position:absolute; top:4px; right:4px; width:8px; height:8px; border-radius:50%; background:var(--red-main);"></span>
+      </a>
+    </div>
+  </header>
+
+  <div style="display:flex; flex:1; min-height:0;">
+    <nav class="dl-nav">
+      <sc-for list="{{ navRows }}" as="item" hint-placeholder-count="10">
+        <button class="dl-navbtn dl-item" onClick="{{ item.onClick }}" title="{{ item.label }}" data-active="{{ item.active }}" data-trail="{{ item.trail }}" data-depth="{{ item.depth }}">
+          <sc-if value="{{ item.showIcon }}" hint-placeholder-val="{{ true }}">
+            <i class="ti {{ item.icon }}" style="font-size:20px; flex-shrink:0;"></i>
+          </sc-if>
+          <span>{{ item.label }}</span>
+          <sc-if value="{{ item.hasChildren }}" hint-placeholder-val="{{ false }}">
+            <i class="ti {{ item.chevIcon }} dl-chev"></i>
+          </sc-if>
+        </button>
+      </sc-for>
+      <a href="../00 공통/HEL00-03 메뉴 (닫힘).dc.html" style="margin-top:auto; height:36px; flex-shrink:0; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); white-space:nowrap; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:4px; text-decoration:none;" style-hover="background:var(--gray-5);">
+        <i class="ti ti-chevron-left" style="font-size:15px;"></i>메뉴닫기
+      </a>
+    </nav>
+
+    <main style="flex:1; min-width:0; display:flex; flex-direction:column; overflow:hidden;">
+      <div style="flex-shrink:0; display:flex; align-items:center; padding:14px 24px 0;">
+        <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Breadcrumb" items="{{ crumbItems }}" hint-size="300px,20px"></x-import>
+      </div>
+      <div style="flex-shrink:0; display:flex; align-items:center; gap:12px; padding:10px 24px 16px;">
+        <span style="font:700 16px/1.2 var(--font-content); color:var(--text-primary); white-space:nowrap;">장비가동률</span>
+        <sc-if value="{{ showPicker }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-left:auto; display:flex; align-items:center; gap:5px;">
+            <span style="font:400 11px var(--font-content); color:var(--text-tertiary); white-space:nowrap; flex-shrink:0;">화면 ID</span>
+            <sc-for list="{{ pickRows }}" as="p" hint-placeholder-count="3">
+              <button class="dl-pick" onClick="{{ p.onClick }}" title="{{ p.label }}" style="flex-shrink:0; height:24px; padding:0 8px; border:1px solid {{ p.border }}; border-radius:999px; background:{{ p.bg }}; color:{{ p.color }}; font:700 11px var(--font-content); font-variant-numeric:tabular-nums; cursor:pointer;">{{ p.short }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="flex:1; min-height:0; overflow:auto; padding:0 24px 24px; display:flex; flex-direction:column; gap:16px;">
+
+        <div style="flex-shrink:0; display:grid; grid-template-columns:repeat(4, 1fr); gap:16px;">
+          <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">작업시간 합계</span>
+            <span style="font:700 18px/1.2 var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">1,240 분</span>
+            <span style="font:400 12px/1 var(--font-content); color:var(--red-dark); font-variant-numeric:tabular-nums;">▲ 전일 대비 200 분</span>
+          </div>
+          <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">작업시간 평균</span>
+            <span style="font:700 18px/1.2 var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">60 분</span>
+            <span style="font:400 12px/1 var(--font-content); color:var(--red-dark); font-variant-numeric:tabular-nums;">▲ 전일 대비 2 분</span>
+          </div>
+          <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">장비 가동율</span>
+            <span style="font:700 18px/1.2 var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">72 %</span>
+            <span style="font:400 12px/1 var(--font-content); color:var(--red-dark); font-variant-numeric:tabular-nums;">▲ 전일 대비 5 %</span>
+          </div>
+          <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">지연 · 미처리 건 수</span>
+            <span style="font:700 18px/1.2 var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">5 건</span>
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">요청시간 대비 24시간 초과 건 수</span>
+          </div>
+        </div>
+
+        <div style="flex-shrink:0; background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="width:62px; font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">조회일자</span>
+            <div style="position:relative;">
+              <input value="2026/05/01" style="width:112px; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 26px 0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+              <i class="ti ti-calendar" style="position:absolute; right:8px; top:7px; font-size:14px; color:var(--text-tertiary);"></i>
+            </div>
+            <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">~</span>
+            <div style="position:relative;">
+              <input value="2026/05/20" style="width:112px; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 26px 0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+              <i class="ti ti-calendar" style="position:absolute; right:8px; top:7px; font-size:14px; color:var(--text-tertiary);"></i>
+            </div>
+            <div style="display:flex; gap:4px;">
+              <button onClick="{{ setD }}" style="height:28px; padding:0 10px; border:1px solid var(--border-input); border-radius:4px; background:{{ dBg }}; color:{{ dColor }}; font:500 12px var(--font-content); cursor:pointer;">일</button>
+              <button onClick="{{ setW }}" style="height:28px; padding:0 10px; border:1px solid var(--border-input); border-radius:4px; background:{{ wBg }}; color:{{ wColor }}; font:500 12px var(--font-content); cursor:pointer;">주</button>
+              <button onClick="{{ setM }}" style="height:28px; padding:0 10px; border:1px solid var(--border-input); border-radius:4px; background:{{ mBg }}; color:{{ mColor }}; font:500 12px var(--font-content); cursor:pointer;">월</button>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="width:62px; font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">중기그룹</span>
+            <div style="width:140px;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ groupOptions }}" value="{{ f_group }}" onChange="{{ set_group }}" hint-size="100%,28px"></x-import></div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="width:62px; font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">중기형태</span>
+            <div style="width:140px;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ formOptions }}" value="{{ f_form }}" onChange="{{ set_form }}" hint-size="100%,28px"></x-import></div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="width:62px; font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">장비코드</span>
+            <input placeholder="장비코드 입력" style="width:120px; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary);">
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="width:62px; font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">장비명</span>
+            <input placeholder="장비명 입력" value="{{ nameQuery }}" onChange="{{ setNameQuery }}" style="width:140px; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary);">
+          </div>
+          <div style="margin-left:auto; display:flex; gap:8px;">
+            <button style="height:28px; padding:0 14px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); cursor:pointer;" style-hover="background:var(--gray-5);">초기화</button>
+            <button style="height:28px; padding:0 14px; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 13px var(--font-content); cursor:pointer;" style-hover="background:var(--brand-hover);">조회</button>
+          </div>
+        </div>
+
+        <div style="flex-shrink:0; background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px;">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+            <span style="font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">방식 선택</span>
+            <div style="display:flex; gap:4px;">
+              <button onClick="{{ goTable }}" style="height:28px; padding:0 14px; border:1px solid var(--border-input); border-radius:6px; background:{{ tableBg }}; color:{{ tableColor }}; font:500 12px var(--font-content); cursor:pointer;">표</button>
+              <button onClick="{{ goChart }}" style="height:28px; padding:0 14px; border:1px solid var(--border-input); border-radius:6px; background:{{ chartBg }}; color:{{ chartColor }}; font:500 12px var(--font-content); cursor:pointer;">그래프</button>
+            </div>
+            <sc-if value="{{ isChart }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex; gap:4px;">
+                <button onClick="{{ goGroupAxis }}" style="height:28px; padding:0 12px; border:1px solid var(--border-input); border-radius:999px; background:{{ axisGroupBg }}; color:{{ axisGroupColor }}; font:500 11px var(--font-content); cursor:pointer;">중기그룹 조회</button>
+                <button onClick="{{ goDateAxis }}" style="height:28px; padding:0 12px; border:1px solid var(--border-input); border-radius:999px; background:{{ axisDateBg }}; color:{{ axisDateColor }}; font:500 11px var(--font-content); cursor:pointer;">기간별 조회</button>
+              </div>
+            </sc-if>
+            <button style="margin-left:auto; height:28px; padding:0 14px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 12px var(--font-content); cursor:pointer; display:flex; align-items:center; gap:5px;" style-hover="background:var(--gray-5);"><i class="ti ti-download" style="font-size:14px;"></i>Excel 다운로드</button>
+          </div>
+
+          <sc-if value="{{ isTable }}" hint-placeholder-val="{{ true }}">
+            <div style="border:1px solid var(--border-default); border-radius:4px; overflow-x:auto;">
+              <div style="min-width:1420px;">
+                <div style="display:grid; grid-template-columns:80px 130px repeat(9, 1fr) 110px 90px 90px 100px 100px; background:var(--gray-20); font:700 11px var(--font-content); color:var(--text-primary);">
+                  <div class="ut-head" style="grid-row:span 2; display:flex; align-items:center; justify-content:center;">장비코드</div>
+                  <div class="ut-head" style="grid-row:span 2; display:flex; align-items:center; justify-content:center;">장비명</div>
+                  <div class="ut-head" style="grid-column:span 11; border-bottom:1px solid var(--gray-10);">작업시간 (분)</div>
+                  <div class="ut-head" style="grid-column:span 3; border-bottom:1px solid var(--gray-10);">배차건수</div>
+                  <sc-for list="{{ tableHeadCells }}" as="h" hint-placeholder-count="14">
+                    <div class="ut-head" style="font-weight:400; color:var(--text-tertiary);">{{ h.label }}</div>
+                  </sc-for>
+                </div>
+                <sc-for list="{{ tableRows }}" as="r" hint-placeholder-count="6">
+                  <div class="ut-row" style="display:grid; grid-template-columns:80px 130px repeat(9, 1fr) 110px 90px 90px 100px 100px; border-top:1px solid var(--gray-10); font:400 12px var(--font-content); color:var(--text-secondary);">
+                    <div class="ut-cell" style="justify-content:center;">{{ r.code }}</div>
+                    <div class="ut-cell" style="justify-content:flex-start;">{{ r.name }}</div>
+                    <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="14">
+                      <div class="ut-cell">{{ c.v }}</div>
+                    </sc-for>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex; justify-content:flex-end; margin-top:12px;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Pagination" page="{{ page }}" total="{{ 10 }}" onChange="{{ setPage }}" hint-size="280px,32px"></x-import></div>
+          </sc-if>
+
+          <sc-if value="{{ isChart }}" hint-placeholder-val="{{ false }}">
+            <div style="border:1px solid var(--border-default); border-radius:4px; padding:16px;">
+              <div style="display:flex; align-items:stretch; gap:10px; height:360px;">
+                <div style="width:56px; flex-shrink:0; display:flex; flex-direction:column; justify-content:space-between; align-items:flex-end; padding-bottom:34px;">
+                  <span style="font:400 10px var(--font-content); color:var(--text-tertiary);">시간(분)</span>
+                  <sc-for list="{{ leftAxis }}" as="a" hint-placeholder-count="6">
+                    <span style="font:400 10px var(--font-content); color:var(--text-tertiary); font-variant-numeric:tabular-nums;">{{ a.label }}</span>
+                  </sc-for>
+                </div>
+                <div style="flex:1; min-width:0; position:relative; border-left:1px solid var(--border-input); border-bottom:1px solid var(--border-input); background-image:repeating-linear-gradient(0deg, var(--gray-10) 0 1px, transparent 1px 20%);">
+                  <div style="position:absolute; inset:0; display:flex; align-items:flex-end; padding:0 8px;">
+                    <sc-for list="{{ chartBars }}" as="b" hint-placeholder-count="8">
+                      <div style="flex:1; min-width:0; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; gap:4px;">
+                        <div style="width:100%; flex:1; min-height:0; display:flex; align-items:flex-end; justify-content:center; gap:2px;">
+                          <span title="작업시간 합계" style="width:9px; border-radius:2px 2px 0 0; background:#1D4ED8; height:{{ b.h1 }}%;"></span>
+                          <span title="총 배차 건수" style="width:9px; border-radius:2px 2px 0 0; background:#E11D48; height:{{ b.h2 }}%;"></span>
+                          <span title="긴급배차 건수" style="width:9px; border-radius:2px 2px 0 0; background:#7C3AED; height:{{ b.h3 }}%;"></span>
+                          <span title="미확정 건수" style="width:9px; border-radius:2px 2px 0 0; background:#38BDF8; height:{{ b.h4 }}%;"></span>
+                          <span title="작업시간 평균" style="width:7px; height:7px; border-radius:50%; background:#84CC16; margin-bottom:{{ b.avg }}%;"></span>
+                        </div>
+                        <span style="height:32px; flex-shrink:0; display:flex; align-items:flex-start; justify-content:center; font:400 10px/1.3 var(--font-content); color:var(--text-tertiary); text-align:center; word-break:keep-all;">{{ b.label }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+                <div style="width:56px; flex-shrink:0; display:flex; flex-direction:column; justify-content:space-between; align-items:flex-start; padding-bottom:34px;">
+                  <span style="font:400 10px var(--font-content); color:var(--text-tertiary);">합계(건)</span>
+                  <sc-for list="{{ rightAxis }}" as="a" hint-placeholder-count="6">
+                    <span style="font:400 10px var(--font-content); color:var(--text-tertiary); font-variant-numeric:tabular-nums;">{{ a.label }}</span>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:center; gap:16px; margin-top:12px; font:400 11px var(--font-content); color:var(--text-secondary); flex-wrap:wrap;">
+                <span style="display:flex; align-items:center; gap:5px; white-space:nowrap;"><span style="width:10px; height:10px; border-radius:2px; background:#1D4ED8;"></span>작업시간 합계</span>
+                <span style="display:flex; align-items:center; gap:5px; white-space:nowrap;"><span style="width:10px; height:10px; border-radius:2px; background:#E11D48;"></span>총 배차 건수</span>
+                <span style="display:flex; align-items:center; gap:5px; white-space:nowrap;"><span style="width:10px; height:10px; border-radius:2px; background:#7C3AED;"></span>긴급배차 건수</span>
+                <span style="display:flex; align-items:center; gap:5px; white-space:nowrap;"><span style="width:10px; height:10px; border-radius:2px; background:#38BDF8;"></span>미확정 건수</span>
+                <span style="display:flex; align-items:center; gap:5px; white-space:nowrap;"><span style="width:10px; height:10px; border-radius:50%; background:#84CC16;"></span>작업시간 평균</span>
+              </div>
+              <div style="margin-top:10px; text-align:center; font:400 11px var(--font-content); color:var(--text-tertiary);">{{ chartHint }}</div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1920,&quot;height&quot;:1080},&quot;startScreen&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;}}">
+const NAV_TREE = [
+  { key: "dashboard", label: "대시보드", icon: "ti-layout-dashboard", url: "HEL01-01 대시보드 (기본).dc.html" },
+  { key: "jibun", label: "지번관리", icon: "ti-map-pin", children: [
+    { key: "jibun-phys", label: "물리지번 목록", url: "HEL02-00 물리지번 목록.dc.html" },
+    { key: "jibun-logi", label: "논리지번 목록", url: "HEL02-09 논리지번 목록.dc.html" },
+    { key: "jibun-list", label: "지번 목록", url: "HEL03-01 지번 목록.dc.html" },
+    { key: "jibun-plan", label: "활용계획", url: "HEL04-01 활용계획.dc.html" },
+  ]},
+  { key: "material", label: "자재관리", icon: "ti-package-import", children: [
+    { key: "mat-inbound", label: "입고예정정보", children: [
+      { key: "mat-in-outfit", label: "의장재", url: "HEL05-01 의장재 (입고예정정보).dc.html" },
+      { key: "mat-in-equip", label: "기기장비재", url: "HEL05-02 기기장비재 (입고예정정보).dc.html" },
+      { key: "mat-in-steel", label: "강재", url: "HEL05-03 강재 (입고예정정보).dc.html" },
+    ]},
+    { key: "mat-avail", label: "재고가용성정보", url: "HEL05-04 재고가용성정보.dc.html" },
+    { key: "mat-core", label: "핵심자재 관리", url: "HEL13-01 핵심자재 관리 (목록).dc.html" },
+    { key: "mat-loc", label: "적치위치 관리", url: "HEL05-05 적치위치 관리.dc.html" },
+  ]},
+  { key: "block", label: "블록관리", icon: "ti-box", url: "HEL06-01 블록관리 (목록).dc.html" },
+  { key: "transport", label: "운송수단 관리", icon: "ti-truck-delivery", children: [
+    { key: "tr-req", label: "중기배차신청", url: "HEL07-01 중기배차신청 (사용자).dc.html" },
+    { key: "tr-plan", label: "중기배차계획", children: [
+      { key: "tr-plan-daily", label: "일일중기배차계획", url: "HEL08-01 일일중기배차계획 (사용자).dc.html" },
+      { key: "tr-plan-weekly", label: "주간중기배차계획", url: "HEL08-02 주간중기배차계획 (사용자).dc.html" },
+    ]},
+    { key: "tr-result", label: "배차실적", children: [
+      { key: "tr-rs-normal", label: "일반배차실적", url: "HEL09-01 일반배차실적.dc.html" },
+      { key: "tr-rs-urgent", label: "긴급배차실적", url: "HEL10-01 긴급배차실적.dc.html" },
+    ]},
+    { key: "tr-util", label: "장비가동률", self: true },
+    { key: "tr-resource", label: "운송자원정보관리", children: [
+      { key: "tr-rm-master", label: "운송자원 마스터 관리" },
+      { key: "tr-rm-fuel", label: "유류실적 관리" },
+      { key: "tr-rm-jig", label: "치구 마스터 관리" },
+      { key: "tr-rm-week", label: "주간배차 마스터 관리" },
+    ]},
+  ]},
+  { key: "system", label: "시스템관리", icon: "ti-settings", children: [
+    { key: "sys-alarm", label: "알람조건 설정", url: "HEL12-03 알람조건 설정.dc.html" },
+    { key: "sys-role", label: "사용자권한 설정" },
+    { key: "sys-history", label: "히스토리 관리" },
+  ]},
+];
+
+const SCREENS = [
+  { id: "HEL23-01", label: "표 형태", mode: "table" },
+  { id: "HEL23-02", label: "그래프 · 중기그룹 조회", mode: "chart", axis: "group" },
+  { id: "HEL23-03", label: "그래프 · 기간별 조회", mode: "chart", axis: "date" },
+];
+
+const DATES = ["6/1(월)", "6/2(화)", "6/3(수)", "6/4(목)", "6/5(금)", "6/8(월)", "6/9(화)", "6/10(수)", "6/0(화)"];
+
+const TABLE_ROWS = [
+  ["151", "5T지게차", [240, 420, 520, 260, 400, 300, 100, 150, 125], 1480, 250, 22, 5, 10],
+  ["150", "10T지게차", [180, 360, 300, 420, 240, 280, 160, 140, 110], 1320, 220, 18, 3, 6],
+  ["149", "10T트랜스포터", [320, 280, 460, 380, 300, 340, 200, 180, 160], 1620, 270, 25, 6, 12],
+  ["148", "5T고소차", [120, 180, 240, 200, 160, 140, 100, 90, 80], 980, 165, 14, 2, 4],
+  ["147", "550T트랜스포터", [400, 480, 520, 460, 500, 420, 300, 280, 260], 1980, 330, 30, 8, 14],
+  ["139", "20T지게차", [160, 200, 280, 240, 220, 180, 120, 110, 100], 1120, 190, 16, 4, 7],
+];
+
+const GROUP_BARS = [
+  ["150T 트랜스포터", 320, 300, 120, 90, 62],
+  ["50T 트랜스포터", 240, 280, 100, 70, 55],
+  ["120T 트랜스포터", 400, 320, 140, 110, 70],
+  ["100T 트랜스포터", 360, 290, 90, 80, 58],
+  ["200T 트랜스포터", 460, 330, 160, 120, 76],
+  ["550T 트랜스포터", 500, 340, 180, 140, 82],
+  ["400T 트랜스포터", 420, 310, 130, 100, 68],
+  ["425T 트랜스포터", 380, 300, 110, 95, 64],
+];
+
+const DATE_BARS = [
+  ["2026.5.1", 280, 300, 100, 80, 56],
+  ["2026.5.2", 340, 310, 120, 90, 62],
+  ["2026.5.3", 300, 290, 90, 70, 58],
+  ["2026.5.4", 420, 330, 150, 110, 72],
+  ["2026.5.5", 460, 340, 170, 130, 78],
+  ["2026.5.6", 380, 320, 140, 100, 66],
+  ["2026.5.7", 320, 300, 110, 85, 60],
+  ["2026.5.8", 260, 285, 95, 75, 54],
+];
+
+const SCREEN_DIRS = { HEL00: "00 공통", HEL01: "01 대시보드", HEL02: "02 지번관리", HEL03: "02 지번관리", HEL04: "02 지번관리", HEL05: "03 자재관리", HEL13: "03 자재관리", HEL06: "04 블록관리", HEL07: "05 중기배차신청", HEL08: "06 중기배차계획", HEL09: "07 배차실적", HEL10: "07 배차실적", HEL23: "08 장비가동률", HEL11: "09 운송자원정보관리", HEL14: "09 운송자원정보관리", HEL15: "09 운송자원정보관리", HEL24: "09 운송자원정보관리", HEL12: "10 알람", HEL16: "11 시스템관리", HEL17: "11 시스템관리", HEL18: "12 태블릿 PC 앱", HEL19: "13 작업자용 모바일 앱", HEL20: "13 작업자용 모바일 앱", HEL21: "13 작업자용 모바일 앱", HEL22: "13 작업자용 모바일 앱" };
+function resolveUrl(u) {
+  const dir = SCREEN_DIRS[String(u || "").slice(0, 5)];
+  return dir ? "../" + dir + "/" + u : u;
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const sc = SCREENS.find((s) => s.id === props.startScreen) || SCREENS[0];
+    this.state = {
+      screen: sc.id,
+      lnbOpen: { transport: true },
+      page: 1, period: "일",
+      f_group: sc.axis === "group" ? "tp" : "",
+      f_form: "",
+      nameQuery: sc.axis === "date" ? "550T 트랜스포터" : "",
+    };
+  }
+
+  go(id) {
+    const sc = SCREENS.find((s) => s.id === id);
+    if (!sc) return;
+    this.setState({
+      screen: id,
+      f_group: sc.axis === "group" ? "tp" : this.state.f_group,
+      nameQuery: sc.axis === "date" ? "550T 트랜스포터" : "",
+    });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const cur = SCREENS.find((x) => x.id === s.screen) || SCREENS[0];
+    const isTable = cur.mode === "table";
+    const lnbOpen = s.lnbOpen;
+
+    const navRows = [];
+    const walk = (nodes, depth) => {
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        const has = !!(n.children && n.children.length);
+        const isOpen = !!lnbOpen[n.key];
+        navRows.push({
+          label: n.label, icon: n.icon || "", showIcon: depth === 0, depth: String(depth),
+          active: !!n.self, trail: n.key === "transport",
+          hasChildren: has, chevIcon: isOpen ? "ti-chevron-up" : "ti-chevron-down",
+          onClick: () => {
+            if (has) {
+              const next = Object.assign({}, lnbOpen);
+              next[n.key] = !isOpen;
+              this.setState({ lnbOpen: next });
+            } else if (n.url) { window.location.href = encodeURI(resolveUrl(n.url)); }
+          },
+        });
+        if (has && isOpen) walk(n.children, depth + 1);
+      }
+    };
+    walk(NAV_TREE, 0);
+
+    const nf = (v) => v.toLocaleString("ko-KR");
+    const tableHeadCells = DATES.map((d) => ({ label: "2026/" + d }))
+      .concat([{ label: "합계(분)" }, { label: "평균(분)" }, { label: "총 배차" }, { label: "미확정" }, { label: "긴급배차" }]);
+    const tableRows = TABLE_ROWS.map((r) => ({
+      code: r[0], name: r[1],
+      cells: r[2].map((v) => ({ v: nf(v) })).concat([
+        { v: nf(r[3]) }, { v: nf(r[4]) }, { v: nf(r[5]) }, { v: nf(r[6]) }, { v: nf(r[7]) },
+      ]),
+    }));
+
+    const src = cur.axis === "date" ? DATE_BARS : GROUP_BARS;
+    const chartBars = src.map((b) => ({
+      label: b[0],
+      h1: Math.round(b[1] / 500 * 88),
+      h2: Math.round((b[2] - 280) / 70 * 88),
+      h3: Math.round(b[3] / 500 * 88),
+      h4: Math.round(b[4] / 500 * 88),
+      avg: Math.round(b[5] / 100 * 80),
+    }));
+
+    const pb = (name) => ({
+      bg: s.period === name ? "var(--status-wait-bg)" : "var(--bg-primary)",
+      color: s.period === name ? "var(--brand-primary)" : "var(--text-secondary)",
+    });
+    const d = pb("일"), w = pb("주"), m = pb("월");
+
+    return {
+      screenLabel: cur.id + " 장비가동률 (" + cur.label + ")",
+      crumbItems: [{ label: "HOME" }, { label: "운송수단 관리" }, { label: "장비가동률" }],
+      navRows: navRows,
+      isTable: isTable,
+      isChart: !isTable,
+      tableBg: isTable ? "var(--status-wait-bg)" : "var(--bg-primary)",
+      tableColor: isTable ? "var(--brand-primary)" : "var(--text-secondary)",
+      chartBg: isTable ? "var(--bg-primary)" : "var(--status-wait-bg)",
+      chartColor: isTable ? "var(--text-secondary)" : "var(--brand-primary)",
+      goTable: () => this.go("HEL23-01"),
+      goChart: () => this.go("HEL23-02"),
+      goGroupAxis: () => this.go("HEL23-02"),
+      goDateAxis: () => this.go("HEL23-03"),
+      axisGroupBg: cur.axis === "group" ? "var(--status-wait-bg)" : "var(--bg-primary)",
+      axisGroupColor: cur.axis === "group" ? "var(--brand-primary)" : "var(--text-secondary)",
+      axisDateBg: cur.axis === "date" ? "var(--status-wait-bg)" : "var(--bg-primary)",
+      axisDateColor: cur.axis === "date" ? "var(--brand-primary)" : "var(--text-secondary)",
+      chartHint: cur.axis === "date"
+        ? "기간별 조회는 모든 차량의 데이터를 통합하여 일자별로 표기합니다"
+        : "중기그룹 선택 후 조회 시 X축이 해당 그룹 소속 차량 목록으로 변경됩니다",
+      tableHeadCells: tableHeadCells,
+      tableRows: tableRows,
+      chartBars: chartBars,
+      leftAxis: [{ label: "500" }, { label: "400" }, { label: "300" }, { label: "200" }, { label: "100" }, { label: "0" }],
+      rightAxis: [{ label: "350" }, { label: "336" }, { label: "322" }, { label: "308" }, { label: "294" }, { label: "280" }],
+      groupOptions: [{ value: "", label: "전체" }, { value: "tp", label: "트랜스포터" }, { value: "trailer", label: "트레일러" }, { value: "crane", label: "크레인" }, { value: "aerial", label: "고소차" }, { value: "forklift", label: "지게차" }],
+      f_group: s.f_group,
+      set_group: (v) => this.setState({ f_group: typeof v === "string" ? v : (v && v.target ? v.target.value : v) }),
+      formOptions: [{ value: "", label: "전체" }, { value: "tp550", label: "TP550 : 550T" }, { value: "fl05", label: "FL05 : 5T" }, { value: "fl20", label: "FL20 : 20T" }],
+      f_form: s.f_form,
+      set_form: (v) => this.setState({ f_form: typeof v === "string" ? v : (v && v.target ? v.target.value : v) }),
+      nameQuery: s.nameQuery,
+      setNameQuery: (e) => this.setState({ nameQuery: e && e.target ? e.target.value : "" }),
+      setD: () => this.setState({ period: "일" }), dBg: d.bg, dColor: d.color,
+      setW: () => this.setState({ period: "주" }), wBg: w.bg, wColor: w.color,
+      setM: () => this.setState({ period: "월" }), mBg: m.bg, mColor: m.color,
+      page: s.page,
+      setPage: (p) => this.setState({ page: p }),
+      showPicker: !this.props.startScreen,
+      pickRows: SCREENS.map((sc) => {
+        const on = sc.id === s.screen;
+        return {
+          short: sc.id.replace("HEL23-", ""), label: sc.id + " " + sc.label,
+          border: on ? "var(--brand-primary)" : "var(--border-input)",
+          bg: on ? "var(--status-wait-bg)" : "var(--bg-primary)",
+          color: on ? "var(--brand-primary)" : "var(--text-secondary)",
+          onClick: () => this.go(sc.id),
+        };
+      }),
+    };
+  }
+}
+</script>
+</body>
+</html>

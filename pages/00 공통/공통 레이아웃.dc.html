@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.24.0/dist/tabler-icons.min.css">
+<script src="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/_ds_bundle.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; }
+  *, *::before, *::after { box-sizing: border-box; }
+  a { color: var(--blue-dark); text-decoration: none; }
+  a:hover { color: var(--blue-main); }
+  input::placeholder { color: var(--text-placeholder); }
+  .dl-navbtn:hover { background: var(--bg-secondary) !important; }
+  .dl-nav { width: var(--lnb-w); flex-shrink: 0; background: var(--bg-primary); border-right: 1px solid var(--border-subtle); display: flex; flex-direction: column; padding: 12px 8px; }
+  .dl-item { display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; margin: 2px 0; border: none; cursor: pointer; border-radius: var(--radius-btn); background: transparent; color: var(--text-secondary); font-family: var(--font-content); font-weight: 500; font-size: 14px; line-height: 1; width: 100%; text-align: left; }
+  .dl-item[data-active="true"] { background: var(--status-wait-bg); color: var(--brand-primary); font-weight: 700; }
+  .dl-item[data-trail="true"] { color: var(--text-primary); font-weight: 700; }
+  .dl-item[data-depth="1"] { height: 36px; padding-left: 44px; font-size: 13px; font-weight: 400; }
+  .dl-item[data-depth="2"] { height: 32px; padding-left: 60px; font-size: 13px; font-weight: 400; color: var(--text-tertiary); }
+  .dl-chev { margin-left: auto; font-size: 16px; color: var(--text-tertiary); flex-shrink: 0; }
+  .dl-mapbtn:hover { background: var(--gray-5) !important; }
+  .dl-pick:hover { border-color: var(--brand-primary) !important; color: var(--brand-primary) !important; }
+</style>
+</helmet>
+
+<div style="position:relative; height:100vh; width:100%; overflow:hidden; font-family:var(--font-primary); color:var(--text-secondary); background:var(--gray-5);">
+
+<!-- ================= HEL00-01 로그인 ================= -->
+<sc-if value="{{ isLogin }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="HEL00-01 로그인" style="height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0; padding:40px 24px; background:var(--gray-5);">
+    <img src="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/assets/logo-horizontal.png" alt="한화오션에코텍" style="height:34px; width:auto; margin-bottom:28px;">
+    <div style="width:520px; max-width:100%; display:flex; flex-direction:column; gap:0;">
+      <span style="font:700 18px/1.3 var(--font-content); color:var(--text-primary);">Login</span>
+      <span style="font:400 14px/1.5 var(--font-content); color:var(--text-tertiary); margin-top:6px;">권한이 허용된 이용자만 접속하실 수 있습니다.</span>
+      <div style="margin-top:16px; background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:20px;">
+        <div style="display:flex; gap:12px; align-items:stretch;">
+          <div style="flex:1; min-width:0; display:flex; flex-direction:column; gap:8px;">
+            <input placeholder="아이디" style="width:100%; height:36px; border:1px solid var(--border-input); border-radius:4px; padding:0 10px; font:400 14px var(--font-content); color:var(--text-secondary); outline-color:var(--brand-primary);">
+            <input type="password" placeholder="비밀번호" style="width:100%; height:36px; border:1px solid var(--border-input); border-radius:4px; padding:0 10px; font:400 14px var(--font-content); color:var(--text-secondary); outline-color:var(--brand-primary);">
+          </div>
+          <button onClick="{{ doLogin }}" style="width:104px; flex-shrink:0; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 16px var(--font-content); cursor:pointer;" style-hover="background:var(--brand-hover);" style-active="background:var(--brand-pressed);">로그인</button>
+        </div>
+        <div style="margin-top:18px; padding-top:16px; border-top:1px solid var(--border-default); display:flex; flex-direction:column; gap:10px;">
+          <span style="font:400 12px/1.5 var(--font-content); color:var(--text-tertiary);">관리자 계정 및 승인은 아래 담당자의 이메일로 문의해 주십시오.</span>
+          <div style="display:grid; grid-template-columns:72px 1fr; gap:6px 12px; font:400 12px/1.5 var(--font-content); font-variant-numeric:tabular-nums;">
+            <span style="color:var(--text-tertiary);">회사</span><span style="color:var(--text-secondary);">HanwhaOcean ecotech</span>
+            <span style="color:var(--text-tertiary);">Team명</span><span style="color:var(--text-secondary);">생산관리팀</span>
+            <span style="color:var(--text-tertiary);">담당자</span><span style="color:var(--text-secondary);">김도현</span>
+            <span style="color:var(--text-tertiary);">Tel</span><span style="color:var(--text-secondary);">061-780-3142</span>
+            <span style="color:var(--text-tertiary);">Email</span><span><a href="mailto:dh.kim@hanwhaocean-ecotech.co.kr">dh.kim@hanwhaocean-ecotech.co.kr</a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:32px; display:flex; flex-direction:column; align-items:center; gap:4px; font:400 12px/1.6 var(--font-content); color:var(--text-tertiary); font-variant-numeric:tabular-nums; text-align:center;">
+      <span>57765 전라남도 광양시 광양읍 율촌산단 3로 111</span>
+      <span>Tel : 061-780-3000 · Fax : 061-780-3600</span>
+      <span>ⓒ Hanwha Ocean Ecotech. All rights reserved.</span>
+    </div>
+  </div>
+</sc-if>
+
+<!-- ================= HEL00-02 / HEL00-03 공통 셸 ================= -->
+<sc-if value="{{ isShell }}" hint-placeholder-val="{{ true }}">
+  <div data-screen-label="{{ screenLabel }}" style="display:flex; flex-direction:column; height:100%; min-width:1440px; width:100%; overflow:hidden;">
+
+    <header style="height:var(--header-h-web); flex-shrink:0; background:var(--bg-primary); border-bottom:1px solid var(--border-subtle); display:flex; align-items:center; padding:0 20px 0 12px; gap:16px; z-index:20;">
+      <img src="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/assets/logo-horizontal.png" alt="한화오션에코텍" style="height:25px; width:auto; display:block; flex-shrink:0;">
+      <span style="font-family:var(--font-title); font-weight:700; font-size:14px; color:var(--text-primary); letter-spacing:-0.2px; white-space:nowrap;">물류Twin</span>
+      <div style="margin-left:auto; display:flex; align-items:center; gap:18px;">
+        <span style="font-size:14px; color:var(--text-tertiary);"><strong style="font-weight:500; color:var(--text-primary);">{{ userName }}</strong>님 로그인 되었습니다.</span>
+        <button onClick="{{ doLogout }}" title="로그아웃" style="border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:6px;">
+          <i class="ti ti-logout" style="font-size:22px;"></i>
+        </button>
+        <button title="알림" style="border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:6px; position:relative;">
+          <i class="ti ti-bell" style="font-size:22px;"></i>
+          <span style="position:absolute; top:2px; right:2px; min-width:16px; height:16px; padding:0 4px; border-radius:999px; background:var(--red-main); color:#fff; font:700 10px/16px var(--font-content); text-align:center; font-variant-numeric:tabular-nums;">{{ alarmCount }}</span>
+        </button>
+      </div>
+    </header>
+
+    <div style="display:flex; flex:1; min-height:0;">
+
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <nav class="dl-nav">
+          <sc-for list="{{ navRows }}" as="item" hint-placeholder-count="6">
+            <button class="dl-navbtn dl-item" onClick="{{ item.onClick }}" title="{{ item.label }}" data-active="{{ item.active }}" data-trail="{{ item.trail }}" data-depth="{{ item.depth }}">
+              <sc-if value="{{ item.showIcon }}" hint-placeholder-val="{{ true }}">
+                <i class="ti {{ item.icon }}" style="font-size:20px; flex-shrink:0;"></i>
+              </sc-if>
+              <span style="white-space:nowrap; flex-shrink:0;">{{ item.label }}</span>
+              <sc-if value="{{ item.hasChildren }}" hint-placeholder-val="{{ false }}">
+                <i class="ti {{ item.chevIcon }} dl-chev"></i>
+              </sc-if>
+            </button>
+          </sc-for>
+          <button onClick="{{ toggleLnb }}" style="margin-top:auto; height:36px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); cursor:pointer; display:flex; align-items:center; justify-content:center; gap:4px;" style-hover="background:var(--gray-5);">
+            <i class="ti ti-chevron-left" style="font-size:15px;"></i>메뉴닫기
+          </button>
+        </nav>
+      </sc-if>
+
+      <main style="flex:1; min-width:0; display:flex; flex-direction:column; overflow:hidden; position:relative;">
+        <div style="flex-shrink:0; display:flex; align-items:center; padding:14px 24px 0;">
+          <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Breadcrumb" items="{{ crumbItems }}" hint-size="240px,20px"></x-import>
+        </div>
+        <div style="flex-shrink:0; display:flex; align-items:center; gap:12px; padding:10px 24px 16px;">
+          <span style="font:700 16px/1.2 var(--font-content); color:var(--text-primary); white-space:nowrap;">대시보드</span>
+          <sc-if value="{{ showPicker }}" hint-placeholder-val="{{ true }}">
+            <div style="margin-left:auto; display:flex; align-items:center; gap:6px;">
+              <span style="font:400 11px var(--font-content); color:var(--text-tertiary); white-space:nowrap; flex-shrink:0;">화면 ID</span>
+              <sc-for list="{{ pickRows }}" as="p" hint-placeholder-count="3">
+                <button class="dl-pick" onClick="{{ p.onClick }}" title="{{ p.label }}" style="flex-shrink:0; height:26px; padding:0 10px; border:1px solid {{ p.border }}; border-radius:999px; background:{{ p.bg }}; color:{{ p.color }}; font:700 11px var(--font-content); font-variant-numeric:tabular-nums; cursor:pointer; white-space:nowrap;">{{ p.id }}</button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="flex-shrink:0; display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; padding:0 24px 16px;">
+          <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">야드 점유율</span>
+            <span style="font:700 18px/1.2 var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">82 %</span>
+            <span style="font:400 12px/1 var(--font-content); color:var(--red-dark); font-variant-numeric:tabular-nums;">전일 대비 +1.4 %p</span>
+          </div>
+          <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">블록 개소</span>
+            <span style="font:700 18px/1.2 var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">14 ea</span>
+            <span style="font:400 12px/1 var(--font-content); color:var(--blue-dark); font-variant-numeric:tabular-nums;">전일 대비 −2 ea</span>
+          </div>
+          <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">입고예정 자재 · 출고예정 블록</span>
+            <span style="font:700 18px/1.2 var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">25 건 · 8 ea</span>
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">금일 기준</span>
+          </div>
+          <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">운행중 장비</span>
+            <span style="font:700 18px/1.2 var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">20 대</span>
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary); font-variant-numeric:tabular-nums;">지게차 12 · 크레인 3 · TP 5</span>
+          </div>
+        </div>
+
+        <div style="flex:1; min-height:0; padding:0 24px 24px;">
+          <div style="height:100%; position:relative; border:1px solid var(--border-input); border-radius:6px; overflow:hidden; background:var(--gray-10);">
+
+            <div style="position:absolute; inset:0; pointer-events:none;">
+              <div style="position:absolute; left:0; right:0; top:40%; height:26px; background:var(--gray-0); opacity:0.85;"></div>
+              <div style="position:absolute; top:0; bottom:0; left:32%; width:20px; background:var(--gray-0); opacity:0.85;"></div>
+              <div style="position:absolute; top:0; bottom:0; left:68%; width:20px; background:var(--gray-0); opacity:0.85;"></div>
+              <span style="position:absolute; left:42%; top:10%; font:700 15px var(--font-content); color:var(--gray-40); letter-spacing:1px;">1YARD</span>
+              <span style="position:absolute; left:76%; top:62%; font:700 15px var(--font-content); color:var(--gray-40); letter-spacing:1px;">2YARD</span>
+              <div style="position:absolute; left:8%; top:14%; width:20%; height:20%; border:1px solid var(--gray-40); background:rgba(255,255,255,0.35);"></div>
+              <div style="position:absolute; left:38%; top:50%; width:24%; height:26%; border:1px solid var(--gray-40); background:rgba(255,255,255,0.35);"></div>
+              <div style="position:absolute; left:72%; top:16%; width:20%; height:22%; border:1px solid var(--gray-40); background:rgba(255,255,255,0.35);"></div>
+            </div>
+
+            <div style="position:absolute; left:11%; top:19%; display:flex; align-items:center; gap:4px; height:22px; padding:0 8px; border-radius:4px; background:var(--blue-dark); color:#fff; font:700 12px/1 var(--font-content); font-variant-numeric:tabular-nums;"><i class="ti ti-box" style="font-size:13px;"></i>BL201</div>
+            <div style="position:absolute; left:20%; top:28%; display:flex; align-items:center; gap:4px; height:22px; padding:0 8px; border-radius:4px; background:var(--blue-dark); color:#fff; font:700 12px/1 var(--font-content); font-variant-numeric:tabular-nums;"><i class="ti ti-box" style="font-size:13px;"></i>BL305</div>
+            <div style="position:absolute; left:41%; top:56%; display:flex; align-items:center; gap:4px; height:22px; padding:0 8px; border-radius:4px; background:var(--blue-dark); color:#fff; font:700 12px/1 var(--font-content); font-variant-numeric:tabular-nums;"><i class="ti ti-box" style="font-size:13px;"></i>BL412</div>
+            <div style="position:absolute; left:52%; top:66%; display:flex; align-items:center; gap:4px; height:22px; padding:0 8px; border-radius:4px; background:var(--blue-dark); color:#fff; font:700 12px/1 var(--font-content); font-variant-numeric:tabular-nums;"><i class="ti ti-box" style="font-size:13px;"></i>BL508</div>
+            <div style="position:absolute; left:75%; top:22%; display:flex; align-items:center; gap:4px; height:22px; padding:0 8px; border-radius:4px; background:var(--blue-dark); color:#fff; font:700 12px/1 var(--font-content); font-variant-numeric:tabular-nums;"><i class="ti ti-box" style="font-size:13px;"></i>BL602</div>
+
+            <div style="position:absolute; left:34%; top:38%; display:flex; align-items:center; gap:4px; height:24px; padding:0 8px; border-radius:999px; background:var(--brand-primary); color:#fff; font:700 12px/1 var(--font-content); font-variant-numeric:tabular-nums;"><i class="ti ti-truck-delivery" style="font-size:14px;"></i>TP01</div>
+            <div style="position:absolute; left:58%; top:46%; display:flex; align-items:center; gap:4px; height:24px; padding:0 8px; border-radius:999px; background:var(--brand-primary); color:#fff; font:700 12px/1 var(--font-content); font-variant-numeric:tabular-nums;"><i class="ti ti-truck-delivery" style="font-size:14px;"></i>TP02</div>
+            <div style="position:absolute; left:66%; top:72%; display:flex; align-items:center; gap:4px; height:24px; padding:0 8px; border-radius:999px; background:var(--brand-primary); color:#fff; font:700 12px/1 var(--font-content); font-variant-numeric:tabular-nums;"><i class="ti ti-crane" style="font-size:14px;"></i>ZC01</div>
+
+            <div style="position:absolute; left:26%; top:62%; display:flex; align-items:center; gap:4px; height:22px; padding:0 8px; border-radius:4px; background:var(--green-dark); color:#fff; font:500 12px/1 var(--font-content);"><i class="ti ti-package" style="font-size:13px;"></i>의장재 적치</div>
+            <div style="position:absolute; left:47%; top:26%; display:flex; align-items:center; gap:4px; height:22px; padding:0 8px; border-radius:4px; background:var(--red-main); color:#fff; font:500 12px/1 var(--font-content);"><i class="ti ti-alert-triangle" style="font-size:13px;"></i>방해요소</div>
+
+            <div style="position:absolute; left:50%; top:12px; transform:translateX(-50%); width:340px; display:flex; align-items:center; gap:6px; height:32px; padding:0 10px; background:var(--bg-primary); border:1px solid var(--border-default); border-radius:6px;">
+              <i class="ti ti-search" style="font-size:16px; color:var(--text-tertiary); flex-shrink:0;"></i>
+              <input placeholder="검색할 대상 코드를 입력해주세요." style="flex:1; min-width:0; border:none; outline:none; background:transparent; font:400 13px var(--font-content); color:var(--text-secondary);">
+            </div>
+            <button title="지도 안내" style="position:absolute; right:12px; top:12px; width:32px; height:32px; border:1px solid var(--border-default); border-radius:6px; background:var(--bg-primary); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-secondary);">
+              <i class="ti ti-info-circle" style="font-size:17px;"></i>
+            </button>
+
+            <sc-if value="{{ showMapPanel }}" hint-placeholder-val="{{ true }}">
+              <div style="position:absolute; left:12px; top:12px; width:190px; max-height:calc(100% - 72px); overflow:auto; display:flex; flex-direction:column; gap:8px;">
+                <div style="background:var(--bg-primary); border:1px solid var(--border-default); border-radius:6px; padding:12px;">
+                  <div style="font:700 12px var(--font-content); color:var(--text-primary); margin-bottom:6px;">지도유형</div>
+                  <div style="margin-bottom:10px;">
+                    <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ mapTypeOptions }}" value="{{ mapType }}" onChange="{{ setMapType }}" hint-size="100%,28px"></x-import>
+                  </div>
+                  <div style="font:700 12px var(--font-content); color:var(--text-primary); margin-bottom:6px;">지도옵션</div>
+                  <div style="display:flex; flex-direction:column; gap:5px; font-size:12px; margin-bottom:10px;">
+                    <sc-for list="{{ mapOptList }}" as="o" hint-placeholder-count="4">
+                      <span onClick="{{ o.onClick }}" style="display:flex; align-items:center; gap:6px; cursor:pointer; user-select:none;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Checkbox" checked="{{ o.on }}" size="14px" style="pointer-events:none; flex-shrink:0;" hint-size="14px,14px"></x-import>{{ o.label }}</span>
+                    </sc-for>
+                  </div>
+                  <div style="font:700 12px var(--font-content); color:var(--text-primary); margin-bottom:6px;">표시항목</div>
+                  <div style="display:flex; flex-direction:column; gap:5px; font-size:12px;">
+                    <sc-for list="{{ dispItemList }}" as="o" hint-placeholder-count="5">
+                      <span onClick="{{ o.onClick }}" style="display:flex; align-items:center; gap:6px; cursor:pointer; user-select:none;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Checkbox" checked="{{ o.on }}" size="14px" style="pointer-events:none; flex-shrink:0;" hint-size="14px,14px"></x-import>{{ o.label }}</span>
+                    </sc-for>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+
+            <div style="position:absolute; right:12px; bottom:12px; display:flex; flex-direction:column; gap:6px;">
+              <button class="dl-mapbtn" title="전체화면" style="width:32px; height:32px; border:1px solid var(--border-default); border-radius:6px; background:var(--bg-primary); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-secondary);"><i class="ti ti-maximize" style="font-size:16px;"></i></button>
+              <button class="dl-mapbtn" title="새로고침" style="width:32px; height:32px; border:1px solid var(--border-default); border-radius:6px; background:var(--bg-primary); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-secondary);"><i class="ti ti-refresh" style="font-size:16px;"></i></button>
+              <button class="dl-mapbtn" title="현재위치" style="width:32px; height:32px; border:1px solid var(--border-default); border-radius:6px; background:var(--bg-primary); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-secondary);"><i class="ti ti-current-location" style="font-size:16px;"></i></button>
+              <button class="dl-mapbtn" title="확대" style="width:32px; height:32px; border:1px solid var(--border-default); border-radius:6px; background:var(--bg-primary); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-secondary);"><i class="ti ti-plus" style="font-size:16px;"></i></button>
+              <button class="dl-mapbtn" title="축소" style="width:32px; height:32px; border:1px solid var(--border-default); border-radius:6px; background:var(--bg-primary); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-secondary);"><i class="ti ti-minus" style="font-size:16px;"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <sc-if value="{{ collapsed }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ toggleLnb }}" style="position:absolute; left:36px; bottom:36px; z-index:40; height:36px; padding:0 14px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); white-space:nowrap; cursor:pointer; display:flex; align-items:center; gap:4px; box-shadow:0 2px 8px rgba(54,59,64,0.25);" style-hover="background:var(--gray-5);">
+            메뉴열기<i class="ti ti-chevron-right" style="font-size:15px;"></i>
+          </button>
+        </sc-if>
+      </main>
+    </div>
+  </div>
+</sc-if>
+
+<!-- ================= 화면 ID 선택기 (로그인 화면용) ================= -->
+<sc-if value="{{ showPickerFloat }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed; right:16px; bottom:16px; z-index:400; display:flex; flex-direction:column; gap:6px; padding:10px; background:var(--bg-primary); border:1px solid var(--border-default); border-radius:6px; box-shadow:0 2px 8px rgba(54,59,64,0.25);">
+    <span style="font:700 11px/1 var(--font-content); color:var(--text-tertiary); letter-spacing:0.3px;">공통 레이아웃 화면</span>
+    <sc-for list="{{ pickRows }}" as="p" hint-placeholder-count="3">
+      <button class="dl-pick" onClick="{{ p.onClick }}" style="display:flex; align-items:center; gap:8px; height:28px; padding:0 10px; border:1px solid {{ p.border }}; border-radius:4px; background:{{ p.bg }}; color:{{ p.color }}; font:500 12px var(--font-content); cursor:pointer; white-space:nowrap; text-align:left;">
+        <span style="font-variant-numeric:tabular-nums; font-weight:700;">{{ p.id }}</span>{{ p.label }}
+      </button>
+    </sc-for>
+  </div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1920,&quot;height&quot;:1080},&quot;startScreen&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;},&quot;userName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;홍길동&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;콘텐츠&quot;},&quot;alarmCount&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:1,&quot;min&quot;:0,&quot;max&quot;:99,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;콘텐츠&quot;},&quot;showMapPanel&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;표시&quot;}}">
+const NAV_TREE = [
+  { key: "dashboard", label: "대시보드", icon: "ti-layout-dashboard", url: "HEL01-01 대시보드 (기본).dc.html" },
+  { key: "jibun", label: "지번관리", icon: "ti-map-pin", children: [
+    { key: "jibun-phys", label: "물리지번 목록", url: "HEL02-00 물리지번 목록.dc.html" },
+    { key: "jibun-logi", label: "논리지번 목록", url: "HEL02-09 논리지번 목록.dc.html" },
+    { key: "jibun-list", label: "지번 목록", url: "HEL03-01 지번 목록.dc.html" },
+    { key: "jibun-plan", label: "활용계획", url: "HEL04-01 활용계획.dc.html" },
+  ]},
+  { key: "material", label: "자재관리", icon: "ti-package-import", children: [
+    { key: "mat-inbound", label: "입고예정정보", children: [
+      { key: "mat-in-outfit", label: "의장재", url: "HEL05-01 의장재 (입고예정정보).dc.html" },
+      { key: "mat-in-equip", label: "기기장비재", url: "HEL05-02 기기장비재 (입고예정정보).dc.html" },
+      { key: "mat-in-steel", label: "강재", url: "HEL05-03 강재 (입고예정정보).dc.html" },
+    ]},
+    { key: "mat-avail", label: "재고가용성정보", url: "HEL05-04 재고가용성정보.dc.html" },
+    { key: "mat-core", label: "핵심자재 관리", url: "HEL13-01 핵심자재 관리 (목록).dc.html" },
+    { key: "mat-loc", label: "적치위치 관리", url: "HEL05-05 적치위치 관리.dc.html" },
+  ]},
+  { key: "block", label: "블록관리", icon: "ti-box", url: "HEL06-01 블록관리 (목록).dc.html" },
+  { key: "transport", label: "운송수단 관리", icon: "ti-truck-delivery", children: [
+    { key: "tr-req", label: "중기배차신청", url: "HEL07-01 중기배차신청 (사용자).dc.html" },
+    { key: "tr-plan", label: "중기배차계획", children: [
+      { key: "tr-plan-daily", label: "일일중기배차계획", url: "HEL08-01 일일중기배차계획 (사용자).dc.html" },
+      { key: "tr-plan-weekly", label: "주간중기배차계획", url: "HEL08-02 주간중기배차계획 (사용자).dc.html" },
+    ]},
+    { key: "tr-result", label: "배차실적", url: "HEL09-01 일반배차실적.dc.html" },
+    { key: "tr-util", label: "장비가동률", url: "HEL23-01 장비가동률 (표).dc.html" },
+    { key: "tr-res", label: "운송자원정보관리", children: [
+      { key: "tr-res-master", label: "운송자원 마스터 관리", url: "HEL14-01 운송자원 마스터 관리.dc.html" },
+      { key: "tr-res-fuel", label: "유류실적 관리", url: "HEL11-01 유류실적 관리.dc.html" },
+      { key: "tr-res-jig", label: "치구 마스터 관리", url: "HEL15-01 치구 마스터 관리.dc.html" },
+      { key: "tr-res-week", label: "주간배차 마스터 관리", url: "HEL24-01 주간배차 마스터 관리.dc.html" },
+    ]},
+  ]},
+  { key: "system", label: "시스템관리", icon: "ti-settings", children: [
+    { key: "sys-alarm", label: "알람조건 설정", url: "HEL12-03 알람조건 설정.dc.html" },
+    { key: "sys-role", label: "사용자권한 설정", url: "HEL16-01 사용자권한 설정.dc.html" },
+    { key: "sys-history", label: "히스토리 관리", url: "HEL17-01 히스토리 관리.dc.html" },
+  ]},
+];
+
+const SCREENS = [
+  { id: "HEL00-01", label: "로그인", screen: "login" },
+  { id: "HEL00-02", label: "메뉴 열림", screen: "menu-open" },
+  { id: "HEL00-03", label: "메뉴 닫힘", screen: "menu-closed" },
+];
+
+const SCREEN_DIRS = { HEL00: "00 공통", HEL01: "01 대시보드", HEL02: "02 지번관리", HEL03: "02 지번관리", HEL04: "02 지번관리", HEL05: "03 자재관리", HEL13: "03 자재관리", HEL06: "04 블록관리", HEL07: "05 중기배차신청", HEL08: "06 중기배차계획", HEL09: "07 배차실적", HEL10: "07 배차실적", HEL23: "08 장비가동률", HEL11: "09 운송자원정보관리", HEL14: "09 운송자원정보관리", HEL15: "09 운송자원정보관리", HEL24: "09 운송자원정보관리", HEL12: "10 알람", HEL16: "11 시스템관리", HEL17: "11 시스템관리", HEL18: "12 태블릿 PC 앱", HEL19: "13 작업자용 모바일 앱", HEL20: "13 작업자용 모바일 앱", HEL21: "13 작업자용 모바일 앱", HEL22: "13 작업자용 모바일 앱" };
+function resolveUrl(u) {
+  const dir = SCREEN_DIRS[String(u || "").slice(0, 5)];
+  return dir ? "../" + dir + "/" + u : u;
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const start = SCREENS.find((s) => s.id === props.startScreen);
+    this.state = {
+      screen: start ? start.screen : "menu-open",
+      lnbOpen: {},
+      mapType: "satellite",
+      mapOpts: { road: false, cad: false, jibun: false, stack: false },
+      dispItems: { mat: true, block: true, obstacle: true, resource: true, facility: true },
+    };
+  }
+
+  go(screen) { this.setState({ screen: screen }); }
+
+  renderVals() {
+    const s = this.state;
+    const screen = s.screen;
+    const collapsed = screen === "menu-closed";
+    const activeKey = "dashboard";
+    const lnbOpen = s.lnbOpen;
+
+    const navRows = [];
+    const walk = (nodes, depth) => {
+      for (const n of nodes) {
+        const has = !!(n.children && n.children.length);
+        const isOpen = !!lnbOpen[n.key];
+        navRows.push({
+          key: n.key,
+          label: n.label,
+          icon: n.icon || "",
+          showIcon: depth === 0,
+          depth: String(depth),
+          active: n.key === activeKey,
+          trail: false,
+          hasChildren: has,
+          chevIcon: isOpen ? "ti-chevron-up" : "ti-chevron-down",
+          onClick: () => {
+            if (has) {
+              const next = Object.assign({}, lnbOpen);
+              next[n.key] = !isOpen;
+              this.setState({ lnbOpen: next });
+            } else if (n.url) {
+              window.location.href = encodeURI(resolveUrl(n.url));
+            } else if (n.key === "dashboard") {
+              this.go("menu-open");
+            }
+          },
+        });
+        if (has && isOpen) walk(n.children, depth + 1);
+      }
+    };
+    walk(NAV_TREE, 0);
+
+    const mapOptDefs = [
+      ["road", "차도지번"], ["cad", "CAD 도면"], ["jibun", "지번 표시"], ["stack", "적치 여부"],
+    ];
+    const dispDefs = [
+      ["mat", "자재"], ["block", "블록"], ["obstacle", "방해요소"], ["resource", "운송자원"], ["facility", "주요시설"],
+    ];
+    const mapOptList = mapOptDefs.map(([k, label]) => ({
+      label: label,
+      on: !!s.mapOpts[k],
+      onClick: () => {
+        const next = Object.assign({}, s.mapOpts);
+        next[k] = !next[k];
+        this.setState({ mapOpts: next });
+      },
+    }));
+    const dispItemList = dispDefs.map(([k, label]) => ({
+      label: label,
+      on: !!s.dispItems[k],
+      onClick: () => {
+        const next = Object.assign({}, s.dispItems);
+        next[k] = !next[k];
+        this.setState({ dispItems: next });
+      },
+    }));
+
+    const pickRows = SCREENS.map((sc) => {
+      const on = sc.screen === screen;
+      return {
+        id: sc.id,
+        label: sc.label,
+        border: on ? "var(--brand-primary)" : "var(--border-input)",
+        bg: on ? "var(--status-wait-bg)" : "var(--bg-primary)",
+        color: on ? "var(--brand-primary)" : "var(--text-secondary)",
+        onClick: () => this.go(sc.screen),
+      };
+    });
+
+    const cur = SCREENS.find((sc) => sc.screen === screen) || SCREENS[1];
+
+    return {
+      isLogin: screen === "login",
+      isShell: screen !== "login",
+      screenLabel: cur.id + " " + cur.label,
+      collapsed: collapsed,
+      expanded: !collapsed,
+      toggleLnb: () => this.go(collapsed ? "menu-open" : "menu-closed"),
+      doLogin: () => this.go("menu-open"),
+      doLogout: () => this.go("login"),
+      userName: this.props.userName ?? "홍길동",
+      alarmCount: this.props.alarmCount ?? 1,
+      showMapPanel: this.props.showMapPanel ?? true,
+      crumbItems: [{ label: "HOME" }, { label: "대시보드" }],
+      navRows: navRows,
+      mapTypeOptions: [
+        { value: "satellite", label: "위성지도" },
+        { value: "cad", label: "CAD 도면" },
+      ],
+      mapType: s.mapType,
+      setMapType: (v) => this.setState({ mapType: typeof v === "string" ? v : (v && v.target ? v.target.value : v) }),
+      mapOptList: mapOptList,
+      dispItemList: dispItemList,
+      showPicker: !this.props.startScreen,
+      showPickerFloat: !this.props.startScreen && screen === "login",
+      pickRows: pickRows,
+    };
+  }
+}
+</script>
+</body>
+</html>

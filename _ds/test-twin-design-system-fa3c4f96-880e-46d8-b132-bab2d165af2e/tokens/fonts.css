@@ -1,0 +1,75 @@
+/* ============================================================
+   Fonts — 디자인가이드 V0.1
+   · 한화 (Hanwha)          → Title & Menu   [self-hosted, uploaded]
+   · Spoqa Han Sans Neo     → Content        [CDN webfont]
+   Base letter-spacing 0% for both (guide slides 5–6).
+   ============================================================ */
+
+/* Spoqa Han Sans Neo — Content face. Self-hosted (uploaded OTF).
+   Weights: Thin 100 / Light 300 / Regular 400 / Medium 500 / Bold 700. */
+@font-face {
+  font-family: "Spoqa Han Sans Neo";
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/SpoqaHanSansNeo-Thin.otf") format("opentype");
+}
+@font-face {
+  font-family: "Spoqa Han Sans Neo";
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/SpoqaHanSansNeo-Light.otf") format("opentype");
+}
+@font-face {
+  font-family: "Spoqa Han Sans Neo";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/SpoqaHanSansNeo-Regular.otf") format("opentype");
+}
+@font-face {
+  font-family: "Spoqa Han Sans Neo";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/SpoqaHanSansNeo-Medium.otf") format("opentype");
+}
+@font-face {
+  font-family: "Spoqa Han Sans Neo";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/SpoqaHanSansNeo-Bold.otf") format("opentype");
+}
+
+/* 한화 (Hanwha) — Title & Menu face. Uploaded weights: L / R / B.
+   Guide weights used: Regular(400) · Medium(500→R) · Bold(700). */
+@font-face {
+  font-family: "Hanwha";
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/03HanwhaL_OTF.otf") format("opentype");
+}
+@font-face {
+  font-family: "Hanwha";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/02HanwhaR_OTF.otf") format("opentype");
+}
+@font-face {
+  font-family: "Hanwha";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/02HanwhaR_OTF.otf") format("opentype");
+}
+@font-face {
+  font-family: "Hanwha";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/01HanwhaB_OTF.otf") format("opentype");
+}

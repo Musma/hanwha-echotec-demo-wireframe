@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.24.0/dist/tabler-icons.min.css">
+<script src="_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/_ds_bundle.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; }
+  *, *::before, *::after { box-sizing: border-box; }
+  a { color: var(--blue-dark); text-decoration: none; }
+  a:hover { color: var(--blue-main); }
+  input::placeholder { color: var(--text-placeholder); }
+  button { white-space: nowrap; }
+  .dl-pick:hover { border-color: var(--brand-primary) !important; color: var(--brand-primary) !important; }
+  .tb-card { border: 1px solid var(--border-default); border-radius: 12px; background: var(--bg-primary); padding: 14px; display: flex; flex-direction: column; gap: 8px; cursor: pointer; }
+  .tb-card:hover { background: var(--gray-5); }
+  .tb-card[data-on="true"] { border-color: var(--brand-primary); background: var(--status-wait-bg); }
+  .tb-card[data-urgent="true"] { border: 2px solid var(--brand-primary); }
+  .tb-tab { flex: 1; height: 44px; border: none; background: transparent; color: var(--text-tertiary); font: 500 15px var(--font-content); cursor: pointer; border-bottom: 2px solid transparent; }
+  .tb-tab[data-on="true"] { color: var(--brand-primary); font-weight: 700; border-bottom-color: var(--brand-primary); }
+  .tb-row { display: grid; grid-template-columns: 130px 1fr; border-bottom: 1px solid var(--border-default); }
+  .tb-k { background: var(--gray-5); padding: 10px 12px; font: 400 13px var(--font-content); color: var(--text-tertiary); display: flex; align-items: center; }
+  .tb-v { padding: 10px 12px; font: 400 13px var(--font-content); color: var(--text-secondary); font-variant-numeric: tabular-nums; display: flex; align-items: center; }
+</style>
+</helmet>
+
+<div style="min-height:100vh; width:100%; background:var(--gray-10); display:flex; flex-direction:column; align-items:center; gap:16px; padding:20px; font-family:var(--font-primary); color:var(--text-secondary);" data-screen-label="{{ screenLabel }}">
+
+  <sc-if value="{{ showPicker }}" hint-placeholder-val="{{ true }}">
+    <div style="width:1280px; max-width:100%; display:flex; align-items:center; gap:8px; padding:12px 16px; background:var(--bg-primary); border:1px solid var(--border-default); border-radius:8px;">
+      <span style="font:700 14px var(--font-content); color:var(--text-primary); white-space:nowrap;">태블릿 PC 앱</span>
+      <span style="font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">{{ screenLabel }}</span>
+      <div style="margin-left:auto; display:flex; align-items:center; gap:5px; overflow-x:auto;">
+        <sc-for list="{{ pickRows }}" as="p" hint-placeholder-count="8">
+          <button class="dl-pick" onClick="{{ p.onClick }}" title="{{ p.label }}" style="flex-shrink:0; height:26px; padding:0 10px; border:1px solid {{ p.border }}; border-radius:999px; background:{{ p.bg }}; color:{{ p.color }}; font:700 11px var(--font-content); font-variant-numeric:tabular-nums; cursor:pointer;">{{ p.short }}</button>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ 태블릿 프레임 ============ -->
+  <div style="width:1280px; height:800px; max-width:100%; flex-shrink:0; background:var(--gray-80); border-radius:22px; padding:14px; box-shadow:0 2px 8px rgba(54,59,64,0.25);">
+    <div style="width:100%; height:100%; background:var(--bg-primary); border-radius:12px; overflow:hidden; display:flex; flex-direction:column;">
+
+      <!-- ===== 연동 화면 ===== -->
+      <sc-if value="{{ isLink }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1; min-height:0; display:flex;">
+          <div style="flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; padding:40px;">
+            <i class="ti ti-info-circle" style="font-size:44px; color:var(--text-tertiary);"></i>
+            <span style="font:400 15px/1.6 var(--font-content); color:var(--text-secondary); text-align:center; max-width:340px;">운송장비와 연동되지 않은 태블릿PC입니다.<br>안드로이드ID 정보를 통해 연동해주세요.</span>
+            <div style="width:320px; display:flex; flex-direction:column; gap:6px; margin-top:6px;">
+              <span style="font:400 13px var(--font-content); color:var(--text-tertiary);">안드로이드 ID</span>
+              <div style="height:44px; border:1px solid var(--border-input); border-radius:6px; background:var(--gray-5); padding:0 12px; display:flex; align-items:center; font:500 14px var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">16e7485e9e6e342e</div>
+            </div>
+            <button onClick="{{ goLogin }}" style="width:320px; height:48px; border:none; border-radius:6px; background:var(--blue-dark); color:#fff; font:500 16px var(--font-content); cursor:pointer;">연결 확인</button>
+            <span style="margin-top:8px; font:400 13px var(--font-content); color:var(--text-tertiary);">관리자 문의 : 홍길동 (010-1111-1111)</span>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ===== 로그인 화면 ===== -->
+      <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1; min-height:0; display:flex;">
+          <div style="flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; padding:40px;">
+            <img src="_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/assets/logo-horizontal.png" alt="한화오션에코텍" style="height:28px; width:auto; margin-bottom:6px;">
+            <span style="font:700 20px var(--font-content); color:var(--text-primary);">작업자 로그인</span>
+            <span style="font:400 14px var(--font-content); color:var(--text-tertiary);">작업자 ID와 비밀번호를 입력해 주십시오.</span>
+            <input placeholder="사번 또는 ID를 입력하세요." style="width:340px; height:48px; border:1px solid var(--border-input); border-radius:6px; padding:0 12px; font:400 15px var(--font-content); color:var(--text-secondary);">
+            <input type="password" placeholder="비밀번호를 입력하세요." style="width:340px; height:48px; border:1px solid var(--border-input); border-radius:6px; padding:0 12px; font:400 15px var(--font-content); color:var(--text-secondary);">
+            <span onClick="{{ toggleKeep }}" style="width:340px; display:flex; align-items:center; gap:8px; cursor:pointer; font:400 14px var(--font-content); color:var(--text-secondary);">
+              <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Checkbox" checked="{{ keepLogin }}" size="20px" style="pointer-events:none;" hint-size="20px,20px"></x-import>
+              로그인상태 유지 (14일간)
+            </span>
+            <button onClick="{{ doLogin }}" style="width:340px; height:48px; border:none; border-radius:6px; background:var(--blue-dark); color:#fff; font:500 16px var(--font-content); cursor:pointer; margin-top:4px;">로그인</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ===== 작업 화면 ===== -->
+      <sc-if value="{{ isWork }}" hint-placeholder-val="{{ true }}">
+        <div style="position:relative; flex-shrink:0; height:60px; display:flex; align-items:center; gap:12px; padding:0 16px; border-bottom:1px solid var(--border-default); background:var(--bg-primary);">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <i class="ti ti-forklift" style="font-size:22px; color:var(--brand-primary);"></i>
+            <span style="font:500 14px var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums; white-space:nowrap;">지게차 · 175바1255 · 홍길동</span>
+            <a href="#" onClick="{{ doLogout }}" style="font:400 13px var(--font-content); text-decoration:underline; white-space:nowrap;">로그아웃</a>
+          </div>
+          <span style="position:absolute; left:50%; transform:translateX(-50%); font:700 17px var(--font-content); color:var(--text-primary);">작업 목록</span>
+          <div style="margin-left:auto; display:flex; align-items:center; gap:12px;">
+            <button onClick="{{ pressUrgent }}" style="height:44px; padding:0 20px; border:none; border-radius:6px; background:{{ urgentBg }}; color:#fff; font:700 15px var(--font-content); cursor:pointer; display:flex; align-items:center; gap:6px;"><i class="ti ti-phone-call" style="font-size:18px;"></i>긴급호출</button>
+            <button onClick="{{ toggleAlarm }}" title="알림" style="width:44px; height:44px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-secondary); position:relative;">
+              <i class="ti ti-bell" style="font-size:20px;"></i>
+              <sc-if value="{{ hasAlarm }}" hint-placeholder-val="{{ false }}">
+                <span style="position:absolute; top:7px; right:7px; width:8px; height:8px; border-radius:50%; background:var(--red-main);"></span>
+              </sc-if>
+            </button>
+          </div>
+        </div>
+
+        <div style="flex:1; min-height:0; display:flex;">
+          <div style="width:380px; flex-shrink:0; border-right:1px solid var(--border-default); display:flex; flex-direction:column;">
+
+            <sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+              <div style="flex-shrink:0; display:flex; border-bottom:1px solid var(--border-default);">
+                <button class="tb-tab" onClick="{{ tabAll }}" data-on="{{ tabAllOn }}">전체 ({{ countAll }})</button>
+                <button class="tb-tab" onClick="{{ tabWait }}" data-on="{{ tabWaitOn }}">대기 ({{ countWait }})</button>
+                <button class="tb-tab" onClick="{{ tabDone }}" data-on="{{ tabDoneOn }}">완료 ({{ countDone }})</button>
+              </div>
+              <div style="flex:1; min-height:0; overflow:auto; padding:12px; display:flex; flex-direction:column; gap:10px;">
+                <sc-for list="{{ cards }}" as="c" hint-placeholder-count="6">
+                  <div class="tb-card" onClick="{{ c.onClick }}" data-on="{{ c.selected }}" data-urgent="{{ c.isUrgent }}">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <span style="height:22px; padding:0 8px; border-radius:999px; background:{{ c.tagBg }}; color:{{ c.tagColor }}; font:700 11px/22px var(--font-content); white-space:nowrap;">{{ c.tag }}</span>
+                      <span style="margin-left:auto; font:700 13px var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">{{ c.no }}</span>
+                    </div>
+                    <span style="font:500 15px var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">{{ c.title }}</span>
+                    <div style="display:flex; flex-direction:column; gap:3px; font:400 12px/1.5 var(--font-content); color:var(--text-tertiary); font-variant-numeric:tabular-nums;">
+                      <span>출발지 · {{ c.from }}</span>
+                      <span>도착지 · {{ c.to }}</span>
+                    </div>
+                  </div>
+                </sc-for>
+                <div style="text-align:center; padding:6px 0; color:var(--text-tertiary);"><i class="ti ti-chevron-down" style="font-size:18px;"></i></div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+              <div style="flex-shrink:0; height:52px; display:flex; align-items:center; justify-content:center; background:{{ stateBg }}; color:#fff; font:700 16px var(--font-content);">{{ stateLabel }}</div>
+              <div style="flex:1; min-height:0; overflow:auto; padding:14px; display:flex; flex-direction:column; gap:12px;">
+                <div style="border:1px solid var(--border-default); border-radius:8px; overflow:hidden;">
+                  <sc-for list="{{ detailRows }}" as="r" hint-placeholder-count="9">
+                    <div class="tb-row">
+                      <div class="tb-k">{{ r.k }}</div>
+                      <div class="tb-v" style="color:{{ r.color }};">{{ r.v }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ hasElapsed }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; align-items:center; justify-content:center; gap:8px; height:44px; border-radius:8px; background:{{ elapsedBg }}; color:{{ elapsedColor }}; font:700 16px var(--font-content); font-variant-numeric:tabular-nums;">
+                    <i class="ti ti-clock" style="font-size:18px;"></i>경과시간 {{ elapsed }}
+                  </div>
+                </sc-if>
+                <a href="#" onClick="{{ backToList }}" style="font:400 13px var(--font-content); text-decoration:underline; text-align:center;">작업 목록으로</a>
+              </div>
+              <div style="flex-shrink:0; padding:14px; border-top:1px solid var(--border-default); display:flex; gap:10px;">
+                <button onClick="{{ startWork }}" disabled="{{ startDisabled }}" style="flex:1; height:56px; border:none; border-radius:8px; background:{{ startBg }}; color:{{ startColor }}; font:700 17px var(--font-content); cursor:{{ startCursor }};">작업 시작</button>
+                <button onClick="{{ endWork }}" disabled="{{ endDisabled }}" style="flex:1; height:56px; border:none; border-radius:8px; background:{{ endBg }}; color:{{ endColor }}; font:700 17px var(--font-content); cursor:{{ endCursor }};">작업 종료</button>
+              </div>
+            </sc-if>
+          </div>
+
+          <!-- ===== 지도 ===== -->
+          <div style="flex:1; min-width:0; position:relative; background:var(--gray-10); overflow:hidden;">
+            <div style="position:absolute; inset:0; pointer-events:none;">
+              <div style="position:absolute; left:0; right:0; top:44%; height:26px; background:var(--gray-0); opacity:0.85;"></div>
+              <div style="position:absolute; top:0; bottom:0; left:34%; width:22px; background:var(--gray-0); opacity:0.85;"></div>
+              <span style="position:absolute; left:46%; top:8%; font:700 15px var(--font-content); color:var(--gray-40); letter-spacing:1px;">1YARD</span>
+            </div>
+
+            <div style="position:absolute; inset:0; pointer-events:none;">
+              <div style="position:absolute; left:0; right:0; top:44%; height:26px; background:rgba(45,45,45,0.6);"></div>
+              <div style="position:absolute; top:0; bottom:0; left:34%; width:22px; background:rgba(45,45,45,0.6);"></div>
+            </div>
+
+            <div style="position:absolute; left:10%; top:52%; width:24%; height:26%; border:1.5px solid var(--green-dark); background:rgba(0,130,51,0.14); display:flex; align-items:flex-start; justify-content:flex-start; padding:6px;">
+              <span style="font:700 12px var(--font-content); color:var(--green-dark); font-variant-numeric:tabular-nums;">AA1001</span>
+            </div>
+            <sc-if value="{{ showFromLabel }}" hint-placeholder-val="{{ false }}">
+              <span style="position:absolute; left:10%; top:80%; height:22px; padding:0 8px; border-radius:4px; background:var(--green-dark); color:#fff; font:700 12px/22px var(--font-content);">출발지</span>
+            </sc-if>
+
+            <div style="position:absolute; left:58%; top:16%; width:24%; height:24%; border:1.5px solid var(--blue-dark); background:rgba(10,114,242,0.12); display:flex; align-items:flex-start; justify-content:flex-start; padding:6px;">
+              <span style="font:700 12px var(--font-content); color:var(--blue-dark); font-variant-numeric:tabular-nums;">AA1002</span>
+            </div>
+            <sc-if value="{{ showToLabel }}" hint-placeholder-val="{{ false }}">
+              <span style="position:absolute; left:58%; top:42%; height:22px; padding:0 8px; border-radius:4px; background:var(--blue-dark); color:#fff; font:700 12px/22px var(--font-content);">도착지</span>
+            </sc-if>
+
+            <sc-if value="{{ showRoute }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute; left:22%; top:65%; width:13.5%; border-top:2px dashed var(--red-main); pointer-events:none;"></div>
+              <div style="position:absolute; left:35.3%; top:45.5%; height:19.5%; border-left:2px dashed var(--red-main); pointer-events:none;"></div>
+              <div style="position:absolute; left:35.3%; top:45.5%; width:34.7%; border-top:2px dashed var(--red-main); pointer-events:none;"></div>
+              <div style="position:absolute; left:70%; top:38%; height:7.5%; border-left:2px dashed var(--red-main); pointer-events:none;"></div>
+              <i class="ti ti-circle-arrow-up" style="position:absolute; left:70%; top:34%; transform:translate(-50%,-50%); font-size:20px; color:var(--red-main); pointer-events:none;"></i>
+            </sc-if>
+
+            <div onClick="{{ clickBlock }}" style="position:absolute; left:{{ blockLeft }}%; top:{{ blockTop }}%; display:flex; align-items:center; gap:4px; height:26px; padding:0 10px; border-radius:4px; background:var(--blue-dark); color:#fff; font:700 13px/1 var(--font-content); font-variant-numeric:tabular-nums; cursor:pointer;"><i class="ti ti-box" style="font-size:15px;"></i>BT001</div>
+
+            <div style="position:absolute; left:{{ pinLeft }}%; top:{{ pinTop }}%; display:flex; flex-direction:column; align-items:center; gap:4px;">
+              <div style="width:38px; height:38px; border-radius:50%; background:var(--brand-primary); border:3px solid #fff; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(54,59,64,0.25);">
+                <i class="ti ti-map-pin" style="font-size:20px; color:#fff;"></i>
+              </div>
+              <sc-if value="{{ showStack }}" hint-placeholder-val="{{ false }}">
+                <span style="height:24px; padding:0 10px; border-radius:999px; background:var(--text-primary); color:#fff; font:700 12px/24px var(--font-content); white-space:nowrap; font-variant-numeric:tabular-nums;">BT001 적치중</span>
+              </sc-if>
+            </div>
+
+            <sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+              <div style="position:absolute; right:16px; top:16px; display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
+                <button onClick="{{ toggleFind }}" style="height:44px; padding:0 16px; border:1px solid var(--border-default); border-radius:8px; background:var(--bg-primary); color:var(--text-secondary); font:500 14px var(--font-content); cursor:pointer; display:flex; align-items:center; gap:6px;" style-hover="background:var(--gray-5);"><i class="ti ti-search" style="font-size:17px;"></i>자재 찾기</button>
+                <sc-if value="{{ showFind }}" hint-placeholder-val="{{ false }}">
+                  <div style="width:320px; background:var(--bg-primary); border:1px solid var(--border-default); border-radius:8px; padding:12px; box-shadow:0 2px 8px rgba(54,59,64,0.25);">
+                    <div style="display:flex; align-items:center; margin-bottom:10px;">
+                      <span style="font:700 14px var(--font-content); color:var(--text-primary);">자재 찾기</span>
+                      <button onClick="{{ toggleFind }}" title="닫기" style="margin-left:auto; border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:2px;"><i class="ti ti-x" style="font-size:17px;"></i></button>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <input placeholder="명칭 또는 코드를 입력해주세요." style="flex:1; min-width:0; height:40px; border:1px solid var(--border-input); border-radius:6px; padding:0 10px; font:400 14px var(--font-content); color:var(--text-secondary);">
+                      <button style="height:40px; padding:0 16px; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 14px var(--font-content); cursor:pointer;">조회</button>
+                    </div>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ showAlarmPop }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute; right:16px; top:16px; width:300px; background:var(--bg-primary); border:1px solid var(--border-default); border-radius:8px; padding:14px; box-shadow:0 2px 8px rgba(54,59,64,0.25); display:flex; flex-direction:column; gap:10px;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <i class="ti ti-bell-ringing" style="font-size:18px; color:var(--brand-primary);"></i>
+                  <span style="font:700 14px var(--font-content); color:var(--text-primary);">긴급작업 알림</span>
+                  <button onClick="{{ toggleAlarm }}" title="닫기" style="margin-left:auto; border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:2px;"><i class="ti ti-x" style="font-size:16px;"></i></button>
+                </div>
+                <span style="font:400 14px/1.6 var(--font-content); color:var(--text-secondary);">긴급작업 1건이 발생하였습니다.</span>
+                <a href="#" onClick="{{ openUrgentTask }}" style="font:500 13px var(--font-content); text-decoration:underline;">상세보기 ›</a>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ showUrgentToast }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute; left:50%; bottom:20px; transform:translateX(-50%); display:flex; align-items:center; gap:10px; height:48px; padding:0 18px; border-radius:8px; background:var(--red-main); color:#fff; font:500 15px var(--font-content); box-shadow:0 2px 8px rgba(54,59,64,0.25); white-space:nowrap;">
+                <i class="ti ti-phone-call" style="font-size:18px;"></i>긴급호출 전송 · 작업자용 앱에 현재 차량 위치가 표시됩니다
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1360,&quot;height&quot;:920},&quot;startScreen&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;}}">
+const SCREENS = [
+  { id: "HEL18-01-1", label: "앱 초기 화면 · 운송장비 연동", kind: "link" },
+  { id: "HEL18-01-2", label: "작업자 로그인", kind: "login" },
+  { id: "HEL18-02", label: "작업화면 (작업 목록)", kind: "list", tab: "all" },
+  { id: "HEL18-03", label: "작업화면 (대기 탭 · 카드 선택)", kind: "list", tab: "wait", sel: "15601" },
+  { id: "HEL18-04", label: "작업 상세 (작업 대기)", kind: "detail", state: "wait" },
+  { id: "HEL18-05", label: "작업 상세 (진행중)", kind: "detail", state: "run" },
+  { id: "HEL18-06", label: "작업 상세 (작업완료)", kind: "detail", state: "done" },
+  { id: "HEL18-07", label: "긴급호출", kind: "list", tab: "all", urgentPress: true },
+  { id: "HEL18-08", label: "긴급작업 알림", kind: "list", tab: "all", alarm: true },
+];
+
+const CARDS = [
+  { no: "15601", type: "블록 이동", code: "BT001", name: "함수", from: "AA1001 의장재 공장", to: "AA1002 의장재 적치장", state: "wait" },
+  { no: "15600", type: "자재 이동", code: "ZG011", name: "Volt", from: "AC2010 의장재 적치장", to: "AA1002 강재물류센터", state: "wait" },
+  { no: "15599", type: "자재 이동", code: "ZG009", name: "Nut", from: "AA1002 의장재 적치장", to: "AA1001 강재 전처리장", state: "done" },
+  { no: "15598", type: "자재 이동", code: "ZG102", name: "강재", from: "AA1002 강재물류센터", to: "AA1001 강재 전처리장", state: "done" },
+  { no: "15597", type: "블록 이동", code: "ZG201", name: "함미", from: "AA1001 의장재 공장", to: "AC2010 의장재 적치장", state: "done" },
+  { no: "15596", type: "자재 이동", code: "ZG200", name: "강재", from: "AA1002 강재물류센터", to: "AA1001 의장재 공장", state: "done" },
+];
+
+const TAG = {
+  wait: { label: "작업대기", bg: "var(--status-done-bg)", color: "var(--status-done-text)" },
+  done: { label: "작업완료", bg: "var(--status-progress-bg)", color: "var(--status-progress-text)" },
+  urgent: { label: "긴급작업", bg: "var(--status-wait-bg)", color: "var(--status-wait-text)" },
+};
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const sc = SCREENS.find((s) => s.id === props.startScreen) || SCREENS[0];
+    this.state = {
+      screen: sc.id,
+      tab: sc.tab || "all",
+      selected: sc.sel || null,
+      keepLogin: false,
+      showFind: false,
+      alarmOpen: !!sc.alarm,
+      hasAlarm: !!sc.alarm,
+      urgentPressed: !!sc.urgentPress,
+      showToast: !!sc.urgentPress,
+      showStack: sc.state === "run",
+    };
+  }
+
+  go(id) {
+    const sc = SCREENS.find((s) => s.id === id);
+    if (!sc) return;
+    this.setState({
+      screen: id,
+      tab: sc.tab || this.state.tab,
+      selected: sc.sel || (sc.kind === "detail" ? "15601" : null),
+      alarmOpen: !!sc.alarm,
+      hasAlarm: !!sc.alarm,
+      urgentPressed: !!sc.urgentPress,
+      showToast: !!sc.urgentPress,
+      showFind: false,
+      showStack: sc.state === "run",
+    });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const cur = SCREENS.find((x) => x.id === s.screen) || SCREENS[0];
+    const kind = cur.kind;
+    const st = cur.state || "wait";
+
+    const filtered = CARDS.filter((c) => s.tab === "all" || c.state === s.tab);
+    const cards = filtered.map((c) => {
+      const urgent = cur.id === "HEL18-08" && c.no === "15600";
+      const tag = urgent ? TAG.urgent : TAG[c.state];
+      return {
+        no: c.no,
+        title: c.type + " · " + c.code + " · " + c.name,
+        from: c.from, to: c.to,
+        tag: tag.label, tagBg: tag.bg, tagColor: tag.color,
+        selected: s.selected === c.no,
+        isUrgent: urgent,
+        onClick: () => {
+          if (c.state === "wait") this.setState({ selected: c.no, screen: "HEL18-04" });
+          else this.setState({ selected: c.no });
+        },
+      };
+    });
+
+    const detailWait = [
+      { k: "작업번호", v: "15601" }, { k: "작업대상", v: "BT001" }, { k: "명칭", v: "함수" },
+      { k: "중량 (ton)", v: "10" }, { k: "길이 × 폭 × 높이 (m)", v: "10 × 20 × 10" },
+      { k: "작업유형", v: "블록이동" }, { k: "작업 착수일", v: "2026/05/20" }, { k: "작업 완료일", v: "2026/05/20" },
+      { k: "상세내용", v: "블록 불출작업을 위한 주변 블록 이동 작업" },
+    ];
+    const detailRun = [
+      { k: "작업번호", v: "15601" }, { k: "작업대상", v: "BT001" }, { k: "명칭", v: "함수" },
+      { k: "중량 (ton)", v: "10" }, { k: "길이 × 폭 × 높이 (m)", v: "10 × 20 × 10" },
+      { k: "출발지", v: "AA1001", color: "var(--green-dark)" }, { k: "도착지", v: "-" },
+    ];
+    const detailDone = [
+      { k: "작업번호", v: "15601" }, { k: "작업대상", v: "BT001" }, { k: "명칭", v: "함수" },
+      { k: "중량 (ton)", v: "10" }, { k: "길이 × 폭 × 높이 (m)", v: "10 × 20 × 10" },
+      { k: "출발지", v: "AA1001", color: "var(--green-dark)" }, { k: "도착지", v: "AA1002", color: "var(--blue-dark)" },
+      { k: "작업시작 시간", v: "13:00" }, { k: "작업종료 시간", v: "13:50" },
+    ];
+    const detailRows = (st === "run" ? detailRun : st === "done" ? detailDone : detailWait)
+      .map((r) => ({ k: r.k, v: r.v, color: r.color || "var(--text-secondary)" }));
+
+    return {
+      screenLabel: cur.id + " " + cur.label,
+      isLink: kind === "link",
+      isLogin: kind === "login",
+      isWork: kind !== "link" && kind !== "login",
+      goLogin: () => this.go("HEL18-01-2"),
+      isList: kind === "list",
+      isDetail: kind === "detail",
+      keepLogin: s.keepLogin,
+      toggleKeep: () => this.setState({ keepLogin: !s.keepLogin }),
+      doLogin: () => this.go("HEL18-02"),
+      doLogout: () => this.go("HEL18-01-2"),
+      countAll: 10,
+      countWait: 5,
+      countDone: 5,
+      tabAll: () => this.setState({ tab: "all" }), tabAllOn: s.tab === "all",
+      tabWait: () => this.setState({ tab: "wait" }), tabWaitOn: s.tab === "wait",
+      tabDone: () => this.setState({ tab: "done" }), tabDoneOn: s.tab === "done",
+      cards: cards,
+      detailRows: detailRows,
+      stateLabel: st === "run" ? "진행중" : st === "done" ? "작업완료" : "작업 대기",
+      stateBg: st === "run" ? "var(--brand-pressed)" : st === "done" ? "var(--blue-dark)" : "var(--green-dark)",
+      hasElapsed: st !== "wait",
+      elapsed: st === "run" ? "00:25:01" : "00:50:22",
+      elapsedBg: st === "run" ? "var(--status-wait-bg)" : "var(--status-done-bg)",
+      elapsedColor: st === "run" ? "var(--status-wait-text)" : "var(--status-done-text)",
+      startDisabled: st !== "wait",
+      startBg: st === "wait" ? "var(--brand-primary)" : "var(--gray-20)",
+      startColor: st === "wait" ? "#fff" : "var(--text-tertiary)",
+      startCursor: st === "wait" ? "pointer" : "default",
+      startWork: () => { if (st === "wait") this.go("HEL18-05"); },
+      endDisabled: st !== "run",
+      endBg: st === "run" ? "var(--blue-dark)" : "var(--gray-20)",
+      endColor: st === "run" ? "#fff" : "var(--text-tertiary)",
+      endCursor: st === "run" ? "pointer" : "default",
+      endWork: () => { if (st === "run") this.go("HEL18-06"); },
+      backToList: () => this.go("HEL18-02"),
+      blockLeft: st === "done" ? 64 : 16,
+      blockTop: st === "done" ? 24 : 58,
+      pinLeft: st === "wait" ? 40 : st === "run" ? 24 : 62,
+      pinTop: st === "wait" ? 34 : st === "run" ? 62 : 32,
+      showStack: st === "run" && s.showStack,
+      clickBlock: () => this.setState({ showStack: !s.showStack }),
+      showRoute: st === "done",
+      showFromLabel: st === "done",
+      showToLabel: st === "done",
+      showFind: s.showFind,
+      toggleFind: () => this.setState({ showFind: !s.showFind }),
+      hasAlarm: s.hasAlarm,
+      showAlarmPop: s.alarmOpen,
+      toggleAlarm: () => this.setState({ alarmOpen: !s.alarmOpen }),
+      openUrgentTask: () => this.setState({ tab: "wait", selected: "15600", alarmOpen: false }),
+      urgentBg: s.urgentPressed ? "var(--gray-50)" : "var(--red-main)",
+      pressUrgent: () => this.setState({ urgentPressed: true, showToast: true, screen: "HEL18-07" }),
+      showUrgentToast: s.showToast,
+      showPicker: !this.props.startScreen,
+      pickRows: SCREENS.map((sc) => {
+        const on = sc.id === s.screen;
+        return {
+          short: sc.id.replace("HEL18-", ""), label: sc.id + " " + sc.label,
+          border: on ? "var(--brand-primary)" : "var(--border-input)",
+          bg: on ? "var(--status-wait-bg)" : "var(--bg-primary)",
+          color: on ? "var(--brand-primary)" : "var(--text-secondary)",
+          onClick: () => this.go(sc.id),
+        };
+      }),
+    };
+  }
+}
+</script>
+</body>
+</html>

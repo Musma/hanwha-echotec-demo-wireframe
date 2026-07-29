@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.24.0/dist/tabler-icons.min.css">
+<script src="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/_ds_bundle.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; }
+  *, *::before, *::after { box-sizing: border-box; }
+  a { color: var(--blue-dark); text-decoration: none; }
+  a:hover { color: var(--blue-main); }
+  input::placeholder { color: var(--text-placeholder); }
+  button { white-space: nowrap; }
+  .dl-navbtn:hover { background: var(--bg-secondary) !important; }
+  .dl-nav { width: var(--lnb-w); flex-shrink: 0; background: var(--bg-primary); border-right: 1px solid var(--border-subtle); display: flex; flex-direction: column; padding: 12px 8px; overflow-y: auto; }
+  .dl-item { display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; margin: 2px 0; border: none; cursor: pointer; border-radius: var(--radius-btn); background: transparent; color: var(--text-secondary); font-family: var(--font-content); font-weight: 500; font-size: 14px; line-height: 1; width: 100%; text-align: left; }
+  .dl-item > span { flex-shrink: 0; text-overflow: clip; }
+  .dl-item[data-active="true"] { background: var(--status-wait-bg); color: var(--brand-primary); font-weight: 700; }
+  .dl-item[data-trail="true"] { color: var(--text-primary); font-weight: 700; }
+  .dl-item[data-depth="1"] { height: 36px; padding-left: 44px; font-size: 13px; font-weight: 400; }
+  .dl-item[data-depth="2"] { height: 32px; padding-left: 60px; font-size: 13px; font-weight: 400; color: var(--text-tertiary); }
+  .dl-chev { margin-left: auto; font-size: 16px; color: var(--text-tertiary); flex-shrink: 0; }
+  .dl-pick:hover { border-color: var(--brand-primary) !important; color: var(--brand-primary) !important; }
+  .mt-row:hover { background: var(--gray-5); }
+</style>
+</helmet>
+
+<div style="display:flex; flex-direction:column; height:100vh; min-width:1440px; width:100%; overflow:hidden; font-family:var(--font-primary); color:var(--text-secondary); background:var(--gray-5);" data-screen-label="{{ screenLabel }}">
+
+  <header style="height:var(--header-h-web); flex-shrink:0; background:var(--bg-primary); border-bottom:1px solid var(--border-subtle); display:flex; align-items:center; padding:0 20px 0 12px; gap:16px; z-index:20;">
+    <img src="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/assets/logo-horizontal.png" alt="한화오션에코텍" style="height:25px; width:auto; display:block; flex-shrink:0;">
+    <span style="font-family:var(--font-title); font-weight:700; font-size:14px; color:var(--text-primary); letter-spacing:-0.2px; white-space:nowrap;">물류Twin</span>
+    <div style="margin-left:auto; display:flex; align-items:center; gap:18px;">
+      <span style="font-size:14px; color:var(--text-tertiary); white-space:nowrap;"><strong style="font-weight:500; color:var(--text-primary);">홍길동</strong>님 로그인 되었습니다.</span>
+      <button title="로그아웃" style="border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:6px;"><i class="ti ti-logout" style="font-size:22px;"></i></button>
+      <a href="../10 알람/HEL12-01 알람목록 (알림 드롭다운).dc.html" title="알림" style="border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:6px; position:relative;">
+        <i class="ti ti-bell" style="font-size:22px;"></i>
+        <span style="position:absolute; top:4px; right:4px; width:8px; height:8px; border-radius:50%; background:var(--red-main);"></span>
+      </a>
+    </div>
+  </header>
+
+  <div style="display:flex; flex:1; min-height:0;">
+    <nav class="dl-nav">
+      <sc-for list="{{ navRows }}" as="item" hint-placeholder-count="9">
+        <button class="dl-navbtn dl-item" onClick="{{ item.onClick }}" title="{{ item.label }}" data-active="{{ item.active }}" data-trail="{{ item.trail }}" data-depth="{{ item.depth }}">
+          <sc-if value="{{ item.showIcon }}" hint-placeholder-val="{{ true }}">
+            <i class="ti {{ item.icon }}" style="font-size:20px; flex-shrink:0;"></i>
+          </sc-if>
+          <span>{{ item.label }}</span>
+          <sc-if value="{{ item.hasChildren }}" hint-placeholder-val="{{ false }}">
+            <i class="ti {{ item.chevIcon }} dl-chev"></i>
+          </sc-if>
+        </button>
+      </sc-for>
+      <a href="../00 공통/HEL00-03 메뉴 (닫힘).dc.html" style="margin-top:auto; height:36px; flex-shrink:0; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); white-space:nowrap; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:4px; text-decoration:none;" style-hover="background:var(--gray-5);">
+        <i class="ti ti-chevron-left" style="font-size:15px;"></i>메뉴닫기
+      </a>
+    </nav>
+
+    <main style="flex:1; min-width:0; display:flex; flex-direction:column; overflow:hidden; position:relative;">
+      <div style="flex-shrink:0; display:flex; align-items:center; padding:14px 24px 0;">
+        <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Breadcrumb" items="{{ crumbItems }}" hint-size="320px,20px"></x-import>
+      </div>
+      <div style="flex-shrink:0; display:flex; align-items:center; gap:12px; padding:10px 24px 16px;">
+        <span style="font:700 16px/1.2 var(--font-content); color:var(--text-primary); white-space:nowrap;">{{ pageTitle }}</span>
+        <sc-if value="{{ showPicker }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-left:auto; display:flex; align-items:center; gap:5px; overflow-x:auto; padding-bottom:2px;">
+            <span style="font:400 11px var(--font-content); color:var(--text-tertiary); white-space:nowrap; flex-shrink:0;">화면 ID</span>
+            <sc-for list="{{ pickRows }}" as="p" hint-placeholder-count="9">
+              <button class="dl-pick" onClick="{{ p.onClick }}" title="{{ p.label }}" style="flex-shrink:0; height:24px; padding:0 8px; border:1px solid {{ p.border }}; border-radius:999px; background:{{ p.bg }}; color:{{ p.color }}; font:700 11px var(--font-content); font-variant-numeric:tabular-nums; cursor:pointer;">{{ p.short }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="flex:1; min-height:0; overflow:auto; padding:0 24px 24px; display:flex; flex-direction:column; gap:16px;">
+
+        <!-- ===== 검색 조건 ===== -->
+        <div style="flex-shrink:0; background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:10px;">
+          <sc-for list="{{ searchRows }}" as="row" hint-placeholder-count="2">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <sc-for list="{{ row.fields }}" as="f" hint-placeholder-count="3">
+                <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+                  <span style="width:88px; font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">{{ f.label }}</span>
+                  <sc-if value="{{ f.isText }}" hint-placeholder-val="{{ true }}">
+                    <input placeholder="{{ f.ph }}" style="width:160px; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary);">
+                  </sc-if>
+                  <sc-if value="{{ f.isSelect }}" hint-placeholder-val="{{ false }}">
+                    <div style="width:160px;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ f.options }}" value="{{ f.value }}" onChange="{{ f.onChange }}" hint-size="100%,28px"></x-import></div>
+                  </sc-if>
+                  <sc-if value="{{ f.isRange }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                      <div style="position:relative;">
+                        <input value="2026/05/01" style="width:112px; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 26px 0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                        <i class="ti ti-calendar" style="position:absolute; right:8px; top:7px; font-size:14px; color:var(--text-tertiary);"></i>
+                      </div>
+                      <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">~</span>
+                      <div style="position:relative;">
+                        <input value="2026/05/20" style="width:112px; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 26px 0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                        <i class="ti ti-calendar" style="position:absolute; right:8px; top:7px; font-size:14px; color:var(--text-tertiary);"></i>
+                      </div>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+              <sc-if value="{{ row.hasButtons }}" hint-placeholder-val="{{ true }}">
+                <div style="margin-left:auto; display:flex; gap:8px; flex-shrink:0;">
+                  <button style="height:28px; padding:0 14px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); cursor:pointer;" style-hover="background:var(--gray-5);">초기화</button>
+                  <button style="height:28px; padding:0 14px; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 13px var(--font-content); cursor:pointer;" style-hover="background:var(--brand-hover);">조회</button>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- ===== 목록 ===== -->
+        <div style="flex-shrink:0; background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+            <span style="font:500 16px/1.2 var(--font-content); color:var(--text-primary); white-space:nowrap;">{{ listTitle }}</span>
+            <span style="font:400 12px var(--font-content); color:var(--text-tertiary); font-variant-numeric:tabular-nums;">{{ listCount }}</span>
+            <div style="margin-left:auto; display:flex; gap:8px;">
+              <sc-if value="{{ hasSave }}" hint-placeholder-val="{{ false }}">
+                <button style="height:28px; padding:0 14px; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 13px var(--font-content); cursor:pointer;" style-hover="background:var(--brand-hover);">저장</button>
+              </sc-if>
+              <sc-if value="{{ hasRegister }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ openReg }}" style="height:28px; padding:0 14px; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 13px var(--font-content); cursor:pointer;" style-hover="background:var(--brand-hover);">등록</button>
+              </sc-if>
+              <sc-if value="{{ hasExcel }}" hint-placeholder-val="{{ false }}">
+                <button style="height:28px; padding:0 14px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); cursor:pointer; display:flex; align-items:center; gap:5px;" style-hover="background:var(--gray-5);"><i class="ti ti-file-spreadsheet" style="font-size:14px;"></i>Excel</button>
+              </sc-if>
+            </div>
+          </div>
+
+          <div style="border:1px solid var(--border-default); border-radius:4px; overflow-x:auto;">
+            <div style="min-width:{{ tableMinWidth }};">
+              <div style="display:grid; grid-template-columns:{{ gridCols }}; background:var(--gray-20); font:700 12px var(--font-content); color:var(--text-primary);">
+                <sc-for list="{{ cols }}" as="c" hint-placeholder-count="10">
+                  <div style="padding:9px 8px; text-align:center; border-left:1px solid var(--gray-10); white-space:nowrap;">{{ c.label }}</div>
+                </sc-for>
+              </div>
+              <sc-for list="{{ rows }}" as="r" hint-placeholder-count="8">
+                <div class="mt-row" style="display:grid; grid-template-columns:{{ gridCols }}; border-top:1px solid var(--gray-10); font:400 12px var(--font-content); color:var(--text-secondary);">
+                  <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="10">
+                    <div style="padding:9px 8px; border-left:1px solid var(--gray-5); display:flex; align-items:center; justify-content:{{ c.justify }}; gap:6px; font-variant-numeric:tabular-nums; color:{{ c.color }}; white-space:nowrap; overflow:hidden;">
+                      <sc-if value="{{ c.isToggle }}" hint-placeholder-val="{{ false }}">
+                        <span onClick="{{ c.onToggle }}" style="width:38px; height:20px; border-radius:999px; background:{{ c.track }}; padding:2px; display:inline-flex; align-items:center; cursor:pointer; flex-shrink:0;"><span style="width:16px; height:16px; border-radius:50%; background:#fff; transform:translateX({{ c.knob }});"></span></span>
+                      </sc-if>
+                      <sc-if value="{{ c.isLink }}" hint-placeholder-val="{{ false }}">
+                        <a href="#" onClick="{{ c.onClick }}" style="text-decoration:underline;">{{ c.v }}</a>
+                      </sc-if>
+                      <sc-if value="{{ c.isInput }}" hint-placeholder-val="{{ false }}">
+                        <input placeholder="논리지번을 입력해주세요." value="{{ c.v }}" onChange="{{ c.onChange }}" style="flex:1; min-width:0; height:26px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary);">
+                        <a href="#" onClick="{{ c.onSearch }}" style="flex-shrink:0; text-decoration:underline;">검색</a>
+                      </sc-if>
+                      <sc-if value="{{ c.isText }}" hint-placeholder-val="{{ true }}">{{ c.v }}</sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:center; margin-top:12px;">
+            <span style="font:400 11px var(--font-content); color:var(--text-tertiary);">{{ scrollHint }}</span>
+            <div style="margin-left:auto;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Pagination" page="{{ page }}" total="{{ 10 }}" onChange="{{ setPage }}" hint-size="280px,32px"></x-import></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== HEL13-02 핵심자재 등록 팝업 ===== -->
+      <sc-if value="{{ showReg }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute; inset:0; z-index:40; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center;">
+          <div style="width:420px; background:var(--bg-primary); border-radius:6px; overflow:hidden;">
+            <div style="height:44px; display:flex; align-items:center; padding:0 16px; border-bottom:1px solid var(--border-default);">
+              <span style="font:700 16px var(--font-content); color:var(--text-primary);">등록</span>
+              <button onClick="{{ closeReg }}" title="닫기" style="margin-left:auto; border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:4px;"><i class="ti ti-x" style="font-size:18px;"></i></button>
+            </div>
+            <div style="padding:16px; display:flex; flex-direction:column; gap:12px;">
+              <div style="display:flex; flex-direction:column; gap:6px;">
+                <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">자재번호 <span style="color:var(--red-main);">*</span></span>
+                <input placeholder="자재번호를 입력해주세요." style="width:100%; height:32px; border:1px solid var(--border-input); border-radius:4px; padding:0 10px; font:400 13px var(--font-content); color:var(--text-secondary);">
+              </div>
+              <div style="display:flex; flex-direction:column; gap:6px;">
+                <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">자재내역 <span style="color:var(--red-main);">*</span></span>
+                <input placeholder="자재 설명을 입력해주세요." style="width:100%; height:32px; border:1px solid var(--border-input); border-radius:4px; padding:0 10px; font:400 13px var(--font-content); color:var(--text-secondary);">
+              </div>
+              <div style="display:flex; flex-direction:column; gap:6px;">
+                <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">자재그룹 <span style="color:var(--red-main);">*</span></span>
+                <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-m" options="{{ regGroupOptions }}" value="{{ regGroup }}" onChange="{{ setRegGroup }}" hint-size="100%,32px"></x-import>
+              </div>
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">사용여부 <span style="color:var(--red-main);">*</span></span>
+                <span onClick="{{ toggleRegUse }}" style="width:38px; height:20px; border-radius:999px; background:{{ regUseTrack }}; padding:2px; display:inline-flex; align-items:center; cursor:pointer;"><span style="width:16px; height:16px; border-radius:50%; background:#fff; transform:translateX({{ regUseKnob }});"></span></span>
+                <span style="font:500 12px var(--font-content); color:var(--text-secondary);">{{ regUseLabel }}</span>
+              </div>
+            </div>
+            <div style="padding:0 16px 16px; display:flex; justify-content:flex-end; gap:8px;">
+              <button onClick="{{ closeReg }}" style="height:32px; padding:0 16px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--gray-5);">초기화</button>
+              <button onClick="{{ closeReg }}" style="height:32px; padding:0 16px; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--brand-hover);">등록</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ===== HEL05-05 작업대상 검색 팝업 ===== -->
+      <sc-if value="{{ showTarget }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute; inset:0; z-index:40; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center;">
+          <div style="width:520px; background:var(--bg-primary); border-radius:6px; overflow:hidden;">
+            <div style="height:44px; display:flex; align-items:center; padding:0 16px; border-bottom:1px solid var(--border-default);">
+              <span style="font:700 16px var(--font-content); color:var(--text-primary);">작업대상</span>
+              <button onClick="{{ closeTarget }}" title="닫기" style="margin-left:auto; border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:4px;"><i class="ti ti-x" style="font-size:18px;"></i></button>
+            </div>
+            <div style="padding:16px; display:flex; flex-direction:column; gap:12px;">
+              <div style="position:relative;">
+                <input value="{{ targetQuery }}" onChange="{{ setTargetQuery }}" placeholder="지번코드를 입력해주세요." style="width:100%; height:32px; border:1px solid var(--border-input); border-radius:4px; padding:0 32px 0 10px; font:400 13px var(--font-content); color:var(--text-secondary);">
+                <i class="ti ti-search" style="position:absolute; right:10px; top:9px; font-size:15px; color:var(--text-tertiary);"></i>
+              </div>
+              <div style="border:1px solid var(--border-default); border-radius:4px; overflow:hidden;">
+                <div style="display:grid; grid-template-columns:70px 130px 1fr 60px; background:var(--gray-20); font:700 12px var(--font-content); color:var(--text-primary);">
+                  <div style="padding:8px; text-align:center;">구분</div>
+                  <div style="padding:8px; text-align:center;">지번코드</div>
+                  <div style="padding:8px; text-align:center;">명칭</div>
+                  <div style="padding:8px; text-align:center;">선택</div>
+                </div>
+                <sc-for list="{{ targetRows }}" as="t" hint-placeholder-count="6">
+                  <div class="mt-row" style="display:grid; grid-template-columns:70px 130px 1fr 60px; border-top:1px solid var(--gray-10); font:400 12px var(--font-content); color:var(--text-secondary);">
+                    <div style="padding:8px; display:flex; align-items:center; justify-content:center;">{{ t.lv }}</div>
+                    <div style="padding:8px; display:flex; align-items:center; gap:0; font-variant-numeric:tabular-nums;"><span style="background:var(--status-wait-bg); color:var(--brand-pressed); font-weight:700;">{{ t.hit }}</span>{{ t.rest }}</div>
+                    <div style="padding:8px; display:flex; align-items:center;">{{ t.name }}</div>
+                    <div style="padding:8px; display:flex; align-items:center; justify-content:center;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Checkbox" checked="{{ t.on }}" size="16px" onChange="{{ t.onToggle }}" hint-size="16px,16px"></x-import></div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="padding:0 16px 16px; display:flex; justify-content:flex-end; gap:8px;">
+              <button onClick="{{ closeTarget }}" style="height:32px; padding:0 16px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--gray-5);">취소</button>
+              <button onClick="{{ applyTarget }}" style="height:32px; padding:0 16px; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--brand-hover);">확인</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1920,&quot;height&quot;:1080},&quot;startScreen&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;}}">
+const SCREENS = [
+  { id: "HEL05-01", label: "의장재 (입고예정정보)", key: "outfit", scroll: 0 },
+  { id: "HEL05-01-1", label: "의장재 (가로 스크롤 중간)", key: "outfit", scroll: 1 },
+  { id: "HEL05-01-2", label: "의장재 (가로 스크롤 끝)", key: "outfit", scroll: 2 },
+  { id: "HEL05-02", label: "기기장비재 (입고예정정보)", key: "equip" },
+  { id: "HEL05-03", label: "강재 (입고예정정보)", key: "steel" },
+  { id: "HEL05-04", label: "재고가용성정보", key: "avail" },
+  { id: "HEL13-01", label: "핵심자재 관리 (목록)", key: "core" },
+  { id: "HEL13-02", label: "핵심자재 등록 팝업", key: "core", modal: "reg" },
+  { id: "HEL05-05", label: "적치위치 관리", key: "loc" },
+];
+
+const GROUP_OPTS = [
+  { value: "", label: "전체" }, { value: "10", label: "10 : 철의장" }, { value: "1L", label: "1L : 강판재" },
+  { value: "1P", label: "1P : 배관재" }, { value: "1F", label: "1F : 철의장재" }, { value: "Y1", label: "Y1 : 의장재" },
+];
+
+const OUTFIT_COLS = [
+  [["공사번호", 90], ["블록번호", 90], ["자재번호", 130], ["자재내역", 150], ["자재그룹", 90], ["수량단위", 80], ["구매번호", 110], ["밸브번호", 110], ["예정수량", 90, 1], ["자재 총중량", 100, 1], ["발주 PND", 100], ["발주 MND", 100], ["변경 PND", 100]],
+  [["보급 요청일", 105], ["납품 예정일(최신)", 130], ["납품 예정일(과거1)", 130], ["납품 예정일(과거2)", 130], ["보급장소", 110], ["작업공정", 120], ["공급 업체코드", 105], ["공급 업체명", 110], ["공급업체 연락처", 125], ["불출일자", 100], ["불출수량", 90, 1]],
+  [["공급 업체코드", 105], ["공급 업체명", 110], ["공급업체 연락처", 125], ["불출일자", 100], ["불출수량", 90, 1], ["상위 발주번호", 145], ["상위 자재번호", 165], ["발주번호", 100], ["D/O번호", 145], ["납품예정일 수정일자", 140]],
+];
+
+const OUTFIT_ROWS = [
+  [
+    ["2451", "561", "MAT-001", "Valve 100x10..", "1P0P02", "EA", "PO-24510", "V-1001", "20", "180 kg", "2026-05-04", "2026-05-06", "2026-05-11"],
+    ["2451", "562", "MAT-002", "Sensor 10mm..", "1P0P02", "EA", "PO-24511", "V-1002", "12", "34 kg", "2026-05-06", "2026-05-08", "2026-05-13"],
+    ["2452", "571", "MAT-003", "Steel 12mm..", "1L0P01", "kg", "PO-24520", "-", "1,200", "1,200 kg", "2026-05-07", "2026-05-09", "2026-05-15"],
+    ["2452", "572", "MAT-004", "Pump 15L..", "1F0P04", "L", "PO-24521", "V-1004", "8", "96 kg", "2026-05-08", "2026-05-11", "2026-05-18"],
+    ["2453", "581", "MAT-005", "Valve 20x20..", "1P0P02", "EA", "PO-24530", "V-1005", "40", "220 kg", "2026-05-11", "2026-05-13", "2026-05-20"],
+    ["2453", "582", "MAT-006", "Flange 80A..", "1P0P03", "EA", "PO-24531", "V-1006", "60", "310 kg", "2026-05-12", "2026-05-14", "2026-05-21"],
+    ["2454", "591", "MAT-007", "Gasket 100A..", "1P0P03", "EA", "PO-24540", "-", "150", "45 kg", "2026-05-13", "2026-05-15", "2026-05-22"],
+    ["2454", "592", "MAT-008", "Steel 20mm..", "1L0P01", "kg", "PO-24541", "-", "2,400", "2,400 kg", "2026-05-14", "2026-05-18", "2026-05-25"],
+  ],
+  [
+    ["2026-05-01", "2026-05-11", "2026-05-08", "2026-05-04", "내업1공장", "오션사내보관", "A1B2", "성광벤드", "051-970-1000", "2026-05-12", "20"],
+    ["2026-05-02", "2026-05-13", "2026-05-09", "2026-05-06", "내업1공장", "오션사내보관", "A1B3", "태광", "051-970-2000", "2026-05-14", "12"],
+    ["2026-05-03", "2026-05-15", "2026-05-11", "2026-05-07", "내업2공장", "외부보관", "B2C1", "현대제철", "032-746-1000", "2026-05-16", "1,200"],
+    ["2026-05-04", "2026-05-18", "2026-05-13", "2026-05-08", "의장재 공장", "오션사내보관", "B2C4", "동아펌프", "055-260-1000", "2026-05-19", "8"],
+    ["2026-05-05", "2026-05-20", "2026-05-15", "2026-05-11", "내업1공장", "오션사내보관", "A1B2", "성광벤드", "051-970-1000", "2026-05-21", "40"],
+    ["2026-05-06", "2026-05-21", "2026-05-16", "2026-05-12", "내업1공장", "오션사내보관", "A1B5", "대창단자", "052-260-3000", "2026-05-22", "60"],
+    ["2026-05-07", "2026-05-22", "2026-05-18", "2026-05-13", "의장재 공장", "외부보관", "A1B6", "한국가스켓", "051-311-4000", "2026-05-23", "150"],
+    ["2026-05-08", "2026-05-25", "2026-05-20", "2026-05-14", "내업2공장", "오션사내보관", "B2C1", "현대제철", "032-746-1000", "2026-05-26", "2,400"],
+  ],
+  [
+    ["A1B2", "성광벤드", "051-970-1000", "2026-05-12", "20", "2366W516BPZ3001", "0470MPGDNB2AN772", "236153", "2585W505CP3H2Z", "2026-07-20"],
+    ["A1B3", "태광", "051-970-2000", "2026-05-14", "12", "2366W516BPZ3002", "0470MPGDNB2AN773", "236154", "2585W505CP3H30", "2026-07-18"],
+    ["B2C1", "현대제철", "032-746-1000", "2026-05-16", "1,200", "2366W516BPZ3010", "0470MPGDNB2AN801", "236160", "2585W505CP3H41", "2026-07-15"],
+    ["B2C4", "동아펌프", "055-260-1000", "2026-05-19", "8", "2366W516BPZ3014", "0470MPGDNB2AN812", "236165", "2585W505CP3H55", "2026-07-22"],
+    ["A1B2", "성광벤드", "051-970-1000", "2026-05-21", "40", "2366W516BPZ3020", "0470MPGDNB2AN820", "236170", "2585W505CP3H60", "2026-07-25"],
+    ["A1B5", "대창단자", "052-260-3000", "2026-05-22", "60", "2366W516BPZ3021", "0470MPGDNB2AN824", "236171", "2585W505CP3H61", "2026-07-26"],
+    ["A1B6", "한국가스켓", "051-311-4000", "2026-05-23", "150", "2366W516BPZ3025", "0470MPGDNB2AN830", "236175", "2585W505CP3H70", "2026-07-28"],
+    ["B2C1", "현대제철", "032-746-1000", "2026-05-26", "2,400", "2366W516BPZ3030", "0470MPGDNB2AN840", "236180", "2585W505CP3H80", "2026-07-30"],
+  ],
+];
+
+const EQUIP_COLS = [["B/L No", 100], ["통관일자", 100], ["공사번호", 90], ["블록번호", 90], ["상위자재번호", 165], ["Box No", 90], ["자재번호", 120], ["자재그룹", 90], ["수량단위", 80], ["입고예정 수량", 105, 1], ["자재 총중량", 100, 1], ["Box별 사진", 90]];
+const EQUIP_ROWS = [
+  ["A123124", "2026-05-04", "2451", "561", "0470MPGDNB2AN772", "BOX-01", "EQ-1001", "1F0P04", "EA", "4", "820 kg", "Y"],
+  ["A123124", "2026-05-04", "2451", "561", "0470MPGDNB2AN773", "BOX-02", "EQ-1002", "1F0P04", "EA", "2", "410 kg", "N"],
+  ["A23616", "2026-05-08", "2452", "571", "0470MPGDNB2AN801", "BOX-03", "EQ-1003", "1F0P05", "kg", "1,050", "1,050 kg", "Y"],
+  ["A23616", "2026-05-08", "2452", "572", "0470MPGDNB2AN812", "BOX-04", "EQ-1004", "1F0P05", "EA", "6", "1,240 kg", "Y"],
+  ["A23617", "2026-05-11", "2453", "581", "0470MPGDNB2AN820", "BOX-05", "EQ-1005", "1F0P06", "EA", "10", "2,100 kg", "N"],
+  ["A23617", "2026-05-11", "2453", "582", "0470MPGDNB2AN824", "BOX-06", "EQ-1006", "1F0P06", "EA", "3", "640 kg", "Y"],
+  ["A23620", "2026-05-14", "2454", "591", "0470MPGDNB2AN830", "BOX-07", "EQ-1007", "1F0P07", "kg", "480", "480 kg", "N"],
+  ["A23620", "2026-05-14", "2454", "592", "0470MPGDNB2AN840", "BOX-08", "EQ-1008", "1F0P07", "EA", "8", "1,680 kg", "Y"],
+];
+
+const STEEL_COLS = [["거래처 마크", 100], ["공사번호", 90], ["자재번호", 130], ["강재상태", 130], ["Mill 출하 예정일자", 140], ["입하 예정수량", 110, 1], ["단중(kg)", 95, 1], ["두께(mm)", 90, 1], ["폭(mm)", 90, 1], ["길이(mm)", 95, 1], ["Mill order No.", 120], ["Mill사 제작 현황", 120]];
+const STEEL_ROWS = [
+  ["HMO", "42176", "4217D95SP26", "90 : 납품완료", "2023.05.04", "10", "5,308", "30", "1,970", "11,212", "4840026271", "제작중"],
+  ["HMO", "42176", "4217D95SP27", "50 : 제작중", "2023.05.06", "8", "4,120", "25", "1,850", "10,400", "4840026272", "출하"],
+  ["POS", "42177", "4217D95SP31", "90 : 납품완료", "2023.05.08", "12", "6,240", "32", "2,100", "12,000", "4840026280", "입하"],
+  ["POS", "42177", "4217D95SP32", "30 : 발주완료", "2023.05.11", "6", "3,180", "20", "1,600", "9,800", "4840026281", "이동"],
+  ["HMO", "42178", "4217D95SP40", "50 : 제작중", "2023.05.13", "14", "7,410", "36", "2,240", "12,600", "4840026290", "제작중"],
+  ["DSM", "42178", "4217D95SP41", "90 : 납품완료", "2023.05.15", "9", "4,860", "28", "1,900", "11,000", "4840026291", "입하"],
+  ["DSM", "42179", "4217D95SP50", "30 : 발주완료", "2023.05.18", "11", "5,720", "30", "2,000", "11,500", "4840026300", "출하"],
+  ["POS", "42179", "4217D95SP51", "50 : 제작중", "2023.05.20", "7", "3,640", "22", "1,750", "10,200", "4840026301", "제작중"],
+];
+
+const AVAIL_COLS = [["공사번호", 100], ["블록번호", 100], ["자재번호", 130], ["자재내역", 170], ["자재그룹", 100], ["수량단위", 90], ["보관위치", 150], ["자재수량", 100, 1], ["할당 수량", 100, 1], ["가용 수량", 100, 1]];
+const AVAIL_ROWS = [
+  ["2451", "561", "MAT-001", "Valve 100x10..", "1P0P02", "EA", "오션 물류센터", "20", "5", "15"],
+  ["2451", "562", "MAT-002", "Sensor 10mm..", "1P0P02", "EA", "오션 자재창고", "50", "10", "40"],
+  ["2452", "571", "MAT-003", "Steel 12mm..", "1L0P01", "kg", "오션 강재창고", "1,200", "400", "800"],
+  ["2452", "572", "MAT-004", "Pump 15L..", "1F0P04", "L", "오션 의장재창고", "80", "20", "60"],
+  ["2453", "581", "MAT-005", "Valve 20x20..", "1P0P02", "EA", "오션 물류센터", "140", "40", "100"],
+  ["2453", "582", "MAT-006", "Flange 80A..", "1P0P03", "EA", "오션 자재창고", "260", "60", "200"],
+  ["2454", "591", "MAT-007", "Gasket 100A..", "1P0P03", "EA", "오션 의장재창고", "500", "150", "350"],
+  ["2454", "592", "MAT-008", "Steel 20mm..", "1L0P01", "kg", "오션 강재창고", "2,400", "900", "1,500"],
+];
+
+const CORE_ROWS = [
+  ["MAT-001", "Valve 100x10..", "10 : 철의장", "2026-05-04"],
+  ["MAT-003", "Steel 12mm..", "1L : 강판재", "2026-05-06"],
+  ["MAT-005", "Valve 20x20..", "1P : 배관재", "2026-05-08"],
+  ["MAT-006", "Flange 80A..", "1P : 배관재", "2026-05-11"],
+  ["MAT-007", "Gasket 100A..", "1F : 철의장재", "2026-05-13"],
+  ["MAT-008", "Steel 20mm..", "1L : 강판재", "2026-05-15"],
+  ["EQ-1003", "Sensor 10mm..", "10 : 철의장", "2026-05-18"],
+  ["EQ-1005", "Pump 15L..", "1F : 철의장재", "2026-05-20"],
+];
+
+const LOC_ROWS = [
+  ["1", "10: 의장재", "I1", "2026-07-13", "홍길동"],
+  ["2", "20: 기기장비재", "", "2026-07-13", "홍길동"],
+  ["3", "30: 강재", "", "2026-07-12", "심청이"],
+  ["4", "40: 소비재", "", "2026-07-12", "심청이"],
+  ["5", "50: 의장재 공장", "", "2026-07-11", "이몽룡"],
+  ["6", "60: 본관", "", "2026-07-11", "이몽룡"],
+];
+
+const TARGETS = [
+  { lv: "Lv2", code: "I1b2", name: "의장재" },
+  { lv: "Lv2", code: "I1b1", name: "기기장비재" },
+  { lv: "Lv3", code: "I1c1", name: "의장재 공장1" },
+  { lv: "Lv3", code: "I1c2", name: "의장재 공장2" },
+  { lv: "Lv3", code: "I1c3", name: "강재 선처리" },
+  { lv: "Lv3", code: "I1c4", name: "강재 후처리" },
+];
+
+const NAV_TREE = [
+  { key: "dashboard", label: "대시보드", icon: "ti-layout-dashboard", url: "HEL01-01 대시보드 (기본).dc.html" },
+  { key: "jibun", label: "지번관리", icon: "ti-map-pin", children: [
+    { key: "jibun-phys", label: "물리지번 목록", url: "HEL02-00 물리지번 목록.dc.html" },
+    { key: "jibun-logi", label: "논리지번 목록", url: "HEL02-09 논리지번 목록.dc.html" },
+    { key: "jibun-list", label: "지번 목록", url: "HEL03-01 지번 목록.dc.html" },
+    { key: "jibun-plan", label: "활용계획", url: "HEL04-01 활용계획.dc.html" },
+  ]},
+  { key: "material", label: "자재관리", icon: "ti-package-import", children: [
+    { key: "mat-inbound", label: "입고예정정보", children: [
+      { key: "mat-in-outfit", label: "의장재", go: "HEL05-01" },
+      { key: "mat-in-equip", label: "기기장비재", go: "HEL05-02" },
+      { key: "mat-in-steel", label: "강재", go: "HEL05-03" },
+    ]},
+    { key: "mat-avail", label: "재고가용성정보", go: "HEL05-04" },
+    { key: "mat-core", label: "핵심자재 관리", go: "HEL13-01" },
+    { key: "mat-loc", label: "적치위치 관리", go: "HEL05-05" },
+  ]},
+  { key: "block", label: "블록관리", icon: "ti-box", url: "HEL06-01 블록관리 (목록).dc.html" },
+  { key: "transport", label: "운송수단 관리", icon: "ti-truck-delivery", children: [
+    { key: "tr-req", label: "중기배차신청", url: "HEL07-01 중기배차신청 (사용자).dc.html" },
+    { key: "tr-plan", label: "중기배차계획", children: [
+      { key: "tr-plan-daily", label: "일일중기배차계획", url: "HEL08-01 일일중기배차계획 (사용자).dc.html" },
+      { key: "tr-plan-weekly", label: "주간중기배차계획", url: "HEL08-02 주간중기배차계획 (사용자).dc.html" },
+    ]},
+    { key: "tr-result", label: "배차실적", url: "HEL09-01 일반배차실적.dc.html" },
+    { key: "tr-util", label: "장비가동률", url: "HEL23-01 장비가동률 (표).dc.html" },
+    { key: "tr-res", label: "운송자원정보관리", children: [
+      { key: "tr-res-master", label: "운송자원 마스터 관리", url: "HEL14-01 운송자원 마스터 관리.dc.html" },
+      { key: "tr-res-fuel", label: "유류실적 관리", url: "HEL11-01 유류실적 관리.dc.html" },
+      { key: "tr-res-jig", label: "치구 마스터 관리", url: "HEL15-01 치구 마스터 관리.dc.html" },
+      { key: "tr-res-week", label: "주간배차 마스터 관리", url: "HEL24-01 주간배차 마스터 관리.dc.html" },
+    ]},
+  ]},
+  { key: "system", label: "시스템관리", icon: "ti-settings", children: [
+    { key: "sys-alarm", label: "알람조건 설정", url: "HEL12-03 알람조건 설정.dc.html" },
+    { key: "sys-role", label: "사용자권한 설정", url: "HEL16-01 사용자권한 설정.dc.html" },
+    { key: "sys-history", label: "히스토리 관리", url: "HEL17-01 히스토리 관리.dc.html" },
+  ]},
+];
+
+const PAGE_META = {
+  outfit: { crumb: ["HOME", "자재관리", "입고예정정보", "의장재"], title: "의장재", navKey: "mat-in-outfit" },
+  equip: { crumb: ["HOME", "자재관리", "입고예정정보", "기기장비재"], title: "기기장비재", navKey: "mat-in-equip" },
+  steel: { crumb: ["HOME", "자재관리", "입고예정정보", "강재"], title: "강재", navKey: "mat-in-steel" },
+  avail: { crumb: ["HOME", "자재관리", "재고가용성정보"], title: "재고가용성정보", navKey: "mat-avail" },
+  core: { crumb: ["HOME", "자재관리", "핵심자재 관리"], title: "핵심자재 관리", navKey: "mat-core" },
+  loc: { crumb: ["HOME", "자재관리", "적치위치 관리"], title: "적치위치 관리", navKey: "mat-loc" },
+};
+
+const SCREEN_DIRS = { HEL00: "00 공통", HEL01: "01 대시보드", HEL02: "02 지번관리", HEL03: "02 지번관리", HEL04: "02 지번관리", HEL05: "03 자재관리", HEL13: "03 자재관리", HEL06: "04 블록관리", HEL07: "05 중기배차신청", HEL08: "06 중기배차계획", HEL09: "07 배차실적", HEL10: "07 배차실적", HEL23: "08 장비가동률", HEL11: "09 운송자원정보관리", HEL14: "09 운송자원정보관리", HEL15: "09 운송자원정보관리", HEL24: "09 운송자원정보관리", HEL12: "10 알람", HEL16: "11 시스템관리", HEL17: "11 시스템관리", HEL18: "12 태블릿 PC 앱", HEL19: "13 작업자용 모바일 앱", HEL20: "13 작업자용 모바일 앱", HEL21: "13 작업자용 모바일 앱", HEL22: "13 작업자용 모바일 앱" };
+function resolveUrl(u) {
+  const dir = SCREEN_DIRS[String(u || "").slice(0, 5)];
+  return dir ? "../" + dir + "/" + u : u;
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const sc = SCREENS.find((s) => s.id === props.startScreen) || SCREENS[0];
+    this.state = {
+      screen: sc.id,
+      lnbOpen: { material: true, "mat-inbound": true },
+      page: 1,
+      modal: sc.modal || null,
+      coreUse: {},
+      locValues: LOC_ROWS.map((r) => r[2]),
+      targetRow: null,
+      targetQuery: "I1",
+      targetSel: { "I1b2": true },
+      regGroup: "Y1",
+      regUse: true,
+      groupFilter: "",
+    };
+  }
+
+  go(id) {
+    const sc = SCREENS.find((s) => s.id === id);
+    if (!sc) return;
+    this.setState({ screen: id, modal: sc.modal || null, page: 1 });
+  }
+
+  cur() { return SCREENS.find((s) => s.id === this.state.screen) || SCREENS[0]; }
+
+  cell(v, num) {
+    return { v: v, isText: true, justify: num ? "flex-end" : "flex-start", color: "var(--text-secondary)" };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const cur = this.cur();
+    const key = cur.key;
+    const meta = PAGE_META[key];
+    const lnbOpen = s.lnbOpen;
+
+    const navRows = [];
+    const walk = (nodes, depth) => {
+      for (const n of nodes) {
+        const has = !!(n.children && n.children.length);
+        const isOpen = !!lnbOpen[n.key];
+        navRows.push({
+          label: n.label, icon: n.icon || "", showIcon: depth === 0, depth: String(depth),
+          active: n.key === meta.navKey,
+          trail: has && (n.key === "material" || n.key === "mat-inbound"),
+          hasChildren: has, chevIcon: isOpen ? "ti-chevron-up" : "ti-chevron-down",
+          onClick: () => {
+            if (has) {
+              const next = Object.assign({}, lnbOpen);
+              next[n.key] = !isOpen;
+              this.setState({ lnbOpen: next });
+            } else if (n.go) { this.go(n.go); }
+            else if (n.url) { window.location.href = encodeURI(resolveUrl(n.url)); }
+          },
+        });
+        if (has && isOpen) walk(n.children, depth + 1);
+      }
+    };
+    walk(NAV_TREE, 0);
+
+    const selField = (label, value, onChange) => ({ label, isSelect: true, isText: false, isRange: false, options: GROUP_OPTS, value, onChange });
+    const txtField = (label, ph) => ({ label, isText: true, ph: ph });
+    const rngField = (label) => ({ label, isRange: true, isText: false });
+    const setGroup = (v) => this.setState({ groupFilter: typeof v === "string" ? v : (v && v.target ? v.target.value : v) });
+
+    let searchRows, cols, rowsRaw, listTitle = "자재목록", listCount = "(12 / 522)";
+    let hasRegister = false, hasExcel = false, hasSave = false, scrollHint = "";
+
+    if (key === "outfit") {
+      searchRows = [
+        { fields: [txtField("공사번호", "공사번호 입력"), txtField("블록번호", "블록번호 입력"), txtField("자재번호", "자재번호 입력")], hasButtons: false },
+        { fields: [selField("자재그룹", s.groupFilter, setGroup), rngField("PND 일정"), rngField("납품예정일")], hasButtons: true },
+      ];
+      cols = OUTFIT_COLS[cur.scroll];
+      rowsRaw = OUTFIT_ROWS[cur.scroll];
+      scrollHint = ["컬럼이 많아 좌우 스크롤로 조회합니다 · 앞부분 컬럼", "좌우 스크롤 중간 구간 컬럼", "좌우 스크롤 끝부분 컬럼 · 납품예정일 수정일자는 한화오션 I/F"][cur.scroll];
+    } else if (key === "equip") {
+      searchRows = [
+        { fields: [txtField("공사번호", "공사번호 입력"), txtField("블록번호", "블록번호 입력"), txtField("자재번호", "자재번호 입력")], hasButtons: false },
+        { fields: [selField("자재그룹", s.groupFilter, setGroup), txtField("B/L No", "B/L No 입력"), rngField("통관일자")], hasButtons: true },
+      ];
+      cols = EQUIP_COLS;
+      rowsRaw = EQUIP_ROWS;
+      scrollHint = "Box별 사진 I/F 가능 여부 파악중";
+    } else if (key === "steel") {
+      searchRows = [
+        { fields: [txtField("공사번호", "공사번호 입력"), txtField("자재번호", "자재번호 입력"), selField("강재상태", s.groupFilter, setGroup)], hasButtons: false },
+        { fields: [txtField("Mill order No.", "Mill order No. 입력"), rngField("통관일자")], hasButtons: true },
+      ];
+      cols = STEEL_COLS;
+      rowsRaw = STEEL_ROWS;
+      scrollHint = "Mill사 제작 현황 I/F 가능 여부 파악중";
+    } else if (key === "avail") {
+      searchRows = [
+        { fields: [txtField("공사번호", "공사번호 입력"), txtField("블록번호", "블록번호 입력"), txtField("자재번호", "자재번호 입력")], hasButtons: false },
+        { fields: [selField("자재그룹", s.groupFilter, setGroup), selField("보관위치", s.groupFilter, setGroup)], hasButtons: true },
+      ];
+      cols = AVAIL_COLS;
+      rowsRaw = AVAIL_ROWS;
+    } else if (key === "core") {
+      searchRows = [
+        { fields: [txtField("자재번호", "자재번호 입력"), txtField("자재내역", "자재내역 입력"), selField("자재그룹", s.groupFilter, setGroup)], hasButtons: false },
+        { fields: [selField("사용여부", s.groupFilter, setGroup), rngField("등록일자")], hasButtons: true },
+      ];
+      cols = [["자재번호", 140], ["자재내역", 200], ["자재그룹", 140], ["등록일자", 130], ["핵심자재여부", 130]];
+      rowsRaw = CORE_ROWS;
+      hasRegister = true; hasExcel = true;
+    } else {
+      searchRows = [
+        { fields: [txtField("적치장소", "적치장소 입력"), txtField("논리지번", "논리지번 입력"), rngField("등록일자")], hasButtons: true },
+      ];
+      cols = [["No.", 60], ["적치장소", 180], ["논리지번", 320], ["최근 수정일자", 130], ["수정자", 110]];
+      rowsRaw = LOC_ROWS;
+      hasSave = true; hasExcel = true;
+    }
+
+    const gridCols = cols.map((c) => c[1] + "px").join(" ");
+    const tableMinWidth = cols.reduce((a, c) => a + c[1], 0) + "px";
+
+    let rows;
+    if (key === "core") {
+      rows = rowsRaw.map((r, i) => {
+        const on = s.coreUse[i] === undefined ? i % 3 !== 2 : s.coreUse[i];
+        return {
+          cells: [
+            this.cell(r[0]), this.cell(r[1]), this.cell(r[2]), this.cell(r[3]),
+            {
+              isToggle: true, isText: false, justify: "center", color: "var(--text-secondary)", v: "",
+              track: on ? "var(--brand-primary)" : "var(--gray-40)", knob: on ? "18px" : "0px",
+              onToggle: () => {
+                const next = Object.assign({}, s.coreUse);
+                next[i] = !on;
+                this.setState({ coreUse: next });
+              },
+            },
+          ],
+        };
+      });
+    } else if (key === "loc") {
+      rows = rowsRaw.map((r, i) => ({
+        cells: [
+          this.cell(r[0]), this.cell(r[1]),
+          {
+            isInput: true, isText: false, justify: "flex-start", color: "var(--text-secondary)", v: s.locValues[i],
+            onChange: (e) => {
+              const next = s.locValues.slice();
+              next[i] = e && e.target ? e.target.value : "";
+              this.setState({ locValues: next });
+            },
+            onSearch: () => this.setState({ targetRow: i, targetQuery: s.locValues[i] || "I1" }),
+          },
+          this.cell(r[3]), this.cell(r[4]),
+        ],
+      }));
+    } else if (key === "equip") {
+      rows = rowsRaw.map((r) => ({
+        cells: r.map((v, ci) => {
+          if (ci === 11) return { v: v, isLink: true, isText: false, justify: "center", color: "var(--blue-dark)", onClick: () => {} };
+          const num = !!(EQUIP_COLS[ci] && EQUIP_COLS[ci][2]);
+          return this.cell(v, num);
+        }),
+      }));
+    } else if (key === "steel") {
+      rows = rowsRaw.map((r) => ({
+        cells: r.map((v, ci) => {
+          if (ci === 11) return { v: v, isLink: true, isText: false, justify: "center", color: "var(--blue-dark)", onClick: () => {} };
+          const num = !!(STEEL_COLS[ci] && STEEL_COLS[ci][2]);
+          return this.cell(v, num);
+        }),
+      }));
+    } else {
+      const colDef = key === "outfit" ? OUTFIT_COLS[cur.scroll] : AVAIL_COLS;
+      rows = rowsRaw.map((r) => ({
+        cells: r.map((v, ci) => {
+          const c = this.cell(v, !!(colDef[ci] && colDef[ci][2]));
+          if (key === "outfit" && cur.scroll === 2 && ci === 9) c.color = "var(--brand-primary)";
+          return c;
+        }),
+      }));
+    }
+
+    const q = (s.targetQuery || "").trim();
+    const targetRows = TARGETS.filter((t) => !q || t.code.toUpperCase().indexOf(q.toUpperCase()) >= 0).map((t) => {
+      const idx = q ? t.code.toUpperCase().indexOf(q.toUpperCase()) : -1;
+      return {
+        lv: t.lv, name: t.name,
+        hit: idx === 0 ? t.code.slice(0, q.length) : "",
+        rest: idx === 0 ? t.code.slice(q.length) : t.code,
+        on: !!s.targetSel[t.code],
+        onToggle: () => {
+          const next = Object.assign({}, s.targetSel);
+          next[t.code] = !next[t.code];
+          this.setState({ targetSel: next });
+        },
+      };
+    });
+
+    return {
+      screenLabel: cur.id + " " + cur.label,
+      pageTitle: meta.title,
+      crumbItems: meta.crumb.map((l) => ({ label: l })),
+      navRows: navRows,
+      searchRows: searchRows,
+      cols: cols.map((c) => ({ label: c[0] })),
+      gridCols: gridCols,
+      tableMinWidth: tableMinWidth,
+      rows: rows,
+      listTitle: listTitle,
+      listCount: listCount,
+      scrollHint: scrollHint,
+      hasRegister: hasRegister,
+      hasExcel: hasExcel,
+      hasSave: hasSave,
+      page: s.page,
+      setPage: (p) => this.setState({ page: p }),
+      showReg: s.modal === "reg",
+      openReg: () => this.setState({ modal: "reg", screen: "HEL13-02" }),
+      closeReg: () => this.setState({ modal: null, screen: "HEL13-01" }),
+      regGroupOptions: GROUP_OPTS.filter((g) => g.value),
+      regGroup: s.regGroup,
+      setRegGroup: (v) => this.setState({ regGroup: typeof v === "string" ? v : (v && v.target ? v.target.value : v) }),
+      regUseTrack: s.regUse ? "var(--brand-primary)" : "var(--gray-40)",
+      regUseKnob: s.regUse ? "18px" : "0px",
+      regUseLabel: s.regUse ? "ON" : "OFF",
+      toggleRegUse: () => this.setState({ regUse: !s.regUse }),
+      showTarget: s.targetRow !== null,
+      targetQuery: s.targetQuery,
+      setTargetQuery: (e) => this.setState({ targetQuery: e && e.target ? e.target.value : "" }),
+      targetRows: targetRows,
+      closeTarget: () => this.setState({ targetRow: null }),
+      applyTarget: () => {
+        const picked = Object.keys(s.targetSel).filter((k) => s.targetSel[k]);
+        const next = s.locValues.slice();
+        if (s.targetRow !== null) next[s.targetRow] = picked.join(", ");
+        this.setState({ locValues: next, targetRow: null });
+      },
+      showPicker: !this.props.startScreen,
+      pickRows: SCREENS.map((sc) => {
+        const on = sc.id === s.screen;
+        return {
+          short: sc.id.replace("HEL", ""), label: sc.id + " " + sc.label,
+          border: on ? "var(--brand-primary)" : "var(--border-input)",
+          bg: on ? "var(--status-wait-bg)" : "var(--bg-primary)",
+          color: on ? "var(--brand-primary)" : "var(--text-secondary)",
+          onClick: () => this.go(sc.id),
+        };
+      }),
+    };
+  }
+}
+</script>
+</body>
+</html>

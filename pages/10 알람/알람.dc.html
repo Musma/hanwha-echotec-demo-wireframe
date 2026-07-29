@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.24.0/dist/tabler-icons.min.css">
+<script src="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/_ds_bundle.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; }
+  *, *::before, *::after { box-sizing: border-box; }
+  a { color: var(--blue-dark); text-decoration: none; }
+  a:hover { color: var(--blue-main); }
+  input::placeholder { color: var(--text-placeholder); }
+  .dl-navbtn:hover { background: var(--bg-secondary) !important; }
+  .dl-nav { width: var(--lnb-w); flex-shrink: 0; background: var(--bg-primary); border-right: 1px solid var(--border-subtle); display: flex; flex-direction: column; padding: 12px 8px; }
+  .dl-item { display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; margin: 2px 0; border: none; cursor: pointer; border-radius: var(--radius-btn); background: transparent; color: var(--text-secondary); font-family: var(--font-content); font-weight: 500; font-size: 14px; line-height: 1; width: 100%; text-align: left; }
+  .dl-item[data-active="true"] { background: var(--status-wait-bg); color: var(--brand-primary); font-weight: 700; }
+  .dl-item[data-trail="true"] { color: var(--text-primary); font-weight: 700; }
+  .dl-item[data-depth="1"] { height: 36px; padding-left: 44px; font-size: 13px; font-weight: 400; }
+  .dl-item[data-depth="2"] { height: 32px; padding-left: 60px; font-size: 13px; font-weight: 400; color: var(--text-tertiary); }
+  .dl-chev { margin-left: auto; font-size: 16px; color: var(--text-tertiary); flex-shrink: 0; }
+  .dl-pick:hover { border-color: var(--brand-primary) !important; color: var(--brand-primary) !important; }
+  .al-row:hover { background: var(--gray-5); }
+  .al-card:hover { background: var(--gray-5); }
+</style>
+</helmet>
+
+<div style="display:flex; flex-direction:column; height:100vh; min-width:1440px; width:100%; overflow:hidden; font-family:var(--font-primary); color:var(--text-secondary); background:var(--gray-5);" data-screen-label="{{ screenLabel }}">
+
+  <header style="height:var(--header-h-web); flex-shrink:0; background:var(--bg-primary); border-bottom:1px solid var(--border-subtle); display:flex; align-items:center; padding:0 20px 0 12px; gap:16px; z-index:60; position:relative;">
+    <img src="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/assets/logo-horizontal.png" alt="한화오션에코텍" style="height:25px; width:auto; display:block; flex-shrink:0;">
+    <span style="font-family:var(--font-title); font-weight:700; font-size:14px; color:var(--text-primary); letter-spacing:-0.2px; white-space:nowrap;">물류Twin</span>
+    <div style="margin-left:auto; display:flex; align-items:center; gap:18px;">
+      <span style="font-size:14px; color:var(--text-tertiary); white-space:nowrap;"><strong style="font-weight:500; color:var(--text-primary);">홍길동</strong>님 로그인 되었습니다.</span>
+      <button title="로그아웃" style="border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:6px;"><i class="ti ti-logout" style="font-size:22px;"></i></button>
+      <div style="position:relative;">
+        <button onClick="{{ toggleBell }}" title="알림" style="border:none; background:transparent; cursor:pointer; color:{{ bellColor }}; display:flex; padding:6px; position:relative;">
+          <i class="ti ti-bell" style="font-size:22px;"></i>
+          <span style="position:absolute; top:4px; right:4px; width:8px; height:8px; border-radius:50%; background:var(--red-main);"></span>
+        </button>
+        <sc-if value="{{ bellOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute; right:-4px; top:44px; z-index:80; width:340px; background:var(--bg-primary); border:1px solid var(--border-default); border-radius:6px; box-shadow:0 2px 8px rgba(54,59,64,0.25); overflow:hidden;">
+            <div style="display:flex; align-items:center; gap:14px; padding:10px 14px; border-bottom:1px solid var(--border-default); background:var(--gray-5); font:400 12px var(--font-content);">
+              <span style="display:flex; align-items:center; gap:5px; white-space:nowrap;"><span style="width:8px; height:8px; border-radius:2px; background:var(--red-main);"></span>긴급</span>
+              <span style="display:flex; align-items:center; gap:5px; white-space:nowrap;"><span style="width:8px; height:8px; border-radius:2px; background:var(--orange-40);"></span>주의</span>
+              <span style="display:flex; align-items:center; gap:5px; white-space:nowrap;"><span style="width:8px; height:8px; border-radius:2px; background:var(--blue-dark);"></span>일반</span>
+            </div>
+            <div style="max-height:320px; overflow:auto;">
+              <sc-for list="{{ bellCards }}" as="c" hint-placeholder-count="4">
+                <div class="al-card" style="display:flex; gap:10px; padding:12px 14px; border-bottom:1px solid var(--border-default); cursor:pointer;">
+                  <span style="width:3px; flex-shrink:0; border-radius:2px; background:{{ c.color }};"></span>
+                  <div style="flex:1; min-width:0; display:flex; flex-direction:column; gap:3px;">
+                    <div style="display:flex; align-items:baseline; gap:8px;">
+                      <span style="font:700 13px var(--font-content); color:var(--text-primary); white-space:nowrap;">{{ c.type }}</span>
+                      <span style="margin-left:auto; font:400 11px var(--font-content); color:var(--text-tertiary); white-space:nowrap; font-variant-numeric:tabular-nums;">{{ c.ago }}</span>
+                    </div>
+                    <span style="font:400 12px/1.5 var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">{{ c.msg }}</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <button onClick="{{ goList }}" style="width:100%; height:38px; border:none; border-top:1px solid var(--border-default); background:var(--bg-primary); color:var(--brand-primary); font:500 13px var(--font-content); cursor:pointer; display:flex; align-items:center; justify-content:center; gap:4px;" style-hover="background:var(--gray-5);">전체보기<i class="ti ti-chevron-right" style="font-size:15px;"></i></button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </header>
+
+  <div style="display:flex; flex:1; min-height:0;">
+    <nav class="dl-nav">
+      <sc-for list="{{ navRows }}" as="item" hint-placeholder-count="6">
+        <button class="dl-navbtn dl-item" onClick="{{ item.onClick }}" title="{{ item.label }}" data-active="{{ item.active }}" data-trail="{{ item.trail }}" data-depth="{{ item.depth }}">
+          <sc-if value="{{ item.showIcon }}" hint-placeholder-val="{{ true }}">
+            <i class="ti {{ item.icon }}" style="font-size:20px; flex-shrink:0;"></i>
+          </sc-if>
+          <span style="white-space:nowrap; flex-shrink:0;">{{ item.label }}</span>
+          <sc-if value="{{ item.hasChildren }}" hint-placeholder-val="{{ false }}">
+            <i class="ti {{ item.chevIcon }} dl-chev"></i>
+          </sc-if>
+        </button>
+      </sc-for>
+      <a href="../00 공통/HEL00-03 메뉴 (닫힘).dc.html" style="margin-top:auto; height:36px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); white-space:nowrap; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:4px; text-decoration:none;" style-hover="background:var(--gray-5);">
+        <i class="ti ti-chevron-left" style="font-size:15px;"></i>메뉴닫기
+      </a>
+    </nav>
+
+    <main style="flex:1; min-width:0; display:flex; flex-direction:column; overflow:hidden;">
+      <div style="flex-shrink:0; display:flex; align-items:center; padding:14px 24px 0;">
+        <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Breadcrumb" items="{{ crumbItems }}" hint-size="240px,20px"></x-import>
+      </div>
+      <div style="flex-shrink:0; display:flex; align-items:center; gap:12px; padding:10px 24px 16px;">
+        <span style="font:700 16px/1.2 var(--font-content); color:var(--text-primary); white-space:nowrap;">{{ pageTitle }}</span>
+        <sc-if value="{{ showPicker }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-left:auto; display:flex; align-items:center; gap:6px;">
+            <span style="font:400 11px var(--font-content); color:var(--text-tertiary); white-space:nowrap; flex-shrink:0;">화면 ID</span>
+            <sc-for list="{{ pickRows }}" as="p" hint-placeholder-count="3">
+              <button class="dl-pick" onClick="{{ p.onClick }}" title="{{ p.label }}" style="flex-shrink:0; height:26px; padding:0 10px; border:1px solid {{ p.border }}; border-radius:999px; background:{{ p.bg }}; color:{{ p.color }}; font:700 11px var(--font-content); font-variant-numeric:tabular-nums; cursor:pointer; white-space:nowrap;">{{ p.id }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+
+      <!-- ============ HEL12-01 : 벨 아이콘 안내 ============ -->
+      <sc-if value="{{ isBell }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1; min-height:0; padding:0 24px 24px;">
+          <div style="height:100%; background:var(--surface); border:1px solid var(--border-default); border-radius:6px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px;">
+            <i class="ti ti-bell-ringing" style="font-size:48px; color:var(--gray-40);"></i>
+            <span style="font:400 14px var(--font-content); color:var(--text-tertiary);">상단 알림 아이콘을 클릭하면 최근 알람이 대화박스로 표시됩니다.</span>
+            <button onClick="{{ openBell }}" style="height:32px; padding:0 16px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); cursor:pointer; white-space:nowrap;" style-hover="background:var(--gray-5);">알람 패널 열기</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ============ HEL12-02 알람목록 ============ -->
+      <sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+        <div style="flex:1; min-height:0; overflow:auto; padding:0 24px 24px; display:flex; flex-direction:column; gap:16px;">
+
+          <div style="flex-shrink:0; display:grid; grid-template-columns:repeat(4, 1fr); gap:16px;">
+            <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:10px;">
+              <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">전체 알람 건수 (30일)</span>
+              <span style="font:700 18px/1.2 var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">50 건</span>
+              <div style="display:flex; align-items:baseline; justify-content:space-between; gap:8px; padding-top:8px; border-top:1px solid var(--border-default);">
+                <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">미확인 알람</span>
+                <span style="font:700 14px/1 var(--font-content); color:var(--red-dark); font-variant-numeric:tabular-nums;">10 건</span>
+              </div>
+            </div>
+            <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:10px;">
+              <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">금일 발생 알람 건수</span>
+              <span style="font:700 18px/1.2 var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">10 건</span>
+              <div style="display:flex; align-items:baseline; justify-content:space-between; gap:8px; padding-top:8px; border-top:1px solid var(--border-default);">
+                <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">처리 완료</span>
+                <span style="font:700 14px/1 var(--font-content); color:var(--green-dark); font-variant-numeric:tabular-nums;">10 건</span>
+              </div>
+            </div>
+            <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+              <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">평균 조치 소요 시간</span>
+              <span style="font:700 18px/1.2 var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">5 시간</span>
+              <span style="font:400 12px/1.5 var(--font-content); color:var(--text-tertiary);">알람 확인 후 처리까지 완료 시간 기준</span>
+            </div>
+            <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+              <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">긴급 · 주의 알람 발생</span>
+              <span style="font:700 18px/1.2 var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">5 건</span>
+              <span style="font:400 12px/1 var(--font-content); color:var(--red-dark); font-variant-numeric:tabular-nums;">▲ 전월 대비 2 건</span>
+            </div>
+          </div>
+
+          <div style="flex-shrink:0; background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:10px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="width:64px; flex-shrink:0; font:400 12px var(--font-content); color:var(--text-tertiary);">알람등급</span>
+              <div style="width:150px; flex-shrink:0;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ gradeOptions }}" value="{{ grade }}" onChange="{{ setGrade }}" hint-size="100%,28px"></x-import></div>
+              <span style="width:64px; flex-shrink:0; font:400 12px var(--font-content); color:var(--text-tertiary);">알람유형</span>
+              <div style="width:150px; flex-shrink:0;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ typeOptions }}" value="{{ alarmType }}" onChange="{{ setAlarmType }}" hint-size="100%,28px"></x-import></div>
+              <span style="width:64px; flex-shrink:0; font:400 12px var(--font-content); color:var(--text-tertiary);">발생시간</span>
+              <div style="display:flex; align-items:center; gap:6px;">
+                <div style="position:relative;">
+                  <input value="2026/05/01" style="width:120px; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 28px 0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                  <i class="ti ti-calendar" style="position:absolute; right:8px; top:7px; font-size:14px; color:var(--text-tertiary);"></i>
+                </div>
+                <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">~</span>
+                <div style="position:relative;">
+                  <input value="2026/05/20" style="width:120px; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 28px 0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                  <i class="ti ti-calendar" style="position:absolute; right:8px; top:7px; font-size:14px; color:var(--text-tertiary);"></i>
+                </div>
+              </div>
+              <div style="margin-left:auto; display:flex; gap:8px;">
+                <button style="height:28px; padding:0 14px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); cursor:pointer; white-space:nowrap;" style-hover="background:var(--gray-5);">초기화</button>
+                <button style="height:28px; padding:0 14px; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 13px var(--font-content); cursor:pointer; white-space:nowrap;" style-hover="background:var(--brand-hover);">조회</button>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="width:64px; flex-shrink:0; font:400 12px var(--font-content); color:var(--text-tertiary);">알람내용</span>
+              <input placeholder="알람내용을 입력해주세요." style="width:260px; flex-shrink:0; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary);">
+              <span style="width:64px; flex-shrink:0; font:400 12px var(--font-content); color:var(--text-tertiary);">담당자</span>
+              <input placeholder="담당자명을 입력해주세요." style="width:150px; flex-shrink:0; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary);">
+              <span style="width:64px; flex-shrink:0; font:400 12px var(--font-content); color:var(--text-tertiary);">상태</span>
+              <div style="width:150px; flex-shrink:0;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ statusOptions }}" value="{{ statusFilter }}" onChange="{{ setStatusFilter }}" hint-size="100%,28px"></x-import></div>
+            </div>
+          </div>
+
+          <div style="flex-shrink:0; background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+              <span style="font:500 16px/1.2 var(--font-content); color:var(--text-primary); white-space:nowrap;">알람목록</span>
+              <span style="font:400 12px var(--font-content); color:var(--text-tertiary); font-variant-numeric:tabular-nums;">(12 / 522)</span>
+            </div>
+            <div style="border:1px solid var(--border-default); border-radius:4px; overflow:hidden;">
+              <div style="display:grid; grid-template-columns:44px 90px 110px 1fr 150px 150px 100px 100px; background:var(--gray-20); font:700 12px var(--font-content); color:var(--text-primary);">
+                <div style="padding:9px 8px; display:flex; align-items:center; justify-content:center;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Checkbox" checked="{{ allChecked }}" size="16px" onChange="{{ toggleAll }}" hint-size="16px,16px"></x-import></div>
+                <div style="padding:9px 8px; text-align:center;">알람등급</div>
+                <div style="padding:9px 8px; text-align:center;">알람유형</div>
+                <div style="padding:9px 8px; text-align:center;">알람내용</div>
+                <div style="padding:9px 8px; text-align:center;">발생시간</div>
+                <div style="padding:9px 8px; text-align:center;">처리완료 시간</div>
+                <div style="padding:9px 8px; text-align:center;">담당자</div>
+                <div style="padding:9px 8px; text-align:center;">상태</div>
+              </div>
+              <sc-for list="{{ rows }}" as="r" hint-placeholder-count="7">
+                <div class="al-row" style="display:grid; grid-template-columns:44px 90px 110px 1fr 150px 150px 100px 100px; border-top:1px solid var(--gray-10); font:400 12px var(--font-content); color:var(--text-secondary);">
+                  <div style="padding:9px 8px; display:flex; align-items:center; justify-content:center;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Checkbox" checked="{{ r.checked }}" size="16px" onChange="{{ r.onCheck }}" hint-size="16px,16px"></x-import></div>
+                  <div style="padding:9px 8px; display:flex; align-items:center; justify-content:center;"><span style="height:20px; padding:0 8px; border-radius:999px; background:{{ r.gradeBg }}; color:{{ r.gradeColor }}; font:700 11px/20px var(--font-content); white-space:nowrap;">{{ r.grade }}</span></div>
+                  <div style="padding:9px 8px; display:flex; align-items:center;">{{ r.type }}</div>
+                  <div style="padding:9px 8px; display:flex; align-items:center; font-variant-numeric:tabular-nums;">{{ r.content }}</div>
+                  <div style="padding:9px 8px; display:flex; align-items:center; font-variant-numeric:tabular-nums;">{{ r.at }}</div>
+                  <div style="padding:9px 8px; display:flex; align-items:center; font-variant-numeric:tabular-nums;">{{ r.doneAt }}</div>
+                  <div style="padding:9px 8px; display:flex; align-items:center;">{{ r.owner }}</div>
+                  <div style="padding:9px 8px; display:flex; align-items:center;"><span style="color:{{ r.statusColor }}; font-weight:500; white-space:nowrap;">{{ r.status }}</span></div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex; align-items:center; margin-top:12px;">
+              <div style="display:flex; gap:8px;">
+                <button style="height:32px; padding:0 16px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 14px var(--font-content); cursor:pointer; white-space:nowrap;" style-hover="background:var(--gray-5);">확인</button>
+                <button style="height:32px; padding:0 16px; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 14px var(--font-content); cursor:pointer; white-space:nowrap;" style-hover="background:var(--brand-hover);">처리완료</button>
+              </div>
+              <div style="margin-left:auto;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Pagination" page="{{ page }}" total="{{ totalPages }}" onChange="{{ setPage }}" hint-size="280px,32px"></x-import></div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ============ HEL12-03 알람조건 설정 ============ -->
+      <sc-if value="{{ isSetting }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1; min-height:0; overflow:auto; padding:0 24px 24px;">
+          <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+              <span style="font:500 16px/1.2 var(--font-content); color:var(--text-primary); white-space:nowrap;">알람조건</span>
+              <span style="font:400 12px var(--font-content); color:var(--text-tertiary); font-variant-numeric:tabular-nums;">(8 / 8)</span>
+              <div style="margin-left:auto; display:flex; gap:8px;">
+                <button style="height:32px; padding:0 16px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 14px var(--font-content); cursor:pointer; white-space:nowrap;" style-hover="background:var(--gray-5);">초기화</button>
+                <button style="height:32px; padding:0 16px; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 14px var(--font-content); cursor:pointer; white-space:nowrap;" style-hover="background:var(--brand-hover);">저장</button>
+              </div>
+            </div>
+            <div style="border:1px solid var(--border-default); border-radius:4px; overflow:visible;">
+              <div style="display:grid; grid-template-columns:130px 140px 200px 1fr 100px; background:var(--gray-20); font:700 12px var(--font-content); color:var(--text-primary);">
+                <div style="padding:9px 8px; text-align:center;">알람등급</div>
+                <div style="padding:9px 8px; text-align:center;">알람유형</div>
+                <div style="padding:9px 8px; text-align:center;">기준 값</div>
+                <div style="padding:9px 8px; text-align:center;">수신 부서</div>
+                <div style="padding:9px 8px; text-align:center;">사용여부</div>
+              </div>
+              <sc-for list="{{ setRows }}" as="r" hint-placeholder-count="8">
+                <div style="display:grid; grid-template-columns:130px 140px 200px 1fr 100px; border-top:1px solid var(--gray-10); font:400 12px var(--font-content); color:var(--text-secondary); position:relative;">
+                  <div style="padding:8px; display:flex; align-items:center;">
+                    <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ gradeSetOptions }}" value="{{ r.grade }}" onChange="{{ r.onGrade }}" hint-size="100%,28px"></x-import>
+                  </div>
+                  <div style="padding:8px; display:flex; align-items:center;">{{ r.type }}</div>
+                  <div style="padding:8px; display:flex; align-items:center; gap:6px;">
+                    <sc-if value="{{ r.hasInput }}" hint-placeholder-val="{{ true }}">
+                      <input value="{{ r.value }}" onChange="{{ r.onValue }}" style="width:74px; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums; text-align:right;">
+                    </sc-if>
+                    <span style="color:var(--text-tertiary); white-space:nowrap;">{{ r.unit }}</span>
+                  </div>
+                  <div style="padding:8px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; position:relative;">
+                    <span onClick="{{ r.setAll }}" style="display:flex; align-items:center; gap:5px; cursor:pointer; white-space:nowrap; color:{{ r.allColor }};"><span style="width:14px; height:14px; border-radius:50%; border:{{ r.allBorder }}; background:#fff; display:inline-block;"></span>전체</span>
+                    <span onClick="{{ r.setSome }}" style="display:flex; align-items:center; gap:5px; cursor:pointer; white-space:nowrap; color:{{ r.someColor }};"><span style="width:14px; height:14px; border-radius:50%; border:{{ r.someBorder }}; background:#fff; display:inline-block;"></span>일부</span>
+                    <sc-if value="{{ r.isSome }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; position:relative;">
+                        <sc-for list="{{ r.tags }}" as="t" hint-placeholder-count="2">
+                          <span style="display:inline-flex; align-items:center; gap:4px; height:22px; padding:0 8px; border-radius:999px; background:var(--status-wait-bg); color:var(--brand-pressed); font:500 11px var(--font-content); white-space:nowrap;">{{ t.name }}<i onClick="{{ t.onRemove }}" class="ti ti-x" style="font-size:12px; cursor:pointer;"></i></span>
+                        </sc-for>
+                        <div style="position:relative;">
+                          <input placeholder="부서 검색" value="{{ r.query }}" onChange="{{ r.onQuery }}" onFocus="{{ r.onFocus }}" style="width:110px; height:26px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 11px var(--font-content); color:var(--text-secondary);">
+                          <sc-if value="{{ r.ddOpen }}" hint-placeholder-val="{{ false }}">
+                            <div style="position:absolute; left:0; top:30px; z-index:50; width:150px; background:var(--bg-primary); border:1px solid var(--border-default); border-radius:4px; padding:4px; box-shadow:0 2px 8px rgba(54,59,64,0.25);">
+                              <sc-for list="{{ r.deptOpts }}" as="d" hint-placeholder-count="4">
+                                <div onClick="{{ d.onToggle }}" style="display:flex; align-items:center; justify-content:space-between; height:26px; padding:0 8px; border-radius:4px; cursor:pointer; font:400 11px var(--font-content); color:{{ d.color }}; white-space:nowrap;">{{ d.name }}<sc-if value="{{ d.on }}" hint-placeholder-val="{{ false }}"><i class="ti ti-x" style="font-size:12px;"></i></sc-if></div>
+                              </sc-for>
+                              <sc-if value="{{ r.noResult }}" hint-placeholder-val="{{ false }}">
+                                <div style="padding:8px; text-align:center; font:400 11px var(--font-content); color:var(--text-tertiary);">검색 결과가 없습니다</div>
+                              </sc-if>
+                            </div>
+                          </sc-if>
+                        </div>
+                      </div>
+                    </sc-if>
+                  </div>
+                  <div style="padding:8px; display:flex; align-items:center; justify-content:center;">
+                    <span onClick="{{ r.onToggleUse }}" style="width:38px; height:20px; border-radius:999px; background:{{ r.useTrack }}; padding:2px; display:inline-flex; align-items:center; cursor:pointer;"><span style="width:16px; height:16px; border-radius:50%; background:#fff; transform:translateX({{ r.useKnob }});"></span></span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex; justify-content:center; margin-top:12px;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Pagination" page="{{ setPage_ }}" total="{{ 1 }}" onChange="{{ setSetPage }}" hint-size="200px,32px"></x-import></div>
+          </div>
+        </div>
+      </sc-if>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1920,&quot;height&quot;:1080},&quot;startScreen&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;}}">
+const NAV_TREE = [
+  { key: "dashboard", label: "대시보드", icon: "ti-layout-dashboard", url: "HEL01-01 대시보드 (기본).dc.html" },
+  { key: "jibun", label: "지번관리", icon: "ti-map-pin", children: [
+    { key: "jibun-phys", label: "물리지번 목록", url: "HEL02-00 물리지번 목록.dc.html" },
+    { key: "jibun-logi", label: "논리지번 목록", url: "HEL02-09 논리지번 목록.dc.html" },
+    { key: "jibun-list", label: "지번 목록", url: "HEL03-01 지번 목록.dc.html" },
+    { key: "jibun-plan", label: "활용계획", url: "HEL04-01 활용계획.dc.html" },
+  ]},
+  { key: "material", label: "자재관리", icon: "ti-package-import", children: [
+    { key: "mat-inbound", label: "입고예정정보", children: [
+      { key: "mat-in-outfit", label: "의장재", url: "HEL05-01 의장재 (입고예정정보).dc.html" },
+      { key: "mat-in-equip", label: "기기장비재", url: "HEL05-02 기기장비재 (입고예정정보).dc.html" },
+      { key: "mat-in-steel", label: "강재", url: "HEL05-03 강재 (입고예정정보).dc.html" },
+    ]},
+    { key: "mat-avail", label: "재고가용성정보", url: "HEL05-04 재고가용성정보.dc.html" },
+    { key: "mat-core", label: "핵심자재 관리", url: "HEL13-01 핵심자재 관리 (목록).dc.html" },
+    { key: "mat-loc", label: "적치위치 관리", url: "HEL05-05 적치위치 관리.dc.html" },
+  ]},
+  { key: "block", label: "블록관리", icon: "ti-box", url: "HEL06-01 블록관리 (목록).dc.html" },
+  { key: "transport", label: "운송수단 관리", icon: "ti-truck-delivery", children: [
+    { key: "tr-req", label: "중기배차신청", url: "HEL07-01 중기배차신청 (사용자).dc.html" },
+    { key: "tr-plan", label: "중기배차계획", children: [
+      { key: "tr-plan-daily", label: "일일중기배차계획", url: "HEL08-01 일일중기배차계획 (사용자).dc.html" },
+      { key: "tr-plan-weekly", label: "주간중기배차계획", url: "HEL08-02 주간중기배차계획 (사용자).dc.html" },
+    ]},
+    { key: "tr-result", label: "배차실적", url: "HEL09-01 일반배차실적.dc.html" },
+    { key: "tr-util", label: "장비가동률", url: "HEL23-01 장비가동률 (표).dc.html" },
+    { key: "tr-res", label: "운송자원정보관리", children: [
+      { key: "tr-res-master", label: "운송자원 마스터 관리", url: "HEL14-01 운송자원 마스터 관리.dc.html" },
+      { key: "tr-res-fuel", label: "유류실적 관리", url: "HEL11-01 유류실적 관리.dc.html" },
+      { key: "tr-res-jig", label: "치구 마스터 관리", url: "HEL15-01 치구 마스터 관리.dc.html" },
+      { key: "tr-res-week", label: "주간배차 마스터 관리", url: "HEL24-01 주간배차 마스터 관리.dc.html" },
+    ]},
+  ]},
+  { key: "system", label: "시스템관리", icon: "ti-settings", children: [
+    { key: "sys-alarm", label: "알람조건 설정", go: "HEL12-03" },
+    { key: "sys-role", label: "사용자권한 설정", url: "HEL16-01 사용자권한 설정.dc.html" },
+    { key: "sys-history", label: "히스토리 관리", url: "HEL17-01 히스토리 관리.dc.html" },
+  ]},
+];
+
+const SCREENS = [
+  { id: "HEL12-01", label: "알람 드롭다운 패널" },
+  { id: "HEL12-02", label: "알람 리스트 페이지" },
+  { id: "HEL12-03", label: "알람조건 설정" },
+];
+
+const BELL_CARDS = [
+  { type: "배차요청", msg: "TP-02 배차 승인 요청", ago: "방금 전", level: "일반" },
+  { type: "재고부족", msg: "2585TFUG001P505 자재 재고 부족", ago: "6분 전", level: "긴급" },
+  { type: "입고지연", msg: "2585TFUG001P501 자재 +1일 입고지연", ago: "42분 전", level: "주의" },
+  { type: "보급요청", msg: "2585TFUG001P501 자재 보급요청 필요", ago: "1시간 전", level: "일반" },
+];
+
+const ROWS = [
+  { grade: "일반", type: "입고예정", content: "2585TFUG001P501 자재 입고예정", at: "2026/06/05 00:00", doneAt: "-", owner: "홍길동", status: "처리중" },
+  { grade: "일반", type: "배차요청", content: "HTP06001 차량 배차 승인 요청", at: "2026/06/04 14:00", doneAt: "2026/06/04 16:00", owner: "심청이", status: "처리완료" },
+  { grade: "긴급", type: "재고부족", content: "2585TFUG001P505 자재 재고 부족", at: "2026/06/04 11:20", doneAt: "2026/06/04 13:05", owner: "홍길동", status: "처리완료" },
+  { grade: "주의", type: "입고지연", content: "2585TFUG001P501 자재 +1일 입고지연", at: "2026/06/04 09:40", doneAt: "-", owner: "이몽룡", status: "미확인" },
+  { grade: "주의", type: "배차지연", content: "HTP06001 차량 배차 +2일 지연", at: "2026/06/03 17:10", doneAt: "-", owner: "이몽룡", status: "미확인" },
+  { grade: "일반", type: "보급요청", content: "2585TFUG001P501 자재 보급요청 필요", at: "2026/06/03 15:00", doneAt: "-", owner: "심청이", status: "미확인" },
+  { grade: "긴급", type: "긴급배차", content: "AA1020 의장공장 앞 긴급 배차 요청", at: "2026/06/03 07:40", doneAt: "2026/06/03 08:10", owner: "홍길동", status: "처리완료" },
+];
+
+const SET_DEFS = [
+  { type: "입고예정", unit: "시간 전", value: "24", grade: "일반", hasInput: true },
+  { type: "입고지연", unit: "시간 후", value: "12", grade: "주의", hasInput: true, some: true, tags: ["중기1팀", "중기3팀"], query: "중기", ddOpen: true },
+  { type: "재고부족", unit: "EA 이하", value: "10", grade: "긴급", hasInput: true },
+  { type: "보급요청", unit: "요청 시 자동 반영", value: "", grade: "일반", hasInput: false },
+  { type: "배차요청", unit: "요청 시 자동 반영", value: "", grade: "일반", hasInput: false },
+  { type: "배차지연", unit: "시간 후", value: "2", grade: "주의", hasInput: true },
+  { type: "긴급배차", unit: "요청 시 자동 반영", value: "", grade: "긴급", hasInput: false, some: true, tags: ["중기1팀", "중기2팀", "중기3팀", "의장1팀", "의장2팀"] },
+  { type: "적치부족", unit: "% 초과 시", value: "90", grade: "주의", hasInput: true },
+];
+
+const DEPTS = ["중기1팀", "중기2팀", "중기3팀", "중기4팀", "의장1팀", "의장2팀"];
+
+const GRADE_STYLE = {
+  "긴급": { bg: "var(--status-error-bg)", color: "var(--status-error-text)" },
+  "주의": { bg: "var(--status-wait-bg)", color: "var(--status-wait-text)" },
+  "일반": { bg: "var(--status-progress-bg)", color: "var(--status-progress-text)" },
+};
+const STATUS_COLOR = { "처리중": "var(--green-dark)", "처리완료": "var(--blue-dark)", "미확인": "var(--red-dark)" };
+const LEVEL_COLOR = { "긴급": "var(--red-main)", "주의": "var(--orange-40)", "일반": "var(--blue-dark)" };
+
+const SCREEN_DIRS = { HEL00: "00 공통", HEL01: "01 대시보드", HEL02: "02 지번관리", HEL03: "02 지번관리", HEL04: "02 지번관리", HEL05: "03 자재관리", HEL13: "03 자재관리", HEL06: "04 블록관리", HEL07: "05 중기배차신청", HEL08: "06 중기배차계획", HEL09: "07 배차실적", HEL10: "07 배차실적", HEL23: "08 장비가동률", HEL11: "09 운송자원정보관리", HEL14: "09 운송자원정보관리", HEL15: "09 운송자원정보관리", HEL24: "09 운송자원정보관리", HEL12: "10 알람", HEL16: "11 시스템관리", HEL17: "11 시스템관리", HEL18: "12 태블릿 PC 앱", HEL19: "13 작업자용 모바일 앱", HEL20: "13 작업자용 모바일 앱", HEL21: "13 작업자용 모바일 앱", HEL22: "13 작업자용 모바일 앱" };
+function resolveUrl(u) {
+  const dir = SCREEN_DIRS[String(u || "").slice(0, 5)];
+  return dir ? "../" + dir + "/" + u : u;
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const id = SCREENS.some((s) => s.id === props.startScreen) ? props.startScreen : "HEL12-02";
+    this.state = {
+      screen: id,
+      bellOpen: id === "HEL12-01",
+      lnbOpen: id === "HEL12-03" ? { system: true } : {},
+      grade: "", alarmType: "", statusFilter: "",
+      checked: {}, page: 1,
+      setRows: SET_DEFS.map((d) => ({
+        type: d.type, unit: d.unit, value: d.value, grade: d.grade, hasInput: d.hasInput,
+        some: !!d.some, tags: (d.tags || []).slice(), query: d.query || "", ddOpen: !!d.ddOpen, use: true,
+      })),
+      setPage: 1,
+    };
+  }
+
+  go(id) {
+    this.setState({
+      screen: id,
+      bellOpen: id === "HEL12-01",
+      lnbOpen: id === "HEL12-03" ? { system: true } : this.state.lnbOpen,
+    });
+  }
+
+  patchSetRow(i, patch) {
+    const rows = this.state.setRows.map((r, idx) => (idx === i ? Object.assign({}, r, patch) : r));
+    this.setState({ setRows: rows });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const screen = s.screen;
+    const lnbOpen = s.lnbOpen;
+
+    const activeKey = screen === "HEL12-03" ? "sys-alarm" : null;
+    const navRows = [];
+    const walk = (nodes, depth) => {
+      for (const n of nodes) {
+        const has = !!(n.children && n.children.length);
+        const isOpen = !!lnbOpen[n.key];
+        navRows.push({
+          label: n.label, icon: n.icon || "", showIcon: depth === 0, depth: String(depth),
+          active: n.key === activeKey, trail: has && n.key === "system" && activeKey === "sys-alarm",
+          hasChildren: has, chevIcon: isOpen ? "ti-chevron-up" : "ti-chevron-down",
+          onClick: () => {
+            if (has) {
+              const next = Object.assign({}, lnbOpen);
+              next[n.key] = !isOpen;
+              this.setState({ lnbOpen: next });
+            } else if (n.go) { this.go(n.go); }
+            else if (n.url) { window.location.href = encodeURI(resolveUrl(n.url)); }
+          },
+        });
+        if (has && isOpen) walk(n.children, depth + 1);
+      }
+    };
+    walk(NAV_TREE, 0);
+
+    const rows = ROWS.map((r, i) => ({
+      grade: r.grade, type: r.type, content: r.content, at: r.at, doneAt: r.doneAt, owner: r.owner, status: r.status,
+      gradeBg: GRADE_STYLE[r.grade].bg, gradeColor: GRADE_STYLE[r.grade].color,
+      statusColor: STATUS_COLOR[r.status],
+      checked: !!s.checked[i],
+      onCheck: () => {
+        const next = Object.assign({}, s.checked);
+        next[i] = !next[i];
+        this.setState({ checked: next });
+      },
+    }));
+    const allChecked = ROWS.length > 0 && ROWS.every((_, i) => s.checked[i]);
+
+    const setRows = s.setRows.map((r, i) => {
+      const q = (r.query || "").trim();
+      const opts = DEPTS.filter((d) => !q || d.indexOf(q) >= 0);
+      return {
+        type: r.type, unit: r.unit, value: r.value, grade: r.grade, hasInput: r.hasInput,
+        isSome: r.some, query: r.query, ddOpen: r.ddOpen, noResult: opts.length === 0,
+        allColor: r.some ? "var(--text-tertiary)" : "var(--text-primary)",
+        someColor: r.some ? "var(--text-primary)" : "var(--text-tertiary)",
+        allBorder: r.some ? "1px solid var(--border-input)" : "4px solid var(--brand-primary)",
+        someBorder: r.some ? "4px solid var(--brand-primary)" : "1px solid var(--border-input)",
+        setAll: () => this.patchSetRow(i, { some: false, ddOpen: false }),
+        setSome: () => this.patchSetRow(i, { some: true }),
+        onGrade: (v) => this.patchSetRow(i, { grade: typeof v === "string" ? v : (v && v.target ? v.target.value : v) }),
+        onValue: (e) => this.patchSetRow(i, { value: e && e.target ? e.target.value : r.value }),
+        onQuery: (e) => this.patchSetRow(i, { query: e && e.target ? e.target.value : "", ddOpen: true }),
+        onFocus: () => this.patchSetRow(i, { ddOpen: true }),
+        tags: r.tags.map((name) => ({
+          name: name,
+          onRemove: () => this.patchSetRow(i, { tags: r.tags.filter((t) => t !== name) }),
+        })),
+        deptOpts: opts.map((d) => ({
+          name: d, on: r.tags.indexOf(d) >= 0,
+          color: r.tags.indexOf(d) >= 0 ? "var(--brand-primary)" : "var(--text-secondary)",
+          onToggle: () => this.patchSetRow(i, {
+            tags: r.tags.indexOf(d) >= 0 ? r.tags.filter((t) => t !== d) : r.tags.concat([d]),
+          }),
+        })),
+        use: r.use,
+        useTrack: r.use ? "var(--brand-primary)" : "var(--gray-40)",
+        useKnob: r.use ? "18px" : "0px",
+        onToggleUse: () => this.patchSetRow(i, { use: !r.use }),
+      };
+    });
+
+    const cur = SCREENS.find((sc) => sc.id === screen) || SCREENS[1];
+    const crumb = screen === "HEL12-03"
+      ? [{ label: "HOME" }, { label: "시스템관리" }, { label: "알람조건 설정" }]
+      : [{ label: "HOME" }, { label: "알람목록" }];
+
+    return {
+      screenLabel: cur.id + " " + cur.label,
+      pageTitle: screen === "HEL12-03" ? "알람조건 설정" : "알람목록",
+      crumbItems: crumb,
+      navRows: navRows,
+      isBell: screen === "HEL12-01",
+      isList: screen === "HEL12-02",
+      isSetting: screen === "HEL12-03",
+      bellOpen: s.bellOpen,
+      bellColor: s.bellOpen ? "var(--brand-primary)" : "var(--text-tertiary)",
+      toggleBell: () => this.setState({ bellOpen: !s.bellOpen }),
+      openBell: () => this.setState({ bellOpen: true }),
+      bellCards: BELL_CARDS.map((c) => ({ type: c.type, msg: c.msg, ago: c.ago, color: LEVEL_COLOR[c.level] })),
+      goList: () => this.go("HEL12-02"),
+      gradeOptions: [{ value: "", label: "전체" }, { value: "일반", label: "일반" }, { value: "주의", label: "주의" }, { value: "긴급", label: "긴급" }],
+      grade: s.grade,
+      setGrade: (v) => this.setState({ grade: typeof v === "string" ? v : (v && v.target ? v.target.value : v) }),
+      typeOptions: [{ value: "", label: "전체" }].concat(SET_DEFS.map((d) => ({ value: d.type, label: d.type }))),
+      alarmType: s.alarmType,
+      setAlarmType: (v) => this.setState({ alarmType: typeof v === "string" ? v : (v && v.target ? v.target.value : v) }),
+      statusOptions: [{ value: "", label: "전체" }, { value: "미확인", label: "미확인" }, { value: "처리중", label: "처리중" }, { value: "처리완료", label: "처리완료" }],
+      statusFilter: s.statusFilter,
+      setStatusFilter: (v) => this.setState({ statusFilter: typeof v === "string" ? v : (v && v.target ? v.target.value : v) }),
+      rows: rows,
+      allChecked: allChecked,
+      toggleAll: () => {
+        const next = {};
+        if (!allChecked) ROWS.forEach((_, i) => { next[i] = true; });
+        this.setState({ checked: next });
+      },
+      page: s.page,
+      totalPages: 10,
+      setPage: (p) => this.setState({ page: p }),
+      gradeSetOptions: [{ value: "일반", label: "일반" }, { value: "주의", label: "주의" }, { value: "긴급", label: "긴급" }],
+      setRows: setRows,
+      setPage_: s.setPage,
+      setSetPage: (p) => this.setState({ setPage: p }),
+      showPicker: !this.props.startScreen,
+      pickRows: SCREENS.map((sc) => {
+        const on = sc.id === screen;
+        return {
+          id: sc.id, label: sc.id + " " + sc.label,
+          border: on ? "var(--brand-primary)" : "var(--border-input)",
+          bg: on ? "var(--status-wait-bg)" : "var(--bg-primary)",
+          color: on ? "var(--brand-primary)" : "var(--text-secondary)",
+          onClick: () => this.go(sc.id),
+        };
+      }),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.24.0/dist/tabler-icons.min.css">
+<script src="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/_ds_bundle.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; }
+  *, *::before, *::after { box-sizing: border-box; }
+  a { color: var(--blue-dark); text-decoration: none; }
+  a:hover { color: var(--blue-main); }
+  input::placeholder { color: var(--text-placeholder); }
+  button { white-space: nowrap; }
+  .dl-navbtn:hover { background: var(--bg-secondary) !important; }
+  .dl-nav { width: var(--lnb-w); flex-shrink: 0; background: var(--bg-primary); border-right: 1px solid var(--border-subtle); display: flex; flex-direction: column; padding: 12px 8px; overflow-y: auto; }
+  .dl-item { display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; margin: 2px 0; border: none; cursor: pointer; border-radius: var(--radius-btn); background: transparent; color: var(--text-secondary); font-family: var(--font-content); font-weight: 500; font-size: 14px; line-height: 1; width: 100%; text-align: left; }
+  .dl-item > span { flex-shrink: 0; text-overflow: clip; }
+  .dl-item[data-active="true"] { background: var(--status-wait-bg); color: var(--brand-primary); font-weight: 700; }
+  .dl-item[data-trail="true"] { color: var(--text-primary); font-weight: 700; }
+  .dl-item[data-depth="1"] { height: 36px; padding-left: 44px; font-size: 13px; font-weight: 400; }
+  .dl-item[data-depth="2"] { height: 32px; padding-left: 60px; font-size: 13px; font-weight: 400; color: var(--text-tertiary); }
+  .dl-chev { margin-left: auto; font-size: 16px; color: var(--text-tertiary); flex-shrink: 0; }
+  .dl-pick:hover { border-color: var(--brand-primary) !important; color: var(--brand-primary) !important; }
+  .rs-row:hover { background: var(--gray-5); }
+  .rs-cell { padding: 9px 8px; border-left: 1px solid var(--gray-5); display: flex; align-items: center; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; }
+  .rs-cell[data-num="true"] { justify-content: flex-end; }
+  .rs-head { padding: 9px 8px; text-align: center; border-left: 1px solid var(--gray-10); white-space: nowrap; }
+</style>
+</helmet>
+
+<div style="display:flex; flex-direction:column; height:100vh; min-width:1440px; width:100%; overflow:hidden; font-family:var(--font-primary); color:var(--text-secondary); background:var(--gray-5);" data-screen-label="{{ screenLabel }}">
+
+  <header style="height:var(--header-h-web); flex-shrink:0; background:var(--bg-primary); border-bottom:1px solid var(--border-subtle); display:flex; align-items:center; padding:0 20px 0 12px; gap:16px; z-index:20;">
+    <img src="../../_ds/test-twin-design-system-fa3c4f96-880e-46d8-b132-bab2d165af2e/assets/logo-horizontal.png" alt="한화오션에코텍" style="height:25px; width:auto; display:block; flex-shrink:0;">
+    <span style="font-family:var(--font-title); font-weight:700; font-size:14px; color:var(--text-primary); letter-spacing:-0.2px; white-space:nowrap;">물류Twin</span>
+    <div style="margin-left:auto; display:flex; align-items:center; gap:14px;">
+      <span style="font-size:14px; color:var(--text-tertiary); white-space:nowrap;"><strong style="font-weight:500; color:var(--text-primary);">홍길동</strong>님 로그인 되었습니다.</span>
+      <button title="로그아웃" style="border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:6px;"><i class="ti ti-logout" style="font-size:22px;"></i></button>
+      <a href="../10 알람/HEL12-01 알람목록 (알림 드롭다운).dc.html" title="알림" style="display:flex; padding:6px; color:var(--text-tertiary); position:relative;">
+        <i class="ti ti-bell" style="font-size:22px;"></i>
+        <span style="position:absolute; top:4px; right:4px; width:8px; height:8px; border-radius:50%; background:var(--red-main);"></span>
+      </a>
+    </div>
+  </header>
+
+  <div style="display:flex; flex:1; min-height:0;">
+    <nav class="dl-nav">
+      <sc-for list="{{ navRows }}" as="item" hint-placeholder-count="10">
+        <button class="dl-navbtn dl-item" onClick="{{ item.onClick }}" title="{{ item.label }}" data-active="{{ item.active }}" data-trail="{{ item.trail }}" data-depth="{{ item.depth }}">
+          <sc-if value="{{ item.showIcon }}" hint-placeholder-val="{{ true }}">
+            <i class="ti {{ item.icon }}" style="font-size:20px; flex-shrink:0;"></i>
+          </sc-if>
+          <span>{{ item.label }}</span>
+          <sc-if value="{{ item.hasChildren }}" hint-placeholder-val="{{ false }}">
+            <i class="ti {{ item.chevIcon }} dl-chev"></i>
+          </sc-if>
+        </button>
+      </sc-for>
+      <a href="../00 공통/HEL00-03 메뉴 (닫힘).dc.html" style="margin-top:auto; height:36px; flex-shrink:0; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); white-space:nowrap; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:4px; text-decoration:none;" style-hover="background:var(--gray-5);">
+        <i class="ti ti-chevron-left" style="font-size:15px;"></i>메뉴닫기
+      </a>
+    </nav>
+
+    <main style="flex:1; min-width:0; display:flex; flex-direction:column; overflow:hidden; position:relative;">
+      <div style="flex-shrink:0; display:flex; align-items:center; padding:14px 24px 0;">
+        <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Breadcrumb" items="{{ crumbItems }}" hint-size="380px,20px"></x-import>
+      </div>
+      <div style="flex-shrink:0; display:flex; align-items:center; gap:12px; padding:10px 24px 16px;">
+        <span style="font:700 16px/1.2 var(--font-content); color:var(--text-primary); white-space:nowrap;">{{ pageTitle }}</span>
+        <sc-if value="{{ showPicker }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-left:auto; display:flex; align-items:center; gap:5px;">
+            <span style="font:400 11px var(--font-content); color:var(--text-tertiary); white-space:nowrap; flex-shrink:0;">화면 ID</span>
+            <sc-for list="{{ pickRows }}" as="p" hint-placeholder-count="5">
+              <button class="dl-pick" onClick="{{ p.onClick }}" title="{{ p.label }}" style="flex-shrink:0; height:24px; padding:0 8px; border:1px solid {{ p.border }}; border-radius:999px; background:{{ p.bg }}; color:{{ p.color }}; font:700 11px var(--font-content); font-variant-numeric:tabular-nums; cursor:pointer;">{{ p.short }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="flex:1; min-height:0; overflow:auto; padding:0 24px 24px; display:flex; flex-direction:column; gap:16px;">
+
+        <div style="flex-shrink:0; display:grid; grid-template-columns:repeat(4, 1fr); gap:16px;">
+          <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">{{ kpi1Label }}</span>
+            <span style="font:700 18px/1.2 var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">20 건</span>
+            <span style="font:400 12px/1.5 var(--font-content); color:var(--text-tertiary);">{{ kpi1Sub }}</span>
+          </div>
+          <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">장비 가동율</span>
+            <span style="font:700 18px/1.2 var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">72 %</span>
+            <span style="font:400 12px/1 var(--font-content); color:var(--red-dark); font-variant-numeric:tabular-nums;">▲ 전일 대비 5 %</span>
+          </div>
+          <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">{{ kpi3Label }}</span>
+            <span style="font:700 18px/1.2 var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">5 건</span>
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">{{ kpi3Sub }}</span>
+          </div>
+          <div style="background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">{{ kpi4Label }}</span>
+            <span style="font:700 18px/1.2 var(--font-content); color:var(--text-primary); font-variant-numeric:tabular-nums;">{{ kpi4Value }}</span>
+            <span style="font:400 12px/1 var(--font-content); color:var(--text-tertiary);">{{ kpi4Sub }}</span>
+          </div>
+        </div>
+
+        <div style="flex-shrink:0; background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="width:62px; font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">조회일자</span>
+            <div style="position:relative;">
+              <input value="2026/05/01" style="width:112px; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 26px 0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+              <i class="ti ti-calendar" style="position:absolute; right:8px; top:7px; font-size:14px; color:var(--text-tertiary);"></i>
+            </div>
+            <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">~</span>
+            <div style="position:relative;">
+              <input value="2026/05/20" style="width:112px; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 26px 0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+              <i class="ti ti-calendar" style="position:absolute; right:8px; top:7px; font-size:14px; color:var(--text-tertiary);"></i>
+            </div>
+            <div style="display:flex; gap:4px;">
+              <button onClick="{{ setP1 }}" data-on="{{ p1On }}" class="dl-pick" style="height:28px; padding:0 10px; border:1px solid var(--border-input); border-radius:4px; background:{{ p1Bg }}; color:{{ p1Color }}; font:500 12px var(--font-content); cursor:pointer;">일</button>
+              <button onClick="{{ setP2 }}" class="dl-pick" style="height:28px; padding:0 10px; border:1px solid var(--border-input); border-radius:4px; background:{{ p2Bg }}; color:{{ p2Color }}; font:500 12px var(--font-content); cursor:pointer;">주</button>
+              <button onClick="{{ setP3 }}" class="dl-pick" style="height:28px; padding:0 10px; border:1px solid var(--border-input); border-radius:4px; background:{{ p3Bg }}; color:{{ p3Color }}; font:500 12px var(--font-content); cursor:pointer;">월</button>
+              <button onClick="{{ setP4 }}" class="dl-pick" style="height:28px; padding:0 10px; border:1px solid var(--border-input); border-radius:4px; background:{{ p4Bg }}; color:{{ p4Color }}; font:500 12px var(--font-content); cursor:pointer;">년</button>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="width:62px; font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">중기그룹</span>
+            <div style="width:130px;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ groupOptions }}" value="{{ f_group }}" onChange="{{ set_group }}" hint-size="100%,28px"></x-import></div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="width:62px; font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">중기형태</span>
+            <div style="width:130px;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ formOptions }}" value="{{ f_form }}" onChange="{{ set_form }}" hint-size="100%,28px"></x-import></div>
+          </div>
+          <sc-if value="{{ hasProjectNo }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="width:62px; font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">공사번호</span>
+              <input placeholder="공사번호 입력" style="width:120px; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary);">
+            </div>
+          </sc-if>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="width:62px; font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">장비코드</span>
+            <input placeholder="장비코드 입력" style="width:120px; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary);">
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="width:62px; font:400 12px var(--font-content); color:var(--text-tertiary); white-space:nowrap;">장비명</span>
+            <input placeholder="장비명 입력" style="width:120px; height:28px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary);">
+          </div>
+          <div style="margin-left:auto; display:flex; gap:8px;">
+            <button style="height:28px; padding:0 14px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 13px var(--font-content); cursor:pointer;" style-hover="background:var(--gray-5);">초기화</button>
+            <button style="height:28px; padding:0 14px; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 13px var(--font-content); cursor:pointer;" style-hover="background:var(--brand-hover);">조회</button>
+          </div>
+        </div>
+
+        <div style="flex-shrink:0; background:var(--surface); border:1px solid var(--border-default); border-radius:6px; padding:16px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+            <span style="font:500 16px/1.2 var(--font-content); color:var(--text-primary); white-space:nowrap;">{{ listTitle }}</span>
+            <span style="font:400 12px var(--font-content); color:var(--text-tertiary); font-variant-numeric:tabular-nums;">(12 / 522)</span>
+            <sc-if value="{{ isNormal }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex; gap:4px; margin-left:12px;">
+                <button onClick="{{ goScroll0 }}" class="dl-pick" style="height:24px; padding:0 10px; border:1px solid var(--border-input); border-radius:999px; background:{{ s0Bg }}; color:{{ s0Color }}; font:500 11px var(--font-content); cursor:pointer;">앞부분 컬럼</button>
+                <button onClick="{{ goScroll1 }}" class="dl-pick" style="height:24px; padding:0 10px; border:1px solid var(--border-input); border-radius:999px; background:{{ s1Bg }}; color:{{ s1Color }}; font:500 11px var(--font-content); cursor:pointer;">가로 스크롤 · 장비·운송 정보</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ isUrgent }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ openReg }}" style="margin-left:auto; height:28px; padding:0 14px; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 13px var(--font-content); cursor:pointer;" style-hover="background:var(--brand-hover);">등록</button>
+            </sc-if>
+          </div>
+
+          <div style="border:1px solid var(--border-default); border-radius:4px; overflow-x:auto;">
+            <div style="min-width:{{ tableMinWidth }};">
+              <div style="display:grid; grid-template-columns:{{ gridCols }}; background:var(--gray-20); font:700 12px var(--font-content); color:var(--text-primary);">
+                <sc-for list="{{ cols }}" as="c" hint-placeholder-count="13">
+                  <div class="rs-head">{{ c.label }}</div>
+                </sc-for>
+              </div>
+              <sc-for list="{{ rows }}" as="r" hint-placeholder-count="8">
+                <div class="rs-row" onClick="{{ r.onClick }}" style="display:grid; grid-template-columns:{{ gridCols }}; border-top:1px solid var(--gray-10); font:400 12px var(--font-content); color:var(--text-secondary);">
+                  <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="13">
+                    <div class="rs-cell" data-num="{{ c.num }}">{{ c.v }}</div>
+                  </sc-for>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:center; margin-top:12px;">
+            <span style="font:400 11px var(--font-content); color:var(--text-tertiary);">{{ tableHint }}</span>
+            <div style="margin-left:auto;"><x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Pagination" page="{{ page }}" total="{{ 10 }}" onChange="{{ setPage }}" hint-size="280px,32px"></x-import></div>
+          </div>
+        </div>
+      </div>
+
+      <sc-if value="{{ showModal }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute; inset:0; z-index:40; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; padding:24px;">
+          <div style="width:560px; max-height:100%; background:var(--bg-primary); border-radius:6px; overflow:hidden; display:flex; flex-direction:column;">
+            <div style="flex-shrink:0; height:44px; display:flex; align-items:center; padding:0 16px; border-bottom:1px solid var(--border-default);">
+              <span style="font:700 16px var(--font-content); color:var(--text-primary);">{{ modalTitle }}</span>
+              <button onClick="{{ closeModal }}" title="닫기" style="margin-left:auto; border:none; background:transparent; cursor:pointer; color:var(--text-tertiary); display:flex; padding:4px;"><i class="ti ti-x" style="font-size:18px;"></i></button>
+            </div>
+            <div style="flex:1; min-height:0; overflow:auto; padding:16px; display:flex; flex-direction:column; gap:16px;">
+              <sc-if value="{{ isRegModal }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex; flex-direction:column; gap:16px;">
+                  <div>
+                    <div style="font:500 14px var(--font-content); color:var(--text-primary); margin-bottom:8px;">사용일 정보</div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                      <div style="display:flex; flex-direction:column; gap:5px;">
+                        <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">운송일자</span>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                          <div style="position:relative; flex:1; min-width:0;">
+                            <input value="2026-06-23" style="width:100%; height:30px; border:1px solid var(--border-input); border-radius:4px; padding:0 28px 0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                            <i class="ti ti-calendar" style="position:absolute; right:8px; top:8px; font-size:14px; color:var(--text-tertiary);"></i>
+                          </div>
+                          <input value="13:00" style="width:74px; height:30px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                        </div>
+                      </div>
+                      <div style="display:flex; flex-direction:column; gap:5px;">
+                        <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">작성자</span>
+                        <div style="height:30px; border:1px solid var(--border-default); border-radius:4px; background:var(--gray-5); padding:0 8px; display:flex; align-items:center; font:400 12px var(--font-content); color:var(--text-tertiary);">홍길동</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div style="font:500 14px var(--font-content); color:var(--text-primary); margin-bottom:8px;">긴급배차정보</div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                      <div style="display:flex; flex-direction:column; gap:5px;">
+                        <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">배차요청일 <span style="color:var(--red-main);">*</span></span>
+                        <div style="position:relative;">
+                          <input value="2026-06-20" style="width:100%; height:30px; border:1px solid var(--border-input); border-radius:4px; padding:0 28px 0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                          <i class="ti ti-calendar" style="position:absolute; right:8px; top:8px; font-size:14px; color:var(--text-tertiary);"></i>
+                        </div>
+                      </div>
+                      <div style="display:flex; flex-direction:column; gap:5px;">
+                        <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">배차구분 <span style="color:var(--red-main);">*</span></span>
+                        <div style="height:30px; border:1px solid var(--border-default); border-radius:4px; background:var(--status-error-bg); padding:0 8px; display:flex; align-items:center; font:500 12px var(--font-content); color:var(--red-dark);">긴급배차</div>
+                      </div>
+                      <div style="display:flex; flex-direction:column; gap:5px;">
+                        <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">장비차량번호 <span style="color:var(--red-main);">*</span></span>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                          <input value="175로7503" style="flex:1; min-width:0; height:30px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                          <a href="#" style="font:500 12px var(--font-content); text-decoration:underline; white-space:nowrap;">검색</a>
+                        </div>
+                      </div>
+                      <div style="display:flex; flex-direction:column; gap:5px;">
+                        <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">공사번호 <span style="color:var(--red-main);">*</span></span>
+                        <input placeholder="공사번호를 입력해주세요." style="width:100%; height:30px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary);">
+                      </div>
+                      <div style="display:flex; flex-direction:column; gap:5px;">
+                        <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">이동카테고리 <span style="color:var(--red-main);">*</span></span>
+                        <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ catOptions }}" value="{{ regCat }}" onChange="{{ setRegCat }}" hint-size="100%,30px"></x-import>
+                      </div>
+                      <div style="display:flex; flex-direction:column; gap:5px;">
+                        <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">이동구분 <span style="color:var(--red-main);">*</span></span>
+                        <x-import component-from-global-scope="TwinDesignSystem_fa3c4f.Select" size="web-s" options="{{ moveOptions }}" value="{{ regMove }}" onChange="{{ setRegMove }}" hint-size="100%,30px"></x-import>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div style="font:500 14px var(--font-content); color:var(--text-primary); margin-bottom:8px;">긴급작업정보</div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                      <div style="display:flex; flex-direction:column; gap:5px;">
+                        <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">블록번호 <span style="color:var(--red-main);">*</span></span>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                          <input value="512" style="flex:1; min-width:0; height:30px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                          <a href="#" style="font:500 12px var(--font-content); text-decoration:underline; white-space:nowrap;">검색</a>
+                        </div>
+                      </div>
+                      <div style="display:flex; flex-direction:column; gap:5px;">
+                        <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">Assy 번호</span>
+                        <input placeholder="Assy번호를 입력해주세요." style="width:100%; height:30px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary);">
+                      </div>
+                      <div style="display:flex; flex-direction:column; gap:5px;">
+                        <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">시작시간 <span style="color:var(--red-main);">*</span></span>
+                        <input value="10:50" style="width:100%; height:30px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                      </div>
+                      <div style="display:flex; flex-direction:column; gap:5px;">
+                        <span style="font:400 12px var(--font-content); color:var(--text-tertiary);">종료시간 <span style="color:var(--red-main);">*</span></span>
+                        <input value="11:50" style="width:100%; height:30px; border:1px solid var(--border-input); border-radius:4px; padding:0 8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ isDetailModal }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex; flex-direction:column; gap:16px;">
+              <div>
+                <div style="font:500 14px var(--font-content); color:var(--text-primary); margin-bottom:8px;">사용일 정보</div>
+                <div style="border:1px solid var(--border-default); border-radius:4px; overflow:hidden;">
+                  <div style="display:grid; grid-template-columns:130px 1fr; border-bottom:1px solid var(--border-default);">
+                    <div style="background:var(--gray-5); padding:8px 10px; font:400 12px var(--font-content); color:var(--text-tertiary);">운송일자</div>
+                    <div style="padding:8px 10px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">{{ m_carryDate }}</div>
+                  </div>
+                  <div style="display:grid; grid-template-columns:130px 1fr;">
+                    <div style="background:var(--gray-5); padding:8px 10px; font:400 12px var(--font-content); color:var(--text-tertiary);">작성자</div>
+                    <div style="padding:8px 10px; font:400 12px var(--font-content); color:var(--text-secondary);">홍길동</div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div style="font:500 14px var(--font-content); color:var(--text-primary); margin-bottom:8px;">긴급배차정보</div>
+                <div style="border:1px solid var(--border-default); border-radius:4px; overflow:hidden;">
+                  <div style="display:grid; grid-template-columns:130px 1fr; border-bottom:1px solid var(--border-default);">
+                    <div style="background:var(--gray-5); padding:8px 10px; font:400 12px var(--font-content); color:var(--text-tertiary);">배차요청일 <span style="color:var(--red-main);">*</span></div>
+                    <div style="padding:8px 10px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">{{ m_reqDate }}</div>
+                  </div>
+                  <div style="display:grid; grid-template-columns:130px 1fr; border-bottom:1px solid var(--border-default);">
+                    <div style="background:var(--gray-5); padding:8px 10px; font:400 12px var(--font-content); color:var(--text-tertiary);">{{ m_kindLabel }}</div>
+                    <div style="padding:8px 10px; font:500 12px var(--font-content); color:var(--red-dark);">{{ m_kind }}</div>
+                  </div>
+                  <div style="display:grid; grid-template-columns:130px 1fr; border-bottom:1px solid var(--border-default);">
+                    <div style="background:var(--gray-5); padding:8px 10px; font:400 12px var(--font-content); color:var(--text-tertiary);">장비차량번호 <span style="color:var(--red-main);">*</span></div>
+                    <div style="padding:8px 10px; display:flex; align-items:center; gap:8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                      {{ m_vehicle }}
+                      <sc-if value="{{ isRegModal }}" hint-placeholder-val="{{ false }}"><a href="#" style="text-decoration:underline;">검색</a></sc-if>
+                    </div>
+                  </div>
+                  <div style="display:grid; grid-template-columns:130px 1fr; border-bottom:1px solid var(--border-default);">
+                    <div style="background:var(--gray-5); padding:8px 10px; font:400 12px var(--font-content); color:var(--text-tertiary);">공사번호 <span style="color:var(--red-main);">*</span></div>
+                    <div style="padding:8px 10px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">{{ m_project }}</div>
+                  </div>
+                  <div style="display:grid; grid-template-columns:130px 1fr; border-bottom:1px solid var(--border-default);">
+                    <div style="background:var(--gray-5); padding:8px 10px; font:400 12px var(--font-content); color:var(--text-tertiary);">이동카테고리 <span style="color:var(--red-main);">*</span></div>
+                    <div style="padding:8px 10px; font:400 12px var(--font-content); color:var(--text-secondary);">{{ m_cat }}</div>
+                  </div>
+                  <div style="display:grid; grid-template-columns:130px 1fr;">
+                    <div style="background:var(--gray-5); padding:8px 10px; font:400 12px var(--font-content); color:var(--text-tertiary);">이동구분 <span style="color:var(--red-main);">*</span></div>
+                    <div style="padding:8px 10px; font:400 12px var(--font-content); color:var(--text-secondary);">{{ m_move }}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div style="font:500 14px var(--font-content); color:var(--text-primary); margin-bottom:8px;">긴급작업정보</div>
+                <div style="border:1px solid var(--border-default); border-radius:4px; overflow:hidden;">
+                  <div style="display:grid; grid-template-columns:130px 1fr; border-bottom:1px solid var(--border-default);">
+                    <div style="background:var(--gray-5); padding:8px 10px; font:400 12px var(--font-content); color:var(--text-tertiary);">블록번호 <span style="color:var(--red-main);">*</span></div>
+                    <div style="padding:8px 10px; display:flex; align-items:center; gap:8px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">
+                      {{ m_block }}
+                      <sc-if value="{{ isRegModal }}" hint-placeholder-val="{{ false }}"><a href="#" style="text-decoration:underline;">검색</a></sc-if>
+                    </div>
+                  </div>
+                  <div style="display:grid; grid-template-columns:130px 1fr; border-bottom:1px solid var(--border-default);">
+                    <div style="background:var(--gray-5); padding:8px 10px; font:400 12px var(--font-content); color:var(--text-tertiary);">Assy 번호</div>
+                    <div style="padding:8px 10px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">{{ m_assy }}</div>
+                  </div>
+                  <div style="display:grid; grid-template-columns:130px 1fr; border-bottom:1px solid var(--border-default);">
+                    <div style="background:var(--gray-5); padding:8px 10px; font:400 12px var(--font-content); color:var(--text-tertiary);">시작시간 <span style="color:var(--red-main);">*</span></div>
+                    <div style="padding:8px 10px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">{{ m_start }}</div>
+                  </div>
+                  <div style="display:grid; grid-template-columns:130px 1fr;">
+                    <div style="background:var(--gray-5); padding:8px 10px; font:400 12px var(--font-content); color:var(--text-tertiary);">종료시간 <span style="color:var(--red-main);">*</span></div>
+                    <div style="padding:8px 10px; font:400 12px var(--font-content); color:var(--text-secondary); font-variant-numeric:tabular-nums;">{{ m_end }}</div>
+                  </div>
+                </div>
+              </div>
+                </div>
+              </sc-if>
+            </div>
+            <div style="flex-shrink:0; padding:12px 16px; border-top:1px solid var(--border-default); display:flex; justify-content:center; gap:8px;">
+              <sc-if value="{{ isDetailModal }}" hint-placeholder-val="{{ false }}">
+                <button style="height:32px; padding:0 20px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--gray-5);">수정</button>
+                <button style="height:32px; padding:0 20px; border:1px solid var(--red-main); border-radius:6px; background:var(--bg-primary); color:var(--red-dark); font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--red-lighter);">삭제</button>
+              </sc-if>
+              <sc-if value="{{ isRegModal }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ closeModal }}" style="height:32px; padding:0 20px; border:none; border-radius:6px; background:var(--brand-primary); color:#fff; font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--brand-hover);">등록</button>
+              </sc-if>
+              <button onClick="{{ closeModal }}" style="height:32px; padding:0 20px; border:1px solid var(--border-input); border-radius:6px; background:var(--bg-primary); color:var(--text-secondary); font:500 14px var(--font-content); cursor:pointer;" style-hover="background:var(--gray-5);">{{ modalCloseLabel }}</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1920,&quot;height&quot;:1080},&quot;startScreen&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;}}">
+const NAV_TREE = [
+  { key: "dashboard", label: "대시보드", icon: "ti-layout-dashboard", url: "HEL01-01 대시보드 (기본).dc.html" },
+  { key: "jibun", label: "지번관리", icon: "ti-map-pin", children: [
+    { key: "jibun-phys", label: "물리지번 목록", url: "HEL02-00 물리지번 목록.dc.html" },
+    { key: "jibun-logi", label: "논리지번 목록", url: "HEL02-09 논리지번 목록.dc.html" },
+    { key: "jibun-list", label: "지번 목록", url: "HEL03-01 지번 목록.dc.html" },
+    { key: "jibun-plan", label: "활용계획", url: "HEL04-01 활용계획.dc.html" },
+  ]},
+  { key: "material", label: "자재관리", icon: "ti-package-import", children: [
+    { key: "mat-inbound", label: "입고예정정보", children: [
+      { key: "mat-in-outfit", label: "의장재", url: "HEL05-01 의장재 (입고예정정보).dc.html" },
+      { key: "mat-in-equip", label: "기기장비재", url: "HEL05-02 기기장비재 (입고예정정보).dc.html" },
+      { key: "mat-in-steel", label: "강재", url: "HEL05-03 강재 (입고예정정보).dc.html" },
+    ]},
+    { key: "mat-avail", label: "재고가용성정보", url: "HEL05-04 재고가용성정보.dc.html" },
+    { key: "mat-core", label: "핵심자재 관리", url: "HEL13-01 핵심자재 관리 (목록).dc.html" },
+    { key: "mat-loc", label: "적치위치 관리", url: "HEL05-05 적치위치 관리.dc.html" },
+  ]},
+  { key: "block", label: "블록관리", icon: "ti-box", url: "HEL06-01 블록관리 (목록).dc.html" },
+  { key: "transport", label: "운송수단 관리", icon: "ti-truck-delivery", children: [
+    { key: "tr-req", label: "중기배차신청", url: "HEL07-01 중기배차신청 (사용자).dc.html" },
+    { key: "tr-plan", label: "중기배차계획", children: [
+      { key: "tr-plan-daily", label: "일일중기배차계획", url: "HEL08-01 일일중기배차계획 (사용자).dc.html" },
+      { key: "tr-plan-weekly", label: "주간중기배차계획", url: "HEL08-02 주간중기배차계획 (사용자).dc.html" },
+    ]},
+    { key: "tr-result", label: "배차실적", children: [
+      { key: "tr-rs-normal", label: "일반배차실적", go: "HEL09-01" },
+      { key: "tr-rs-urgent", label: "긴급배차실적", go: "HEL10-01" },
+    ]},
+    { key: "tr-util", label: "장비가동률" },
+    { key: "tr-resource", label: "운송자원정보관리", children: [
+      { key: "tr-rm-master", label: "운송자원 마스터 관리" },
+      { key: "tr-rm-fuel", label: "유류실적 관리" },
+      { key: "tr-rm-jig", label: "치구 마스터 관리" },
+      { key: "tr-rm-week", label: "주간배차 마스터 관리" },
+    ]},
+  ]},
+  { key: "system", label: "시스템관리", icon: "ti-settings", children: [
+    { key: "sys-alarm", label: "알람조건 설정", url: "HEL12-03 알람조건 설정.dc.html" },
+    { key: "sys-role", label: "사용자권한 설정" },
+    { key: "sys-history", label: "히스토리 관리" },
+  ]},
+];
+
+const SCREENS = [
+  { id: "HEL09-01", label: "일반배차실적", kind: "normal", scroll: 0 },
+  { id: "HEL09-01-01", label: "일반배차실적 (가로 스크롤)", kind: "normal", scroll: 1 },
+  { id: "HEL10-01", label: "긴급배차실적", kind: "urgent", modal: null },
+  { id: "HEL10-02", label: "긴급배차실적 (등록 팝업)", kind: "urgent", modal: "reg" },
+  { id: "HEL10-03", label: "긴급배차실적 (상세보기 팝업)", kind: "urgent", modal: "detail" },
+];
+
+const NORMAL_COLS_0 = [["배차요청번호", 110], ["배차 상태 변경", 110], ["운송 상태", 100], ["이동 카테고리", 105], ["이동 구분", 85], ["공사 번호", 95], ["블록·Assy·자재번호", 140], ["치구 구분", 90], ["치구 종류", 90], ["치구 수량", 90, 1], ["작업 Stage", 95], ["출발지", 95], ["도착지", 95], ["중기그룹", 100], ["중기형태", 110]];
+const NORMAL_COLS_1 = [["장비코드", 105], ["장비차량번호", 115], ["적재톤수", 90, 1], ["배차확정일자", 115], ["사용조직", 100], ["장비운전자", 100], ["운전자 연락처", 130], ["운송일자", 110], ["운송 시작시간", 110], ["운송 종료시간", 110], ["총운행시간", 100, 1], ["입력담당자", 100]];
+
+const NORMAL_ROWS_0 = [
+  ["1520", "확정", "운송완료", "선각Assy", "블록", "5154", "512 / 512-A / -", "트레슬", "일반용", "3", "PE", "AB1204", "AB1208", "트랜스포터", "TP550 : 550T"],
+  ["1519", "확정", "운송완료", "의장", "자재", "5154", "456G123", "-", "-", "0", "PE", "AB1102", "AA1004", "지게차", "17 : 17T"],
+  ["1518", "미확정", "배차일변경", "의장", "자재", "4528", "456G423", "-", "-", "0", "ASSY", "AA1004", "AA1022", "지게차", "18 : 19T"],
+  ["1517", "확정", "운송완료", "치구류", "치구", "4528", "JIG-204", "Jig", "라인용", "2", "PE", "AB1020", "AB1030", "크레인", "ZC100 : 100T"],
+  ["1516", "확정", "운송취소", "선각Assy", "블록", "4582", "511 / 511-B / -", "트레슬", "일반용", "4", "DOCK", "AB1208", "AB1210", "트랜스포터", "TP550 : 550T"],
+  ["1515", "미확정", "배차일변경", "의장", "자재", "4582", "456G757", "-", "-", "0", "ASSY", "AA1022", "AA1030", "지게차", "17 : 17T"],
+  ["1514", "확정", "운송완료", "선각Assy", "블록", "5154", "510 / 510-A / -", "트레슬", "일반용", "2", "PE", "AB1104", "AB1108", "고소차", "AL01 : 1T"],
+  ["1513", "확정", "운송완료", "치구류", "치구", "4528", "JIG-118", "Jig", "일반용", "1", "PE", "AB1030", "AB1040", "트레일러", "TR05 : 5T"],
+];
+
+const NORMAL_ROWS_1 = [
+  ["HTP06001", "175로7503", "5", "2026.07.10", "중기1팀", "홍길동", "010-1111-1111", "2026.07.11", "10:00", "11:00", "1", "홍길동"],
+  ["HTP06002", "175로7504", "550", "2026.07.10", "중기1팀", "심청이", "010-1111-2222", "2026.07.11", "11:00", "12:30", "1.5", "심청이"],
+  ["HTP06003", "175로7505", "100", "2026.07.11", "중기2팀", "김한라", "010-1111-3333", "2026.07.12", "13:00", "14:00", "1", "김한라"],
+  ["HTP06004", "175로7506", "1", "2026.07.11", "중기2팀", "임산업", "010-1111-4444", "2026.07.12", "08:00", "09:30", "1.5", "임산업"],
+  ["HTP06005", "175로7507", "10", "2026.07.12", "중기3팀", "김최고", "010-1111-5555", "2026.07.13", "15:00", "16:00", "1", "김최고"],
+  ["HTP06006", "175로7508", "2", "2026.07.12", "중기3팀", "김중기", "010-1111-6666", "2026.07.13", "16:00", "17:20", "1.3", "김중기"],
+  ["HTP06007", "175로7509", "5", "2026.07.13", "중기1팀", "홍길동", "010-1111-1111", "2026.07.14", "09:30", "10:30", "1", "홍길동"],
+  ["HTP06008", "175로7510", "20", "2026.07.13", "중기4팀", "이몽룡", "010-1111-7777", "2026.07.14", "11:00", "12:00", "1", "이몽룡"],
+];
+
+const URGENT_COLS = [["배차요청번호", 110], ["배차 구분", 95], ["요청일자", 105], ["공사번호", 95], ["이동 카테고리", 105], ["이동 구분", 85], ["블록·Assy·자재번호", 140], ["장비 차량번호", 115], ["출발/도착지", 145], ["운송일자", 105], ["시작시간", 90], ["종료시간", 90], ["총 운행시간", 100, 1]];
+
+const URGENT_ROWS = [
+  ["1521", "긴급배차", "2026-05-29", "4528", "선각Assy", "블록", "516 / 516-A / -", "175로7503", "AA1022 → AA1024", "2026-05-29", "12:00", "13:00", "1"],
+  ["1522", "긴급배차", "2026-05-29", "4528", "의장", "자재", "456G242", "175로7505", "AA1024 → AA1030", "2026-05-29", "14:00", "15:00", "1"],
+  ["1523", "긴급배차", "2026-05-30", "4582", "선각Assy", "블록", "512 / 512-A / -", "175로7504", "AB1204 → AB1208", "2026-05-30", "08:30", "10:00", "1.5"],
+  ["1524", "긴급배차", "2026-05-30", "4582", "치구류", "치구", "JIG-204", "175로7506", "AB1020 → AB1030", "2026-05-30", "10:30", "11:20", "0.8"],
+  ["1525", "긴급배차", "2026-06-01", "5154", "의장", "자재", "456G738", "175로7507", "AA1004 → AA1022", "2026-06-01", "13:00", "14:30", "1.5"],
+  ["1526", "긴급배차", "2026-06-01", "5154", "선각Assy", "블록", "511 / 511-B / -", "175로7508", "AB1208 → AB1210", "2026-06-01", "15:00", "16:00", "1"],
+  ["1527", "긴급배차", "2026-06-02", "4528", "의장", "자재", "456G964", "175로7509", "AA1030 → AA1040", "2026-06-02", "09:00", "10:00", "1"],
+  ["1528", "긴급배차", "2026-06-02", "4582", "치구류", "치구", "JIG-118", "175로7510", "AB1030 → AB1040", "2026-06-02", "16:30", "17:30", "1"],
+];
+
+const SCREEN_DIRS = { HEL00: "00 공통", HEL01: "01 대시보드", HEL02: "02 지번관리", HEL03: "02 지번관리", HEL04: "02 지번관리", HEL05: "03 자재관리", HEL13: "03 자재관리", HEL06: "04 블록관리", HEL07: "05 중기배차신청", HEL08: "06 중기배차계획", HEL09: "07 배차실적", HEL10: "07 배차실적", HEL23: "08 장비가동률", HEL11: "09 운송자원정보관리", HEL14: "09 운송자원정보관리", HEL15: "09 운송자원정보관리", HEL24: "09 운송자원정보관리", HEL12: "10 알람", HEL16: "11 시스템관리", HEL17: "11 시스템관리", HEL18: "12 태블릿 PC 앱", HEL19: "13 작업자용 모바일 앱", HEL20: "13 작업자용 모바일 앱", HEL21: "13 작업자용 모바일 앱", HEL22: "13 작업자용 모바일 앱" };
+function resolveUrl(u) {
+  const dir = SCREEN_DIRS[String(u || "").slice(0, 5)];
+  return dir ? "../" + dir + "/" + u : u;
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const sc = SCREENS.find((s) => s.id === props.startScreen) || SCREENS[0];
+    this.state = {
+      screen: sc.id,
+      lnbOpen: { transport: true, "tr-result": true },
+      page: 1, period: "일",
+      f_group: "", f_form: "",
+      modal: sc.modal || null,
+      detailIdx: 0,
+    };
+  }
+
+  go(id) {
+    const sc = SCREENS.find((s) => s.id === id);
+    if (!sc) return;
+    this.setState({ screen: id, modal: sc.modal || null, page: 1 });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const cur = SCREENS.find((x) => x.id === s.screen) || SCREENS[0];
+    const isNormal = cur.kind === "normal";
+    const lnbOpen = s.lnbOpen;
+    const activeKey = isNormal ? "tr-rs-normal" : "tr-rs-urgent";
+
+    const navRows = [];
+    const walk = (nodes, depth) => {
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        const has = !!(n.children && n.children.length);
+        const isOpen = !!lnbOpen[n.key];
+        navRows.push({
+          label: n.label, icon: n.icon || "", showIcon: depth === 0, depth: String(depth),
+          active: n.key === activeKey, trail: n.key === "transport" || n.key === "tr-result",
+          hasChildren: has, chevIcon: isOpen ? "ti-chevron-up" : "ti-chevron-down",
+          onClick: () => {
+            if (has) {
+              const next = Object.assign({}, lnbOpen);
+              next[n.key] = !isOpen;
+              this.setState({ lnbOpen: next });
+            } else if (n.go) { this.go(n.go); }
+            else if (n.url) { window.location.href = encodeURI(resolveUrl(n.url)); }
+          },
+        });
+        if (has && isOpen) walk(n.children, depth + 1);
+      }
+    };
+    walk(NAV_TREE, 0);
+
+    const cols = isNormal ? (cur.scroll === 1 ? NORMAL_COLS_1 : NORMAL_COLS_0) : URGENT_COLS;
+    const raw = isNormal ? (cur.scroll === 1 ? NORMAL_ROWS_1 : NORMAL_ROWS_0) : URGENT_ROWS;
+    const rows = raw.map((r, i) => ({
+      cells: r.map((v, ci) => ({ v: v, num: !!(cols[ci] && cols[ci][2]) })),
+      onClick: isNormal ? null : () => this.setState({ modal: "detail", screen: "HEL10-03", detailIdx: i }),
+    }));
+
+    const d = URGENT_ROWS[s.detailIdx] || URGENT_ROWS[0];
+    const isReg = s.modal === "reg";
+    const pb = (name) => ({
+      bg: s.period === name ? "var(--status-wait-bg)" : "var(--bg-primary)",
+      color: s.period === name ? "var(--brand-primary)" : "var(--text-secondary)",
+    });
+    const p1 = pb("일"), p2 = pb("주"), p3 = pb("월"), p4 = pb("년");
+    const sTab = (n) => ({
+      bg: cur.scroll === n ? "var(--status-wait-bg)" : "var(--bg-primary)",
+      color: cur.scroll === n ? "var(--brand-primary)" : "var(--text-secondary)",
+    });
+    const t0 = sTab(0), t1 = sTab(1);
+
+    return {
+      screenLabel: cur.id + " " + cur.label,
+      pageTitle: isNormal ? "일반배차실적" : "긴급배차실적",
+      crumbItems: [{ label: "HOME" }, { label: "운송수단 관리" }, { label: "배차실적" }, { label: isNormal ? "일반배차실적" : "긴급배차실적" }],
+      navRows: navRows,
+      isNormal: isNormal,
+      isUrgent: !isNormal,
+      kpi1Label: isNormal ? "일반배차 작업건수" : "긴급배차 건수",
+      kpi1Sub: isNormal ? "기간조회 기준 검수" : "7일 이내 긴급배차 건수",
+      kpi3Label: isNormal ? "확정 · 미확정 건수" : "지연 · 미처리 건 수",
+      kpi3Sub: isNormal ? "기간조회 기준 건수" : "요청시간 대비 24시간 초과 건 수",
+      kpi4Label: isNormal ? "블록 · 자재 · 치구 이동구분 건수" : "배차 대기 · 승인완료 · 운행중",
+      kpi4Value: "10 · 5 · 5 건",
+      kpi4Sub: isNormal ? "이동구분 카테고리 기준" : "승인현황 기준",
+      hasProjectNo: isNormal,
+      groupOptions: [{ value: "", label: "전체" }, { value: "tp", label: "트랜스포터" }, { value: "trailer", label: "트레일러" }, { value: "crane", label: "크레인" }, { value: "aerial", label: "고소차" }, { value: "forklift", label: "지게차" }],
+      f_group: s.f_group,
+      set_group: (v) => this.setState({ f_group: typeof v === "string" ? v : (v && v.target ? v.target.value : v) }),
+      formOptions: [{ value: "", label: "전체" }, { value: "tp550", label: "TP550 : 550T" }, { value: "f17", label: "17 : 17T" }, { value: "f18", label: "18 : 19T" }],
+      f_form: s.f_form,
+      set_form: (v) => this.setState({ f_form: typeof v === "string" ? v : (v && v.target ? v.target.value : v) }),
+      setP1: () => this.setState({ period: "일" }), p1Bg: p1.bg, p1Color: p1.color, p1On: s.period === "일",
+      setP2: () => this.setState({ period: "주" }), p2Bg: p2.bg, p2Color: p2.color,
+      setP3: () => this.setState({ period: "월" }), p3Bg: p3.bg, p3Color: p3.color,
+      setP4: () => this.setState({ period: "년" }), p4Bg: p4.bg, p4Color: p4.color,
+      goScroll0: () => this.go("HEL09-01"), s0Bg: t0.bg, s0Color: t0.color,
+      goScroll1: () => this.go("HEL09-01-01"), s1Bg: t1.bg, s1Color: t1.color,
+      listTitle: isNormal ? "배차실적 목록" : "긴급배차 목록",
+      cols: cols.map((c) => ({ label: c[0] })),
+      gridCols: cols.map((c) => c[1] + "px").join(" "),
+      tableMinWidth: cols.reduce((a, c) => a + c[1], 0) + "px",
+      rows: rows,
+      tableHint: isNormal
+        ? (cur.scroll === 1 ? "장비 · 운전자 정보는 승인된 차량 기준 · 운송 시간은 태블릿 PC 이력 기준" : "컬럼이 많아 좌우 스크롤로 조회합니다")
+        : "행을 클릭하면 상세보기 팝업이 열립니다",
+      page: s.page,
+      setPage: (p) => this.setState({ page: p }),
+      showModal: s.modal === "reg" || s.modal === "detail",
+      isRegModal: isReg,
+      isDetailModal: s.modal === "detail",
+      modalTitle: isReg ? "등록" : "상세보기",
+      modalCloseLabel: isReg ? "완료" : "목록",
+      openReg: () => this.setState({ modal: "reg", screen: "HEL10-02" }),
+      closeModal: () => this.setState({ modal: null, screen: "HEL10-01" }),
+      m_carryDate: isReg ? "2026-06-23 13:00" : "2026-06-23 13:00",
+      m_reqDate: isReg ? "2026-06-20" : "2026-06-20",
+      m_kindLabel: isReg ? "배차구분" : "배차유형",
+      m_kind: isReg ? "긴급배차" : "-",
+      m_vehicle: isReg ? "175로7503" : d[7],
+      m_project: isReg ? "4582" : d[3],
+      m_cat: isReg ? "선각 Assy" : d[4],
+      m_move: isReg ? "블록" : d[5],
+      m_block: isReg ? "512" : "512",
+      m_assy: isReg ? "111" : "111",
+      m_start: isReg ? "10:50" : d[10],
+      m_end: isReg ? "11:50" : d[11],
+      catOptions: [{ value: "hull", label: "선각 Assy" }, { value: "outfit", label: "의장" }, { value: "jig", label: "치구류" }],
+      regCat: s.regCat || "hull",
+      setRegCat: (v) => this.setState({ regCat: typeof v === "string" ? v : (v && v.target ? v.target.value : v) }),
+      moveOptions: [{ value: "block", label: "블록" }, { value: "material", label: "자재" }, { value: "jig", label: "치구" }],
+      regMove: s.regMove || "block",
+      setRegMove: (v) => this.setState({ regMove: typeof v === "string" ? v : (v && v.target ? v.target.value : v) }),
+      showPicker: !this.props.startScreen,
+      pickRows: SCREENS.map((sc) => {
+        const on = sc.id === s.screen;
+        return {
+          short: sc.id.replace("HEL", ""), label: sc.id + " " + sc.label,
+          border: on ? "var(--brand-primary)" : "var(--border-input)",
+          bg: on ? "var(--status-wait-bg)" : "var(--bg-primary)",
+          color: on ? "var(--brand-primary)" : "var(--text-secondary)",
+          onClick: () => this.go(sc.id),
+        };
+      }),
+    };
+  }
+}
+</script>
+</body>
+</html>

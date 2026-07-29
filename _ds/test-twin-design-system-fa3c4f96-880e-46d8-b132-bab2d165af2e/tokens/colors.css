@@ -1,0 +1,153 @@
+/* ============================================================
+   한화오션에코텍 물류Twin — Color tokens
+   Source of truth: 디자인가이드 V0.1 (2026.07.07), slides 7–8, 10–14.
+   Screens MUST use semantic tokens, not raw scale steps.
+   ============================================================ */
+
+:root {
+  /* ==========================================================
+     Primitive — Main (Orange) · guide slide 8
+     Named by numeric step (5 lightest → 90 darkest).
+     ========================================================== */
+  --orange-5:  #fcf5ef;
+  --orange-10: #f7e3d2;
+  --orange-20: #f2c59d;
+  --orange-30: #efaa6b;  /* Button hover  */
+  --orange-40: #ed892f;
+  --orange-50: #ed7100;  /* Main · Button default · Focus · Pagination active */
+  --orange-60: #d15700;  /* Button pressed */
+  --orange-70: #ad3d00;
+  --orange-80: #842700;
+  --orange-90: #591500;
+
+  /* ==========================================================
+     Primitive — Grayscale · guide slide 8
+     ========================================================== */
+  --gray-0:   #ffffff;
+  --gray-5:   #f8f8f8;  /* column divider · subtle canvas */
+  --gray-10:  #f0f0f0;  /* table line · row divider */
+  --gray-20:  #e4e4e4;  /* table header bg */
+  --gray-30:  #dbdbdb;
+  --gray-40:  #c6c6c6;  /* input border · placeholder */
+  --gray-50:  #bebebe;  /* disabled */
+  --gray-60:  #717171;  /* tertiary text */
+  --gray-70:  #555555;  /* secondary text */
+  --gray-80:  #2d2d2d;  /* primary text · table title · current page */
+  --gray-90:  #1d1d1d;
+  --gray-100: #000000;
+
+  /* ==========================================================
+     Primitive — Status hues (retained; V0.1 keeps status semantics
+     from the working system — blue=info/progress, red=error, green=done)
+     ========================================================== */
+  --blue-lighter: #cce7f5;
+  --blue-main:    #21a3e6;
+  --blue-dark:    #0a72f2;
+  --red-lighter:  #f5d4cc;
+  --red-main:     #f22922;
+  --red-dark:     #e40c01;
+  --green-lighter:#ddefe4;
+  --green-main:   #4a9d67;
+  --green-dark:   #008233;
+
+  /* ==========================================================
+     Semantic — Light Mode
+     ========================================================== */
+  --brand-primary:   var(--orange-50);  /* #ED7100 */
+  --brand-hover:     var(--orange-30);  /* #EFAA6B */
+  --brand-pressed:   var(--orange-60);  /* #D15700 */
+  --brand-tint:      var(--orange-5);   /* #FCF5EF active-menu / selected bg */
+  --on-brand:        #ffffff;
+
+  --bg-primary:      var(--gray-0);   /* #FFFFFF */
+  --bg-secondary:    var(--gray-5);   /* #F8F8F8 page canvas */
+  --surface:         var(--gray-0);   /* cards, sheets, rows */
+  --surface-disabled:var(--gray-50);  /* #BEBEBE disabled button */
+
+  --text-primary:    var(--gray-80);  /* #2D2D2D titles, table title, current page */
+  --text-secondary:  #444648;         /* content / input value (guide slide 11) */
+  --text-tertiary:   var(--gray-60);  /* #717171 timestamps, sub */
+  --text-placeholder:var(--gray-40);  /* #C6C6C6 */
+  --text-inverse:    var(--gray-0);
+
+  --border-subtle:   var(--gray-5);   /* #F8F8F8 column divider */
+  --border-default:  var(--gray-10);  /* #F0F0F0 table line, row divider, card outline */
+  --border-strong:   var(--gray-20);  /* #E4E4E4 table header edge */
+  --border-focus:    var(--brand-primary);
+  --border-error:    var(--red-main);
+  --border-input:    var(--gray-40);  /* #C6C6C6 (guide slide 11) */
+
+  --table-header-bg: var(--gray-20);  /* #E4E4E4 */
+
+  /* ---- Status — tint bg + dark-step text (paired with text label) ---- */
+  --status-wait-text:     var(--orange-60);   /* 배차대기/대기 */
+  --status-wait-bg:       var(--orange-5);
+  --status-progress-text: var(--blue-dark);    /* 진행중 */
+  --status-progress-bg:   #E9F7FE;
+  --status-done-text:     var(--green-dark);   /* 완료 */
+  --status-done-bg:       #E5F3E9;
+  --status-error-text:    var(--red-dark);     /* 지연/오류/긴급 */
+  --status-error-bg:      #F5EAE7;
+  --status-hold-text:     var(--text-tertiary);/* 취소/보류 */
+  --status-hold-bg:       var(--gray-10);
+
+  /* ---- Overlay / elevation (guide slide 14) ---- */
+  --overlay-dim:     rgba(0, 0, 0, 0.6);
+  --shadow-tooltip:  0 2px 8px rgba(54, 59, 64, 0.25);
+
+  /* ==========================================================
+     Legacy aliases — keep older component references resolving
+     to the V0.1 palette. Do NOT use in new work; prefer semantics.
+     ========================================================== */
+  --hanwha-orange-lighter: var(--orange-10);
+  --hanwha-orange-light:   var(--orange-30);
+  --hanwha-orange-main:    var(--orange-50);
+  --hanwha-orange-dark:    var(--orange-60);
+  --hanwha-orange-darker:  var(--orange-80);
+  --hanwha-gray-darker: var(--gray-90);
+  --hanwha-gray-dark:   var(--gray-80);
+  --hanwha-gray-main:   var(--gray-60);
+  --hanwha-gray-light:  var(--gray-40);
+  --hanwha-gray-lighter:var(--gray-30);
+  --hanwha-white-main:    var(--gray-0);
+  --hanwha-white-lighter: var(--gray-5);   /* column divider */
+  --hanwha-white-light:   var(--gray-5);
+  --hanwha-white-dark:    var(--gray-20);  /* table header bg */
+  --hanwha-white-darker:  var(--gray-10);  /* row divider */
+  --hanwha-red-main:   var(--red-main);
+  --hanwha-red-light:  var(--red-main);
+  --hanwha-blue-main:  var(--blue-main);
+  --hanwha-green-main: var(--green-main);
+  --hanwha-green-light:var(--green-main);
+}
+
+/* ==========================================================
+   Dark Mode — retained scaffold (guide V0.1 documents light only;
+   values below are a sensible dark mapping of the new scale).
+   Toggle via [data-theme="dark"].
+   ========================================================== */
+[data-theme="dark"] {
+  --bg-primary:      var(--gray-90);
+  --bg-secondary:    var(--gray-80);
+  --surface:         var(--gray-80);
+  --surface-disabled:var(--gray-70);
+
+  --text-primary:    var(--gray-5);
+  --text-secondary:  var(--gray-20);
+  --text-tertiary:   var(--gray-40);
+  --text-placeholder:var(--gray-60);
+  --text-inverse:    var(--gray-90);
+
+  --border-subtle:   var(--gray-70);
+  --border-default:  var(--gray-60);
+  --border-strong:   var(--gray-60);
+  --border-input:    var(--gray-60);
+
+  --table-header-bg: var(--gray-70);
+
+  --status-wait-bg:     rgba(237, 113, 0, 0.16);
+  --status-progress-bg: rgba(33, 163, 230, 0.16);
+  --status-done-bg:     rgba(74, 157, 103, 0.16);
+  --status-error-bg:    rgba(242, 41, 34, 0.16);
+  --status-hold-bg:     var(--gray-70);
+}
